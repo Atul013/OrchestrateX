@@ -2,7 +2,7 @@
 # Phase 1: Environment Setup & Model Selection Algorithm
 Goal: Build a unified platform where multiple chatbots can coexist and an intelligent algorithm selects the best model for each query based on specialization.
 
-## Part 1 — API Integration & Infrastructure Setup (Person A)
+## Part 1 — API Integration & Infrastructure Setup (Zayed Ikka)
 Objective: Create a robust foundation that can connect and manage multiple chatbot APIs.
 
 ## Tasks:
@@ -23,7 +23,7 @@ Secure API key storage using environment variables or secrets management
 Implement request logging and audit trails
 Add input sanitization to prevent prompt injection attacks
 
-## Part 2 — Dataset Creation & Model Specialty Analysis (Person B)
+## Part 2 — Dataset Creation & Model Specialty Analysis (Sahil)
 Objective: Build comprehensive training datasets that capture each chatbot's strengths and weaknesses.
 
 ## Tasks:
@@ -47,7 +47,7 @@ Format data as: {"prompt": "...", "domain": "coding", "chatbot_responses": {...}
 Create train/validation/test splits (70/15/15)
 Document evaluation criteria and rating methodologies
 
-## Part 3 — Intelligent Model Selection Algorithm (Person C)
+## Part 3 — Intelligent Model Selection Algorithm (Avinash V Bhaskaran)
 Objective: Develop ML-based routing system that chooses optimal chatbot for each query.
 
 ## Tasks:
@@ -72,7 +72,7 @@ Measure routing accuracy against human expert choices
 Test on out-of-domain queries to assess generalization
 Implement A/B testing framework for algorithm comparison
 
-## Part 4 — Orchestration Engine & Workflow Management (Person D)
+## Part 4 — Orchestration Engine & Workflow Management (Jinu)
 Objective: Build the central system that coordinates model selection and response generation.
 
 ## Tasks:
@@ -97,7 +97,7 @@ Log all requests, selections, and outcomes for analysis
 Track performance metrics (latency, accuracy, cost per query)
 Create dashboard for system health monitoring
 
-## Part 5 — Testing, Validation & Deployment (Person E)
+## Part 5 — Testing, Validation & Deployment (Atul Biju)
 Objective: Ensure system reliability, accuracy, and production readiness.
 
 ## Tasks:
@@ -125,7 +125,7 @@ Create API documentation and usage guidelines for Phase 2 integration
 # Phase 2: Criticism & Iterative Refinement Framework
 Goal: Enable other chatbots to critique the best model's response, with iterative refinement until convergence or maximum iteration limit.
 
-## Part 1 — Multi-Agent Criticism Architecture (Person A)
+## Part 1 — Multi-Agent Criticism Architecture (Zayed Ikka)
 Objective: Design the technical framework for inter-chatbot communication and criticism loops.
 
 ## Tasks:
@@ -151,7 +151,7 @@ Handle cases where critics fail to provide feedback
 Implement timeout mechanisms for slow responses
 Create fallback strategies when criticism loops fail
 
-## Part 2 — Criticism Framework & Evaluation Metrics (Person B)
+## Part 2 — Criticism Framework & Evaluation Metrics (Sahil)
 Objective: Develop systematic approaches for generating high-quality, constructive critiques.
 ## Tasks:
 
@@ -177,7 +177,7 @@ Add self-confidence scoring for critic reliability
 Filter low-quality or contradictory critiques
 Implement critique validation through cross-checking
 
-## Part 3 — Response Refinement Engine (Person C)
+## Part 3 — Response Refinement Engine (Avinash V Bhaskaran)
 Objective: Enable the best chatbot to intelligently incorporate criticism into improved responses.
 
 ## Tasks:
@@ -204,7 +204,7 @@ Define improvement thresholds (e.g., <5% change in quality metrics)
 Implement diminishing returns detection
 Add safeguards against response degradation from over-refinement
 
-## Part 4 — Multi-Agent Coordination & State Management (Person D)
+## Part 4 — Multi-Agent Coordination & State Management (Jinu)
 Objective: Orchestrate complex multi-turn conversations between chatbots while maintaining context.
 
 ## Tasks:
@@ -236,7 +236,7 @@ Track processing time per criticism round
 Monitor token usage and API costs across iterations
 Measure overall improvement quality versus computational cost
 
-## Part 5 — Integration, Evaluation & Production Optimization (Person E)
+## Part 5 — Integration, Evaluation & Production Optimization (Atul Biju)
 Objective: Validate the criticism system effectiveness and integrate with Phase 1 infrastructure.
 
 ## Tasks:
