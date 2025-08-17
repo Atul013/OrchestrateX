@@ -1,6 +1,6 @@
 # OrchestrateX
 # Phase 1: Environment Setup & Model Selection Algorithm
-Goal: Build a unified platform where multiple chatbots can coexist and an intelligent algorithm selects the best model for each query based on specialization.
+Goal: Build a unified platform where multiple chatbots can coexist and an intelligent algorithm selects the best model for each query based on specialization.Yo!
 
 ## Part 1 — API Integration & Infrastructure Setup (Zayed Ikka)
 Objective: Create a robust foundation that can connect and manage multiple chatbot APIs.
