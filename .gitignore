@@ -260,7 +260,7 @@ wandb/
 mlruns/
 
 # Data files (add specific patterns as needed)
-*.csv
+
 *.json
 *.parquet
 *.feather
