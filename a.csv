@@ -1,0 +1,7 @@
+Model Name,Model Size,Architecture,Context Window Size,API Rate Limits 
+GLM-4.5,355 billion total parameters with 32 billion active parameters,Mixture of Experts (MoE) with hybrid reasoning capabilities,128000 tokens context window size for both GLM-4.5 and GLM-4.5-Air variants,300 requests per hour
+GPT-OSS-120B,117 billion total parameters & 5.1 billion active parameters,Mixture of Experts (MoE) with SwiGLU activations Alternating layers of full context attention and sliding 128000 tokens window attention,128000 tokens,300 requests per hour
+Llama 3.1 8B Instant,8 billion parameters,Transformer architecture with Grouped-Query Attention (GQA) for improved efficiency,128000 tokens,14400 requests per day
+Gemini 2.5 Pro,Undisclosed,Transformer architecture with advanced "thinking mode" capabilities for enhanced reasoning,1000000 tokens,25 requests per day (RPD)
+Claude 3.5 Sonnet Latest,Undisclosed,Transformer architecture focused on safety alignment and large context handling,200000 tokens,No guaranteed token or request per minute quotas publicly specified for the free tier API primarily intended as light usage access
+Falcon-7B,7 billion parameters,causal decoder-only transformer using rotary positional embeddings FlashAttention multiquery attention and parallel attention and MLP layers for efficient inference,2048 tokens,300 requests per hour
