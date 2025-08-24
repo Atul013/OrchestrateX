@@ -78,11 +78,12 @@ python prompt_adder.py
 
 2. **Start Model Response Collection**
    - Set up API connections to AI models:
-     - GLM 4.5
-     - Llama 3.1  
-     - GPT OSS
-     - Mistral
-     - Claude 3.5
+     - GLM4.5
+     - GPT-OSS
+     - LLaMa 3
+     - Gemini2.5
+     - Claude .5
+     - Falcon
    - Collect responses for identical prompts
 
 3. **Human Evaluation Setup**
@@ -160,7 +161,7 @@ dataset/
 ## 🎉 Success Criteria
 By the end of your work, you should have:
 - ✅ 3000+ high-quality prompts across 6 domains
-- ✅ Responses from all 5 AI models for each prompt
+- ✅ Responses from all 6 AI models for each prompt
 - ✅ Human evaluation ratings for response quality
 - ✅ Structured dataset ready for ML training
 - ✅ Documentation of methodology and evaluation criteria

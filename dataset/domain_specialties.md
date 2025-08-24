@@ -1,11 +1,12 @@
 # Chatbot Model Specialty Domains
 
 ## Models Considered
-- GLM 4.5
-- Llama 3.1
-- GPT OSS
-- Mistral
-- Claude 3.5
+- GLM4.5
+- GPT-OSS
+- LLaMa 3
+- Gemini2.5
+- Claude .5
+- Falcon
 
 ## Specialty Areas
 - Coding
@@ -16,11 +17,12 @@
 - Sentiment Analysis
 
 ## Model Strengths (Initial Research)
-- **GLM 4.5**: Strong in multilingual tasks, factual Q&A, and reasoning.
-- **Llama 3.1**: Good at creative writing, coding, and general conversation.
-- **GPT OSS**: Open-source, excels in coding and technical Q&A.
-- **Mistral**: Fast, efficient, good for short-form factual and creative responses.
-- **Claude 3.5**: Advanced reasoning, ethical Q&A, and creative writing.
+- **GLM4.5**: Strong in multilingual tasks, factual Q&A, and reasoning.
+- **GPT-OSS**: Open-source, excels in coding and technical Q&A.
+- **LLaMa 3**: Good at creative writing, coding, and general conversation.
+- **Gemini2.5**: Advanced reasoning, multimodal capabilities, and creative tasks.
+- **Claude .5**: Advanced reasoning, ethical Q&A, and creative writing.
+- **Falcon**: Fast, efficient, good for short-form factual and creative responses.
 
 ---
 This file will be updated with more detailed research and references for each model's specialty domain.

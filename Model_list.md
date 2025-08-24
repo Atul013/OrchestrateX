@@ -1,10 +1,20 @@
-# OrchestrateX Model List
+# OrchestrateX M## 2. GPT-OSS (OpenAI's ## 4. Gemini2.5 (Google)
+- **Description:** Google's advanced multi-modal and reasoning AI model with efficient API access.
+- **Access:** Free-tier API available through Google Cloud AI services with daily usage limits.
+- **Use Cases:** Coding, reasoning, complex queries.
+- **Links:**  
+  - [Google Gemini API](https://ai.google.com/research/teams/applied-science/gemini)ource GPT Variants)
+- **Description:** High-capacity GPT-based models released under Apache 2.0 license, supporting flexible deployment.
+- **Access:** Can be run via free-tier cloud inference services or local instances (local deployment not required here).
+- **Use Cases:** General purpose language understanding and generation.
+- **Links:**  
+  - [GPT-OSS on Hugging Face](https://huggingface.co/openai/gpt-oss-120b)ist
 
 This document lists the six AI models selected for integration into the OrchestrateX collaborative multi-model system. These models are chosen based on their open-source availability or free-tier API access to support zero-cost development without local deployment.
 
 ---
 
-## 1. GLM-4.5 (Zhipu AI)
+## 1. GLM4.5 (Zhipu AI)
 - **Description:** State-of-the-art mixture-of-experts model with strong reasoning, coding, and agentic capabilities.
 - **Access:** Available via SiliconFlow, Hugging Face inference APIs with free-tier options.
 - **Use Cases:** Reasoning, coding, complex task solving.
@@ -23,7 +33,7 @@ This document lists the six AI models selected for integration into the Orchestr
 
 ---
 
-## 3. LLaMA 3 (Meta)
+## 3. LLaMa 3 (Meta)
 - **Description:** Instruction-tuned open-source model with strong multilingual and reasoning capabilities.
 - **Access:** Available through API providers offering free-tier access such as Groq.
 - **Use Cases:** Instruction following, multilingual tasks, reasoning.
@@ -42,7 +52,7 @@ This document lists the six AI models selected for integration into the Orchestr
 
 ---
 
-## 5. Anthropic Claude
+## 5. Claude .5 (Anthropic)
 - **Description:** Conversational AI focused on safe and helpful dialogue, creative writing, and coding.
 - **Access:** Free-tier web interface and limited free API calls.
 - **Use Cases:** Conversational agents, code generation, creative content.
@@ -51,7 +61,7 @@ This document lists the six AI models selected for integration into the Orchestr
 
 ---
 
-## 6. Falcon AI (Technology Innovation Institute)
+## 6. Falcon (Technology Innovation Institute)
 - **Description:** Open-source large language model family with strong instruction tuning and wide community adoption.
 - **Access:** Accessible through Hugging Face API free tier and hosted inference endpoints.
 - **Use Cases:** General NLP tasks, instruction following, summarization.

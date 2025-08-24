@@ -1,18 +1,19 @@
 # Response Collection & Evaluation Methodology
 
 ## Step 1: Collect Responses
-- Send identical prompts to all chatbots (GLM 4.5, Llama 3.1, GPT OSS, Mistral, Claude 3.5)
+- Send identical prompts to all chatbots (GLM4.5, GPT-OSS, LLaMa 3, Gemini2.5, Claude .5, Falcon)
 - Store responses in a unified format:
   ```json
   {
     "prompt": "...",
     "domain": "coding",
     "chatbot_responses": {
-      "GLM 4.5": "...",
-      "Llama 3.1": "...",
-      "GPT OSS": "...",
-      "Mistral": "...",
-      "Claude 3.5": "..."
+      "GLM4.5": "...",
+      "GPT-OSS": "...",
+      "LLaMa 3": "...",
+      "Gemini2.5": "...",
+      "Claude .5": "...",
+      "Falcon": "..."
     }
   }
   ```
@@ -38,8 +39,12 @@
     "domain": "coding",
     "chatbot_responses": {...},
     "ratings": {
-      "GLM 4.5": {"accuracy": 4, "relevance": 5, "clarity": 4, "creativity": 3},
-      ...
+      "GLM4.5": {"accuracy": 4, "relevance": 5, "clarity": 4, "creativity": 3},
+      "GPT-OSS": {"accuracy": 5, "relevance": 4, "clarity": 5, "creativity": 3},
+      "LLaMa 3": {"accuracy": 4, "relevance": 4, "clarity": 4, "creativity": 4},
+      "Gemini2.5": {"accuracy": 5, "relevance": 5, "clarity": 4, "creativity": 4},
+      "Claude .5": {"accuracy": 4, "relevance": 5, "clarity": 5, "creativity": 5},
+      "Falcon": {"accuracy": 3, "relevance": 4, "clarity": 4, "creativity": 3}
     }
   }
   ```
