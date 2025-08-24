@@ -1,5 +1,4 @@
 # Sahil's Complete Guide to Dataset Creation & Model Specialty Analysis
-*Phase 1, Part 2 - OrchestrateX Project*
 
 ## 🎯 Your Mission
 As **Sahil**, you're responsible for building comprehensive training datasets that capture each chatbot's strengths and weaknesses across different domains.
