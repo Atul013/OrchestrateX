@@ -1,0 +1,21 @@
+version: '3.8'
+services:
+  project-mongodb:
+    image: mongo:latest
+    container_name: orchestratex_mongodb
+    ports:
+      - "27018:27017"
+    volumes:
+      - orchestratex_data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: project_admin
+      MONGO_INITDB_ROOT_PASSWORD: project_password
+    networks:
+      - orchestratex_network
+
+volumes:
+  orchestratex_data:
+
+networks:
+  orchestratex_network:
+    driver: bridge
