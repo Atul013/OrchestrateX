@@ -82,7 +82,7 @@ python prompt_adder.py
      - GPT-OSS
      - LLaMa 3
      - Gemini2.5
-     - Claude .5
+     - Claude 3.5
      - Falcon
    - Collect responses for identical prompts
 

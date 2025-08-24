@@ -6,7 +6,7 @@ OrchestrateX is an advanced multi-model collaborative AI system designed to deli
 
 ## Features
 
-- **Multi-Model Selection:** Chooses the most suitable model from a pool (e.g., GLM4.5, GPT-OSS, LLaMa 3, Gemini2.5, Claude .5, Falcon) to generate the initial response.
+- **Multi-Model Selection:** Chooses the most suitable model from a pool (e.g., GLM4.5, GPT-OSS, LLaMa 3, Gemini2.5, Claude 3.5, Falcon) to generate the initial response.
 - **Collaborative Criticism:** Other models provide real-time critiques and suggestions to enhance the output of the answering model.
 - **Dynamic Refinement:** The answering model iteratively refines its output based on the feedback.
 - **High Output Quality:** Combines strengths of multiple AI models to produce superior results.

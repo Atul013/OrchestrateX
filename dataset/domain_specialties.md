@@ -5,7 +5,7 @@
 - GPT-OSS
 - LLaMa 3
 - Gemini2.5
-- Claude .5
+- Claude 3.5
 - Falcon
 
 ## Specialty Areas
@@ -21,7 +21,7 @@
 - **GPT-OSS**: Open-source, excels in coding and technical Q&A.
 - **LLaMa 3**: Good at creative writing, coding, and general conversation.
 - **Gemini2.5**: Advanced reasoning, multimodal capabilities, and creative tasks.
-- **Claude .5**: Advanced reasoning, ethical Q&A, and creative writing.
+- **Claude 3.5**: Advanced reasoning, ethical Q&A, and creative writing.
 - **Falcon**: Fast, efficient, good for short-form factual and creative responses.
 
 ---

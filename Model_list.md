@@ -52,7 +52,7 @@ This document lists the six AI models selected for integration into the Orchestr
 
 ---
 
-## 5. Claude .5 (Anthropic)
+## 5. Claude 3.5 (Anthropic)
 - **Description:** Conversational AI focused on safe and helpful dialogue, creative writing, and coding.
 - **Access:** Free-tier web interface and limited free API calls.
 - **Use Cases:** Conversational agents, code generation, creative content.

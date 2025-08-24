@@ -1,7 +1,7 @@
 # Response Collection & Evaluation Methodology
 
 ## Step 1: Collect Responses
-- Send identical prompts to all chatbots (GLM4.5, GPT-OSS, LLaMa 3, Gemini2.5, Claude .5, Falcon)
+- Send identical prompts to all chatbots (GLM4.5, GPT-OSS, LLaMa 3, Gemini2.5, Claude 3.5, Falcon)
 - Store responses in a unified format:
   ```json
   {
@@ -12,7 +12,7 @@
       "GPT-OSS": "...",
       "LLaMa 3": "...",
       "Gemini2.5": "...",
-      "Claude .5": "...",
+      "Claude 3.5": "...",
       "Falcon": "..."
     }
   }
@@ -43,7 +43,7 @@
       "GPT-OSS": {"accuracy": 5, "relevance": 4, "clarity": 5, "creativity": 3},
       "LLaMa 3": {"accuracy": 4, "relevance": 4, "clarity": 4, "creativity": 4},
       "Gemini2.5": {"accuracy": 5, "relevance": 5, "clarity": 4, "creativity": 4},
-      "Claude .5": {"accuracy": 4, "relevance": 5, "clarity": 5, "creativity": 5},
+      "Claude 3.5": {"accuracy": 4, "relevance": 5, "clarity": 5, "creativity": 5},
       "Falcon": {"accuracy": 3, "relevance": 4, "clarity": 4, "creativity": 3}
     }
   }
