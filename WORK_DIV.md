@@ -23,29 +23,36 @@ Secure API key storage using environment variables or secrets management
 Implement request logging and audit trails
 Add input sanitization to prevent prompt injection attacks
 
-## Part 2 — Dataset Creation & Model Specialty Analysis (Sahil)
-Objective: Build comprehensive training datasets that capture each chatbot's strengths and weaknesses.
+## Part 2 — Containerized Database & Backend APIs (Sahil + Jinendran)
+Objective: Set up MongoDB database infrastructure and backend APIs for the OrchestrateX system.
 
 ## Tasks:
 
-### Domain Categorization:
-Define specialty areas: coding, creative writing, factual Q&A, mathematical reasoning, language translation, sentiment analysis
-Research each model's documented strengths (e.g., GPT-4 for reasoning, Qwen for code, Grok for real-time data)
+### Database Infrastructure Setup:
+Set up MongoDB database in Docker containers
+Configure Docker Compose for development and production environments
+Implement database security and access controls
+Ensure data persistence and performance optimization
 
-### Comprehensive Data Collection:
-Collect 500+ prompts per domain from public datasets (MMLU, HumanEval, MT-Bench)
-Include diverse difficulty levels and query types within each domain
-Source multilingual queries to test language capabilities
+### Database Schema Design:
+Design collections for prompts, AI model responses, and evaluation data
+Create indexes for efficient querying and performance
+Implement data validation rules and constraints
+Plan for scalability and future data growth
 
-### Response Quality Labeling:
-Send identical prompts to all chatbots and collect responses
-Use human evaluators to rate responses on: accuracy, relevance, clarity, creativity
-Implement inter-annotator agreement checks for consistency
+### Backend API Development:
+Implement RESTful APIs for CRUD operations
+Create endpoints for prompt management and data retrieval
+Build APIs for AI model response storage and evaluation data
+Add proper error handling and input validation
 
-### Dataset Structuring:
-Format data as: {"prompt": "...", "domain": "coding", "chatbot_responses": {...}, "ratings": {...}}
-Create train/validation/test splits (70/15/15)
-Document evaluation criteria and rating methodologies
+### Integration & Documentation:
+Integrate backend APIs with frontend and algorithm components
+Document database setup and usage instructions
+Create API documentation for team integration
+Implement monitoring and logging for database operations
+
+**Note**: *Dataset creation responsibilities are currently unassigned and need to be allocated to appropriate team member.*
 
 ## Part 3 — Intelligent Model Selection Algorithm (Avinash V Bhaskaran)
 Objective: Develop ML-based routing system that chooses optimal chatbot for each query.
