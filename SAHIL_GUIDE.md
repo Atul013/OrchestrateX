@@ -1,153 +1,253 @@
-# Sahil's Database & Backend Development Guide
-*OrchestrateX Project - Database Infrastructure & API Development*
+# Sahil's MongoDB & Backend API Development Guide
+*Team 2: Containerized Database - OrchestrateX Project*
 
-## 🎯 Your Actual Responsibilities
-As **Sahil**, you are responsible for:
+## 🎯 Your Team 2 Responsibilities
+As **Sahil** (Team 2: Containerized Database), working with **Jinendran**, you are responsible for:
+
+### 🗄️ **Database Infrastructure:**
 - Setting up MongoDB database in Docker containers
 - Designing database schema and collections
-- Implementing backend APIs for CRUD operations
 - Managing database security and access controls
 - Ensuring data persistence and performance optimization
+
+### 🔧 **Backend Development:**
+- Implementing backend APIs for CRUD operations
+- Creating RESTful endpoints for system integration
+- Building secure authentication and authorization
 - Documenting database setup and usage instructions
 
-## 📊 What We Actually Accomplished
-**Note**: Initially worked on prompt collection tools, but this was clarification of roles.
+### ⏰ **Project Deadline:**
+**Friday, August 29, 2025, 11:59 PM IST** - Working prototype required
 
-### ✅ **Prompt Collection Tools Created** (For Dataset Team Reference)
-1. **Mathematical Reasoning Dataset**: 41 prompts collected
-   - 21 diverse math prompts (arithmetic, algebra, geometry, etc.)
-   - 10 Khan Academy algebra foundation prompts  
-   - 10 Khan Academy arithmetic prompts
-   
-2. **Data Collection Infrastructure**:
-   - `prompt_adder.py` - Tool for adding prompts to JSON datasets
-   - `progress_tracker.py` - Progress monitoring system
-   - JSON data structure for prompt storage
+## 🚀 **Getting Started: MongoDB Docker Setup**
 
-### 📋 **Data Structure Understanding** (For Your Database Design)
-From the prompt collection work, you now understand the data structure:
+### **Step 1: Install Prerequisites**
+```bash
+# Install Docker Desktop (if not already installed)
+# Download from: https://www.docker.com/products/docker-desktop/
+```
 
-```json
+### **Step 2: Create Docker Compose Configuration**
+```yaml
+# docker-compose.yml
+version: '3.8'
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: orchestratex_mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: orchestratex_password
+      MONGO_INITDB_DATABASE: orchestratex
+    volumes:
+      - mongodb_data:/data/db
+      - ./init-scripts:/docker-entrypoint-initdb.d
+    networks:
+      - orchestratex_network
+
+volumes:
+  mongodb_data:
+
+networks:
+  orchestratex_network:
+    driver: bridge
+```
+
+### **Step 3: Database Schema Design**
+
+Based on OrchestrateX requirements, you'll need these collections:
+
+#### **1. Prompts Collection**
+```javascript
+// prompts
 {
-  "id": 1,
-  "prompt": "Solve for x: 2x + 5 = 17",
-  "domain": "mathematical_reasoning",
-  "difficulty": "medium",
-  "category": "algebra",
-  "language": "en",
-  "created_at": "2025-08-25T...",
-  "chatbot_responses": {},
-  "ratings": {},
-  "metadata": {
-    "source": "Khan Academy",
-    "collector": "Sahil"
+  _id: ObjectId,
+  prompt: "String - the actual question/task",
+  domain: "String - coding|creative|factual|math|translation|sentiment", 
+  difficulty: "String - easy|medium|hard",
+  category: "String - specific subcategory",
+  language: "String - en|es|fr|etc",
+  created_at: "Date",
+  metadata: {
+    source: "String",
+    collector: "String"
   }
 }
 ```
 
-## 🗄️ Your Real Work: Database & Backend Setup
+#### **2. AI Responses Collection**
+```javascript
+// ai_responses  
+{
+  _id: ObjectId,
+  prompt_id: "ObjectId - reference to prompts collection",
+  model_name: "String - gpt4|claude|llama|mistral|qwen",
+  response: "String - AI model's response",
+  response_time: "Number - milliseconds",
+  tokens_used: "Number",
+  cost: "Number - API cost",
+  timestamp: "Date"
+}
+```
 
-### **PHASE 1: Environment Setup**
-1. **Install Docker Desktop**
-2. **Set up MongoDB in Docker**
-3. **Configure development environment**
+#### **3. Evaluations Collection**
+```javascript
+// evaluations
+{
+  _id: ObjectId,
+  prompt_id: "ObjectId",
+  response_id: "ObjectId", 
+  evaluator_id: "String - human evaluator identifier",
+  ratings: {
+    accuracy: "Number 1-5",
+    relevance: "Number 1-5", 
+    clarity: "Number 1-5",
+    creativity: "Number 1-5"
+  },
+  overall_score: "Number 1-5",
+  comments: "String - optional feedback",
+  timestamp: "Date"
+}
+```
 
-### **PHASE 2: Database Design**
-1. **Design MongoDB Collections**:
-   - `prompts` collection (based on structure above)
-   - `responses` collection (AI model responses)
-   - `evaluations` collection (human ratings)
-   - `users` collection (evaluators, admins)
+## 🔧 **Backend API Development**
 
-2. **Schema Design**:
-   - Define indexes for performance
-   - Set up data validation rules
-   - Plan for scalability
+### **Required Endpoints:**
 
-### **PHASE 3: Backend API Development**
-1. **CRUD Operations**:
-   - Create prompts
-   - Read/search prompts by domain, difficulty, category
-   - Update prompt metadata
-   - Delete prompts
+#### **Prompts Management**
+```
+GET    /api/prompts              # List all prompts (with filters)
+POST   /api/prompts              # Create new prompt
+GET    /api/prompts/:id          # Get specific prompt
+PUT    /api/prompts/:id          # Update prompt
+DELETE /api/prompts/:id          # Delete prompt
+GET    /api/prompts/domain/:domain # Get prompts by domain
+```
 
-2. **API Endpoints**:
-   - `/api/prompts` - Prompt management
-   - `/api/responses` - AI model responses
-   - `/api/evaluations` - Human ratings
-   - `/api/analytics` - Progress tracking
+#### **AI Responses Management**
+```
+GET    /api/responses            # List all responses
+POST   /api/responses            # Store AI model response
+GET    /api/responses/prompt/:id # Get all responses for a prompt
+GET    /api/responses/model/:name # Get responses by model
+```
 
-### **PHASE 4: Security & Performance**
-1. **Database Security**:
-   - Authentication and authorization
-   - Data encryption
-   - Access controls
+#### **Evaluations Management**
+```
+GET    /api/evaluations          # List all evaluations
+POST   /api/evaluations          # Submit evaluation
+GET    /api/evaluations/prompt/:id # Get evaluations for prompt
+GET    /api/analytics/best-models  # Analytics: best performing models
+```
 
-2. **Performance Optimization**:
-   - Query optimization
-   - Indexing strategies
-   - Caching implementation
+## 📊 **Technology Stack Recommendations**
 
-## 🛠️ Tools & Technologies
-- **Database**: MongoDB
-- **Containerization**: Docker
-- **Backend**: Node.js/Express or Python/FastAPI
-- **Authentication**: JWT tokens
-- **Documentation**: Swagger/OpenAPI
+### **Backend Framework Options:**
+1. **Node.js + Express** (JavaScript)
+2. **Python + FastAPI** (Python)  
+3. **Python + Flask** (Python)
 
-## 📁 Project Structure (To Be Created)
+### **MongoDB Integration:**
+- **Node.js**: mongoose ODM
+- **Python**: pymongo or motor (async)
+
+### **Development Tools:**
+- **MongoDB Compass** - GUI for database management
+- **Postman** - API testing
+- **Docker Desktop** - Container management
+
+## � **Security Requirements**
+
+### **Database Security:**
+- Enable MongoDB authentication
+- Use environment variables for credentials
+- Implement role-based access control
+- Set up SSL/TLS for connections
+
+### **API Security:**
+- JWT token authentication
+- Input validation and sanitization
+- Rate limiting
+- CORS configuration
+- Error handling without information leakage
+
+## 📁 **Project Structure**
 ```
 OrchestrateX/
 ├── database/
 │   ├── docker-compose.yml
-│   ├── mongodb/
-│   │   ├── init-scripts/
-│   │   └── config/
+│   ├── init-scripts/
+│   │   └── setup.js
 │   └── schemas/
+│       ├── prompts.js
+│       ├── responses.js
+│       └── evaluations.js
 ├── backend/
-│   ├── api/
-│   ├── models/
+│   ├── app.js (or main.py)
 │   ├── routes/
-│   └── middleware/
-├── docs/
-│   ├── database-setup.md
-│   ├── api-documentation.md
-│   └── deployment-guide.md
-└── tests/
-    ├── unit/
-    └── integration/
+│   │   ├── prompts.js
+│   │   ├── responses.js
+│   │   └── evaluations.js
+│   ├── models/
+│   │   ├── Prompt.js
+│   │   ├── Response.js
+│   │   └── Evaluation.js
+│   ├── middleware/
+│   │   ├── auth.js
+│   │   └── validation.js
+│   └── config/
+│       └── database.js
+└── docs/
+    ├── api-documentation.md
+    └── setup-instructions.md
 ```
 
-## 🎯 Next Immediate Steps
-1. **Set up MongoDB in Docker**
-2. **Design database schema** based on data structure we discovered
-3. **Create basic CRUD APIs**
-4. **Set up development environment**
+## ✅ **Week 1 Tasks (Aug 25-29)**
 
-## 📊 Data Flow Understanding
-From your prompt collection experience, you understand:
-1. **Data Input**: Prompts from various sources (Khan Academy, manual entry)
-2. **Data Processing**: Categorization, validation, formatting
-3. **Data Storage**: JSON structure → MongoDB collections
-4. **Data Output**: APIs for frontend/ML teams to access
+### **Day 1-2: Infrastructure Setup**
+- [ ] Install Docker Desktop
+- [ ] Create docker-compose.yml
+- [ ] Set up MongoDB container
+- [ ] Test database connection
 
-## 🤝 Integration Points
-- **With Dataset Team**: Provide APIs for prompt storage/retrieval
-- **With AI Model Team**: APIs for storing model responses
-- **With Evaluation Team**: APIs for rating collection
-- **With ML Team**: Bulk data export for training
+### **Day 3-4: Schema & Backend**
+- [ ] Design database collections
+- [ ] Choose backend framework
+- [ ] Implement basic CRUD APIs
+- [ ] Set up authentication
 
-## 🎉 Success Criteria
-By the end of your work, you should have:
-- ✅ MongoDB running in Docker containers
-- ✅ Complete database schema designed
-- ✅ RESTful APIs for all CRUD operations
-- ✅ Security and access controls implemented
-- ✅ Performance optimized for expected load
-- ✅ Complete documentation for setup and usage
+### **Day 5: Integration & Testing**
+- [ ] Test all endpoints
+- [ ] Document APIs
+- [ ] Prepare for team integration
+- [ ] Create demo for prototype presentation
+
+## 🤝 **Team Integration Points**
+
+### **With Team 1 (UI - Zayed, Avinash):**
+- Provide API endpoints for frontend integration
+- Ensure proper CORS and authentication setup
+- Document API responses format
+
+### **With Team 3 (Algorithm - Atul):**
+- Provide data access for model training
+- Create analytics endpoints for algorithm evaluation
+- Ensure fast query performance for real-time routing
+
+## � **Success Criteria**
+By August 29, 2025, you should have:
+- ✅ MongoDB running in Docker
+- ✅ Complete database schema implemented
+- ✅ All CRUD APIs functional
+- ✅ Authentication and security working
+- ✅ Documentation complete
+- ✅ Ready for team integration
 
 ---
 
-**The prompt collection work wasn't wasted - it gave you deep understanding of the data structure you'll be storing and serving through your APIs!**
+**Focus on your database and backend work - that's your core responsibility for OrchestrateX success!** 🚀
 
 *Ready to start with MongoDB Docker setup?*
