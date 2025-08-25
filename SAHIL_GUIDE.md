@@ -2,15 +2,18 @@
 *Team 2: Containerized Database - OrchestrateX Project*
 
 ## 🎯 Your Team 2 Responsibilities
-As **Sahil** (Team 2: Containerized Database), working with **Jinendran**, you are responsible for:
+As **Sahil** (Team 2: Containerized Database), working with **Jinendran**:
 
-### 🗄️ **Database Infrastructure:**
-- Setting up MongoDB database in Docker containers
+### � **Division of Work:**
+- **Jinendran**: Setting up MongoDB database in Docker containers
+- **You (Sahil)**: Everything else below ⬇️
+
+### 🗄️ **Your Database Work:**
 - Designing database schema and collections
 - Managing database security and access controls
 - Ensuring data persistence and performance optimization
 
-### 🔧 **Backend Development:**
+### 🔧 **Your Backend Development:**
 - Implementing backend APIs for CRUD operations
 - Creating RESTful endpoints for system integration
 - Building secure authentication and authorization
@@ -19,44 +22,15 @@ As **Sahil** (Team 2: Containerized Database), working with **Jinendran**, you a
 ### ⏰ **Project Deadline:**
 **Friday, August 29, 2025, 11:59 PM IST** - Working prototype required
 
-## 🚀 **Getting Started: MongoDB Docker Setup**
+## 🚀 **Getting Started: Your Work After Jinendran's Docker Setup**
 
-### **Step 1: Install Prerequisites**
-```bash
-# Install Docker Desktop (if not already installed)
-# Download from: https://www.docker.com/products/docker-desktop/
-```
+### **Step 1: Wait for Jinendran's MongoDB Container**
+Jinendran will provide you with:
+- Running MongoDB Docker container
+- Connection details and credentials
+- Basic container configuration
 
-### **Step 2: Create Docker Compose Configuration**
-```yaml
-# docker-compose.yml
-version: '3.8'
-services:
-  mongodb:
-    image: mongo:7.0
-    container_name: orchestratex_mongodb
-    restart: always
-    ports:
-      - "27017:27017"
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: orchestratex_password
-      MONGO_INITDB_DATABASE: orchestratex
-    volumes:
-      - mongodb_data:/data/db
-      - ./init-scripts:/docker-entrypoint-initdb.d
-    networks:
-      - orchestratex_network
-
-volumes:
-  mongodb_data:
-
-networks:
-  orchestratex_network:
-    driver: bridge
-```
-
-### **Step 3: Database Schema Design**
+### **Step 2: Your Database Schema Design**
 
 Based on OrchestrateX requirements, you'll need these collections:
 
@@ -207,17 +181,17 @@ OrchestrateX/
 
 ## ✅ **Week 1 Tasks (Aug 25-29)**
 
-### **Day 1-2: Infrastructure Setup**
-- [ ] Install Docker Desktop
-- [ ] Create docker-compose.yml
-- [ ] Set up MongoDB container
-- [ ] Test database connection
+### **Day 1-2: Schema Design & Planning**
+- [ ] Coordinate with Jinendran on MongoDB container status
+- [ ] Design database collections schema
+- [ ] Plan API endpoints and data flow
+- [ ] Choose your backend framework
 
-### **Day 3-4: Schema & Backend**
-- [ ] Design database collections
-- [ ] Choose backend framework
-- [ ] Implement basic CRUD APIs
-- [ ] Set up authentication
+### **Day 3-4: Backend Development**
+- [ ] Connect to Jinendran's MongoDB container
+- [ ] Implement database models
+- [ ] Build CRUD APIs
+- [ ] Set up authentication and security
 
 ### **Day 5: Integration & Testing**
 - [ ] Test all endpoints
