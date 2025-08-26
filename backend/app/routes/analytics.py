@@ -53,6 +53,63 @@ async def get_cost_analysis(days: int = 7, db=Depends(get_db)):
         end_date = datetime.utcnow()
         start_date = end_date - timedelta(days=days)
         
+        # Get model responses with cost data
+        pipeline = [
+            {
+                "$match": {
+                    "timestamp": {"$gte": start_date, "$lte": end_date},
+                    "cost_usd": {"$exists": True}
+                }
+            },
+            {
+                "$group": {
+                    "_id": "$model_name",
+                    "total_cost": {"$sum": "$cost_usd"},
+                    "total_requests": {"$sum": 1},
+                    "total_tokens": {"$sum": "$tokens_used"},
+                    "avg_cost_per_request": {"$avg": "$cost_usd"},
+                    "avg_response_time": {"$avg": "$response_time_ms"}
+                }
+            },
+            {
+                "$sort": {"total_cost": -1}
+            }
+        ]
+        
+        cost_data = []
+        async for result in db.model_responses.aggregate(pipeline):
+            cost_data.append({
+                "model_name": result["_id"],
+                "total_cost": round(result["total_cost"], 4),
+                "total_requests": result["total_requests"],
+                "total_tokens": result["total_tokens"],
+                "avg_cost_per_request": round(result["avg_cost_per_request"], 4),
+                "avg_response_time_ms": round(result["avg_response_time"], 2)
+            })
+        
+        # Calculate totals
+        total_cost = sum(item["total_cost"] for item in cost_data)
+        total_requests = sum(item["total_requests"] for item in cost_data)
+        
+        return {
+            "period_days": days,
+            "start_date": start_date.isoformat(),
+            "end_date": end_date.isoformat(),
+            "total_cost_usd": round(total_cost, 4),
+            "total_requests": total_requests,
+            "avg_cost_per_request": round(total_cost / total_requests, 4) if total_requests > 0 else 0,
+            "cost_by_model": cost_data,
+            "generated_at": datetime.utcnow().isoformat()
+        }
+        
+    except Exception as e:
+        logging.error(f"Failed to get cost analysis: {e}")
+        raise HTTPException(status_code=500, detail="Failed to retrieve cost analysis")
+    try:
+        # Calculate date range
+        end_date = datetime.utcnow()
+        start_date = end_date - timedelta(days=days)
+        
         # Get sessions within date range
         session_cursor = db.user_sessions.find({
             "created_at": {"$gte": start_date, "$lte": end_date}
