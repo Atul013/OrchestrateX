@@ -6,11 +6,16 @@ print("🔐 Starting OrchestrateX User Management Setup...");
 // Switch to admin database for user creation
 db = db.getSiblingDB("admin");
 
+// Get passwords from environment variables (set in docker-compose)
+const appPassword = process.env.MONGO_APP_PASSWORD || "orchestratex_app_password_2024";
+const readonlyPassword = process.env.MONGO_READONLY_PASSWORD || "orchestratex_readonly_password_2024";
+const backupPassword = process.env.MONGO_BACKUP_PASSWORD || "orchestratex_backup_password_2024";
+
 // Create application user for OrchestrateX backend
 try {
     db.createUser({
         user: "orchestratex_app",
-        pwd: "orchestratex_app_password_2024",
+        pwd: appPassword,
         roles: [
             {
                 role: "readWrite",

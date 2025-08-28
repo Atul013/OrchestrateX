@@ -6,20 +6,36 @@ services:
     image: mongo:8.0
     container_name: orchestratex_mongodb
     restart: unless-stopped
-    command: ["mongod", "--config", "/etc/mongod.conf"]
+    # command: ["mongod", "--config", "/etc/mongod.conf"]  # Custom config available but disabled for stability
+    # Security: Only expose port to localhost in development
     ports:
-      - "27018:27017"
+      - "127.0.0.1:27018:27017"  # Bind to localhost only
     volumes:
       - orchestratex_data:/data/db
+      - orchestratex_config:/data/configdb  # Config database volume
       - ./database/init_db.js:/docker-entrypoint-initdb.d/01-init_db.js:ro
       - ./init-scripts/init-users.js:/docker-entrypoint-initdb.d/02-init-users.js:ro
-      - ./config/mongod.conf:/etc/mongod.conf:ro
+      - ./config/mongod-simple.conf:/etc/mongod.conf:ro
+      - ./logs:/var/log/mongodb  # Mount logs directory
+      - ./backups:/data/backup   # Mount backup directory
     environment:
-      MONGO_INITDB_ROOT_USERNAME: project_admin
-      MONGO_INITDB_ROOT_PASSWORD: project_password
-      MONGO_INITDB_DATABASE: orchestratex
+      # Use environment variables for credentials
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME:-project_admin}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD:-project_password}
+      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE:-orchestratex}
     networks:
       - orchestratex_network
+    # Security: Run as non-root user
+    user: "999:999"  # mongodb user
+    # Security: Add security options
+    security_opt:
+      - no-new-privileges:true
+    # Resource limits for security
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '1.0'
     healthcheck:
       test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
       interval: 30s
@@ -29,7 +45,15 @@ services:
 volumes:
   orchestratex_data:
     driver: local
+  orchestratex_config:
+    driver: local
 
 networks:
   orchestratex_network:
     driver: bridge
+    # Security: Internal network only (uncomment for production)
+    # internal: true
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.20.0.0/16
