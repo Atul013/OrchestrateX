@@ -3,13 +3,33 @@ services:
   project-mongodb:
     image: mongo:latest
     container_name: orchestratex_mongodb
+    restart: unless-stopped
     ports:
-      - "27018:27017"
+      - "${MONGO_HOST_PORT:-27018}:27017"  # Host:Container (override with MONGO_HOST_PORT)
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
     volumes:
       - orchestratex_data:/data/db
+      - ./backend/db/init:/docker-entrypoint-initdb.d:ro # Initialization scripts
+    networks:
+      - orchestratex_network
+
+  # Optional: lightweight web UI for Mongo (disable in production)
+  mongo-express:
+    image: mongo-express:latest
+    container_name: orchestratex_mongo_express
+    restart: unless-stopped
     environment:
-      MONGO_INITDB_ROOT_USERNAME: project_admin
-      MONGO_INITDB_ROOT_PASSWORD: project_password
+      ME_CONFIG_MONGODB_SERVER: project-mongodb
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_ROOT_USERNAME}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_ROOT_PASSWORD}
+      ME_CONFIG_BASICAUTH_USERNAME: ${MONGO_EXPRESS_USER:-admin}
+      ME_CONFIG_BASICAUTH_PASSWORD: ${MONGO_EXPRESS_PASS:-admin}
+    ports:
+      - "${MONGO_EXPRESS_PORT:-8081}:8081"
+    depends_on:
+      - project-mongodb
     networks:
       - orchestratex_network
 
