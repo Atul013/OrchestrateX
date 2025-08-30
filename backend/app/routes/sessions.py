@@ -52,6 +52,9 @@ async def create_session(session_data: UserSessionCreate, db=Depends(get_db)):
         logging.info(f"Created session {result.inserted_id} for user {session_data.user_id}")
         return created_session
         
+    except HTTPException:
+        # Re-raise HTTPExceptions without modification
+        raise
     except Exception as e:
         logging.error(f"Failed to create session: {e}")
         raise HTTPException(status_code=500, detail="Failed to create session")
@@ -70,6 +73,9 @@ async def get_session(session_id: str, db=Depends(get_db)):
         
     except ValueError:
         raise HTTPException(status_code=400, detail="Invalid session ID format")
+    except HTTPException:
+        # Re-raise HTTPExceptions (like 404) without modification
+        raise
     except Exception as e:
         logging.error(f"Failed to get session {session_id}: {e}")
         raise HTTPException(status_code=500, detail="Failed to retrieve session")
