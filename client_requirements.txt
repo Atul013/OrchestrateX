@@ -1,0 +1,9 @@
+# OrchestrateX Client Requirements
+
+aiohttp>=3.8.0
+asyncio
+argparse
+logging
+pathlib
+dataclasses
+typing

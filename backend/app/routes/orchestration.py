@@ -16,7 +16,7 @@ from app.models.schemas import (
     ThreadStatus
 )
 from app.core.database import get_database
-from app.orchestration.engine import orchestration_engine
+from app.orchestration.enhanced_engine import enhanced_engine
 from app.ai_providers import provider_manager
 
 router = APIRouter()
@@ -43,11 +43,11 @@ async def submit_prompt_for_orchestration(request: PromptRequest, background_tas
         logging.info(f"Received orchestration request: {request.prompt[:50]}...")
         
         # Initialize orchestration engine if not already done
-        if orchestration_engine.db is None:
-            await orchestration_engine.initialize()
+        if enhanced_engine.db is None:
+            await enhanced_engine.initialize()
         
         # Start orchestration process
-        result = await orchestration_engine.orchestrate_prompt(
+        result = await enhanced_engine.orchestrate_prompt(
             session_id=request.session_id,
             prompt=request.prompt,
             max_iterations=request.max_iterations,
@@ -171,13 +171,13 @@ async def test_orchestration():
     """Test endpoint for orchestration system"""
     try:
         # Initialize if needed
-        if orchestration_engine.db is None:
-            await orchestration_engine.initialize()
+        if enhanced_engine.db is None:
+            await enhanced_engine.initialize()
         
         # Test with a simple prompt
         test_session_id = "test_session_" + datetime.utcnow().strftime("%Y%m%d_%H%M%S")
         
-        result = await orchestration_engine.orchestrate_prompt(
+        result = await enhanced_engine.orchestrate_prompt(
             session_id=test_session_id,
             prompt="Hello, please introduce yourself and explain what you can do.",
             max_iterations=2,
