@@ -7,9 +7,9 @@ services:
     container_name: orchestratex_mongodb
     restart: unless-stopped
     # command: ["mongod", "--config", "/etc/mongod.conf"]  # Custom config available but disabled for stability
-    # Security: Only expose port to localhost in development
+    # Network access for development team
     ports:
-      - "127.0.0.1:27018:27017"  # Bind to localhost only
+      - "27018:27017"  # Allow external connections (remove 127.0.0.1 binding)
     volumes:
       - orchestratex_data:/data/db
       - orchestratex_config:/data/configdb  # Config database volume
