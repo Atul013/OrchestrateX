@@ -1,0 +1,25 @@
+# Required dependencies to locally host the landing page (React + Vite)
+# Install with: npm install (not pip)
+
+# Main dependencies
+react
+react-dom
+framer-motion
+lucide-react
+recharts
+
+# Dev dependencies (for local development/build)
+@vitejs/plugin-react
+vite
+tailwindcss
+postcss
+autoprefixer
+eslint
+@eslint/js
+@types/react
+@types/react-dom
+eslint-plugin-react-hooks
+eslint-plugin-react-refresh
+globals
+typescript
+typescript-eslint
