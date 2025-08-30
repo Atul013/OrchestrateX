@@ -30,16 +30,21 @@ payload = {
     "max_tokens": 1000
 }
 
+
+
 response = requests.post(API_URL, headers=headers, data=json.dumps(payload))
 if response.status_code == 200:
     result = response.json()
+    print(f"DEBUG: Response received from model: {result.get('model', 'Unknown')}")
     try:
+        print("\nActual Response:")
         print(result["choices"][0]["message"]["content"])
     except Exception:
         print(result)
 else:
     print(f"Error: Request failed with status {response.status_code}")
     try:
-        print(response.json())
+        error_response = response.json()
+        print("Error details:", error_response)
     except Exception:
         print(response.text)
