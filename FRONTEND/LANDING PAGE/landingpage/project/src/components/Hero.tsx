@@ -169,9 +169,14 @@ const Hero: React.FC = () => {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-            <button className="px-8 py-4 bg-gradient-to-r from-primary to-magenta rounded-full text-white font-semibold text-lg flex items-center gap-2 hover:opacity-90 transition-opacity">
+            <a
+              href="http://localhost:5173/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-8 py-4 bg-gradient-to-r from-primary to-magenta rounded-full text-white font-semibold text-lg flex items-center gap-2 hover:opacity-90 transition-opacity"
+            >
               Try Demo <ArrowRight className="w-5 h-5" />
-            </button>
+            </a>
             <button className="px-8 py-4 border-2 border-white/30 rounded-full text-white font-semibold text-lg hover:bg-white/10 transition-colors">
               View API
             </button>

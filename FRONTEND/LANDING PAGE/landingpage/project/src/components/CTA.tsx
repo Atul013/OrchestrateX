@@ -48,7 +48,10 @@ const CTA: React.FC = () => {
                 transition={{ duration: 0.8, delay: 0.4 }}
                 className="flex flex-col sm:flex-row gap-4 justify-center mb-8"
               >
-                <motion.button
+                <motion.a
+                  href="http://localhost:5173/"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   whileHover={{ scale: 1.05, boxShadow: '0 20px 40px rgba(122, 90, 248, 0.3)' }}
                   whileTap={{ scale: 0.95 }}
                   className="px-8 py-4 bg-gradient-to-r from-primary to-magenta rounded-full text-white font-semibold text-lg flex items-center justify-center gap-2 shadow-lg"
@@ -56,7 +59,7 @@ const CTA: React.FC = () => {
                   <Zap className="w-5 h-5" />
                   Start Free
                   <ArrowRight className="w-5 h-5" />
-                </motion.button>
+                </motion.a>
                 
                 <motion.a
                   href="https://github.com/Atul013/OrchestrateX/blob/main/README.md"
