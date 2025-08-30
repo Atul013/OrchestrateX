@@ -17,25 +17,29 @@ export const useChat = () => {
   const createNewChat = useCallback((initialPrompt?: string) => {
     const chatId = generateId();
     const now = new Date();
-    
-    const messages: Message[] = initialPrompt ? [
-      {
-        id: generateId(),
-        content: initialPrompt,
-        type: 'user',
-        timestamp: now
-      },
-      {
-        id: generateId(),
-        content: `I understand you're asking: "${initialPrompt}". Let me help you explore this with the right model routing approach. Based on your query, I'd recommend considering GLM-4.5 for complex reasoning or Claude for clear dialogue.`,
-        type: 'assistant',
-        timestamp: new Date(now.getTime() + 1000)
-      }
-    ] : [];
+    let messages: Message[] = [];
+    let title = 'New Chat';
+    if (initialPrompt) {
+      messages = [
+        {
+          id: generateId(),
+          content: initialPrompt,
+          type: 'user',
+          timestamp: now
+        },
+        {
+          id: generateId(),
+          content: `I understand you're asking: "${initialPrompt}". Let me help you explore this with the right model routing approach. Based on your query, I'd recommend considering GLM-4.5 for complex reasoning or Claude for clear dialogue.`,
+          type: 'assistant',
+          timestamp: new Date(now.getTime() + 1000)
+        }
+      ];
+      title = initialPrompt;
+    }
 
     const newChat: Chat = {
       id: chatId,
-      title: initialPrompt || 'New Chat',
+      title,
       messages,
       createdAt: now
     };
@@ -74,18 +78,24 @@ export const useChat = () => {
       timestamp: new Date(Date.now() + 1000)
     };
 
-    setAppState(prev => ({
-      ...prev,
-      currentChat: {
+    setAppState(prev => {
+      // If this is the first user message, update the chat title
+      const isFirstMessage = prev.currentChat && prev.currentChat.messages.length === 0;
+      const updatedCurrentChat = {
         ...prev.currentChat!,
+        title: isFirstMessage ? content : prev.currentChat!.title,
         messages: [...prev.currentChat!.messages, userMessage, assistantMessage]
-      },
-      chats: prev.chats.map(chat => 
-        chat.id === prev.currentChat!.id 
-          ? { ...chat, messages: [...chat.messages, userMessage, assistantMessage] }
-          : chat
-      )
-    }));
+      };
+      return {
+        ...prev,
+        currentChat: updatedCurrentChat,
+        chats: prev.chats.map(chat =>
+          chat.id === prev.currentChat!.id
+            ? updatedCurrentChat
+            : chat
+        )
+      };
+    });
   }, [appState.currentChat]);
 
   const selectChat = useCallback((chat: Chat) => {
