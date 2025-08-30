@@ -2,9 +2,8 @@
 // MongoDB Playground
 // Use Ctrl+Space inside a snippet or a string literal to trigger completions.
 
-const database = 'NEW_DATABASE_NAME';
-const collection = 'NEW_COLLECTION_NAME';
-
+const database = 'Orchestrate';
+const collection = 'User';
 // Create a new database.
 use(database);
 
@@ -36,6 +35,7 @@ db.createCollection(collection);
     },
     expireAfterSeconds: <number>,
     clusteredIndex: <document>, // Added in MongoDB 5.3
+    
   }
 )*/
 

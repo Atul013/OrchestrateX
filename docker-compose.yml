@@ -1,21 +1,22 @@
-version: '3.8'
+# OrchestrateX Docker Compose Configuration
+# MongoDB service for multi-AI orchestration system
+
 services:
   project-mongodb:
-    image: mongo:latest
+    image: mongo:8.0
     container_name: orchestratex_mongodb
     restart: unless-stopped
     ports:
-      - "${MONGO_HOST_PORT:-27018}:27017"  # Host:Container (override with MONGO_HOST_PORT)
+      - "${MONGO_HOST_PORT:-27018}:27017"
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
     volumes:
       - orchestratex_data:/data/db
-      - ./backend/db/init:/docker-entrypoint-initdb.d:ro # Initialization scripts
+      - ./database/init_db.js:/docker-entrypoint-initdb.d/01-init_db.js:ro
     networks:
       - orchestratex_network
 
-  # Optional: lightweight web UI for Mongo (disable in production)
   mongo-express:
     image: mongo-express:latest
     container_name: orchestratex_mongo_express
@@ -32,9 +33,9 @@ services:
       - project-mongodb
     networks:
       - orchestratex_network
-
 volumes:
   orchestratex_data:
+    driver: local
 
 networks:
   orchestratex_network:

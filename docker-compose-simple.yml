@@ -1,0 +1,33 @@
+# OrchestrateX Docker Compose Configuration
+# MongoDB service for multi-AI orchestration system
+
+services:
+  project-mongodb:
+    image: mongo:8.0
+    container_name: orchestratex_mongodb
+    restart: unless-stopped
+    ports:
+      - "27018:27017"
+    volumes:
+      - orchestratex_data:/data/db
+      - ./database/init_db.js:/docker-entrypoint-initdb.d/init_db.js:ro
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: project_admin
+      MONGO_INITDB_ROOT_PASSWORD: project_password
+      MONGO_INITDB_DATABASE: orchestratex
+    networks:
+      - orchestratex_network
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  orchestratex_data:
+    driver: local
+
+networks:
+  orchestratex_network:
+    driver: bridge

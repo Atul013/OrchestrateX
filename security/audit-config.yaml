@@ -1,0 +1,267 @@
+# MongoDB Audit Configuration for OrchestrateX
+# This configuration enables comprehensive auditing for security and compliance
+
+# Note: MongoDB auditing requires MongoDB Enterprise or MongoDB Atlas
+# For MongoDB Community Edition, use database-level logging and monitoring
+
+# ================================
+# AUDIT CONFIGURATION
+# ================================
+
+# Audit log destination and format
+auditLog:
+  destination: file
+  format: JSON
+  path: /var/log/mongodb/audit.log
+  
+  # Audit filter to capture security-relevant events
+  filter: |
+    {
+      "$or": [
+        # Authentication events
+        { "atype": "authenticate" },
+        { "atype": "authCheck" },
+        { "atype": "logout" },
+        
+        # User management events  
+        { "atype": "createUser" },
+        { "atype": "dropUser" },
+        { "atype": "updateUser" },
+        { "atype": "grantRolesToUser" },
+        { "atype": "revokeRolesFromUser" },
+        
+        # Role management events
+        { "atype": "createRole" },
+        { "atype": "updateRole" },
+        { "atype": "dropRole" },
+        
+        # Database operations
+        { "atype": "createDatabase" },
+        { "atype": "dropDatabase" },
+        
+        # Collection operations
+        { "atype": "createCollection" },
+        { "atype": "dropCollection" },
+        { "atype": "renameCollection" },
+        
+        # Index operations
+        { "atype": "createIndex" },
+        { "atype": "dropIndex" },
+        
+        # Administrative operations
+        { "atype": "enableSharding" },
+        { "atype": "shardCollection" },
+        { "atype": "shutdown" },
+        
+        # Failed operations (security events)
+        { "result": { "$ne": 0 } },
+        
+        # Specific database access (adjust as needed)
+        { 
+          "$and": [
+            { "atype": { "$in": ["insert", "update", "delete", "find"] } },
+            { "ns": { "$regex": "^orchestratex\\." } }
+          ]
+        }
+      ]
+    }
+
+# ================================
+# AUDIT EVENT CATEGORIES
+# ================================
+
+# Authentication & Authorization Events
+authentication_events:
+  - authenticate      # User login attempts
+  - authCheck        # Authorization checks
+  - logout           # User logout events
+
+# User Management Events  
+user_management_events:
+  - createUser       # New user creation
+  - dropUser         # User deletion
+  - updateUser       # User modifications
+  - grantRolesToUser # Role assignments
+  - revokeRolesFromUser # Role removals
+
+# Data Access Events (High Volume - Use Carefully)
+data_access_events:
+  - insert           # Document insertions
+  - update           # Document updates  
+  - delete           # Document deletions
+  - find             # Query operations
+
+# Administrative Events
+administrative_events:
+  - createDatabase   # Database creation
+  - dropDatabase     # Database deletion
+  - createCollection # Collection creation
+  - dropCollection   # Collection deletion
+  - createIndex      # Index creation
+  - dropIndex        # Index deletion
+  - shutdown         # Server shutdown
+
+# ================================
+# AUDIT LOG ROTATION
+# ================================
+
+# Log rotation configuration (Linux/Unix)
+log_rotation:
+  daily: true
+  compress: true
+  rotate_count: 30
+  max_size: "100M"
+
+# Logrotate configuration example
+logrotate_config: |
+  /var/log/mongodb/audit.log {
+    daily
+    rotate 30
+    compress
+    delaycompress
+    missingok
+    notifempty
+    create 0644 mongodb mongodb
+    postrotate
+      /bin/kill -SIGUSR1 $(cat /var/run/mongodb/mongod.pid)
+    endscript
+  }
+
+# ================================
+# MONITORING AND ALERTING
+# ================================
+
+# Critical events that should trigger alerts
+alert_events:
+  - failed_authentication_attempts: 5  # Alert after 5 failed attempts
+  - user_privilege_escalation: true    # Alert on role changes
+  - after_hours_access: true           # Alert on access outside business hours
+  - bulk_data_operations: 1000         # Alert on large operations
+  - administrative_operations: true    # Alert on all admin operations
+
+# ================================
+# COMPLIANCE CONFIGURATIONS
+# ================================
+
+# GDPR Compliance
+gdpr_compliance:
+  log_data_access: true
+  log_data_modifications: true
+  retention_period: "6 years"
+  anonymization_required: true
+
+# SOX Compliance  
+sox_compliance:
+  log_financial_data_access: true
+  segregation_of_duties: true
+  change_management_tracking: true
+
+# HIPAA Compliance
+hipaa_compliance:
+  log_phi_access: true
+  access_control_monitoring: true
+  audit_log_integrity: true
+
+# ================================
+# AUDIT LOG ANALYSIS QUERIES
+# ================================
+
+# Example queries for audit log analysis (run with mongosh or scripts)
+
+# Find failed authentication attempts
+failed_auth_query: |
+  db.auditLog.find({
+    "atype": "authenticate",
+    "result": {"$ne": 0}
+  }).sort({"ts": -1})
+
+# Find privilege escalation events  
+privilege_escalation_query: |
+  db.auditLog.find({
+    "atype": {"$in": ["grantRolesToUser", "updateUser"]},
+    "param.roles": {"$elemMatch": {"role": {"$in": ["dbOwner", "root", "userAdminAnyDatabase"]}}}
+  })
+
+# Find after-hours access
+after_hours_query: |
+  db.auditLog.find({
+    "atype": "authenticate",
+    "result": 0,
+    "$expr": {
+      "$or": [
+        {"$lt": [{"$hour": "$ts"}, 9]},
+        {"$gt": [{"$hour": "$ts"}, 17]}
+      ]
+    }
+  })
+
+# Find bulk operations
+bulk_operations_query: |
+  db.auditLog.find({
+    "atype": {"$in": ["insert", "update", "delete"]},
+    "param.size": {"$gt": 100}
+  })
+
+# ================================
+# COMMUNITY EDITION ALTERNATIVES
+# ================================
+
+# For MongoDB Community Edition, use these alternatives:
+
+# 1. Enable MongoDB slow query logging
+slow_query_logging:
+  enabled: true
+  threshold_ms: 100
+  
+# 2. Application-level audit logging
+application_audit:
+  log_all_database_operations: true
+  log_user_actions: true
+  log_api_calls: true
+  
+# 3. Database profiling for monitoring
+profiling_config:
+  level: 2  # Profile all operations
+  slow_ms: 100
+  
+# 4. Custom audit collection
+custom_audit_collection:
+  collection_name: "audit_log"
+  fields:
+    - timestamp
+    - user_id
+    - action
+    - resource
+    - result
+    - ip_address
+    - user_agent
+
+# ================================
+# SECURITY MONITORING SCRIPTS
+# ================================
+
+# Example monitoring script paths
+monitoring_scripts:
+  - "/opt/orchestratex/scripts/audit-monitor.sh"
+  - "/opt/orchestratex/scripts/security-alerts.py"
+  - "/opt/orchestratex/scripts/compliance-report.js"
+
+# ================================
+# AUDIT LOG BACKUP
+# ================================
+
+# Backup configuration for audit logs
+audit_backup:
+  frequency: "daily"
+  retention: "7 years"
+  encryption: true
+  compression: true
+  offsite_storage: true
+  
+# Backup script example
+backup_command: |
+  #!/bin/bash
+  DATE=$(date +%Y%m%d)
+  tar -czf /backup/audit/audit-log-$DATE.tar.gz /var/log/mongodb/audit.log
+  gpg --encrypt --recipient admin@orchestratex.com /backup/audit/audit-log-$DATE.tar.gz
+  aws s3 cp /backup/audit/audit-log-$DATE.tar.gz.gpg s3://orchestratex-audit-backup/
