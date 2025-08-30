@@ -30,7 +30,7 @@ payload = {
     "max_tokens": 1000
 }
 
-
+    
 
 response = requests.post(API_URL, headers=headers, data=json.dumps(payload))
 if response.status_code == 200:
