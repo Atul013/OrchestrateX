@@ -1,0 +1,7 @@
+Model Name,Model ID,Parameters,Context Length,Main Strengths,Main Limitations,MMLU Score,Coding Score,Math Score,Multilingual,Max Requests/Min,Provider/API Endpoint,Cost (if any),Notes
+GLM-4.5,zai-org/GLM-4.5,9B (MoE),32K tokens,"Reasoning, coding, agentic capabilities","Limited availability, Chinese origin",85,88.5,82,Yes (CN/EN focus),60,OpenRouter,Free tier available,"Mixture-of-experts model, strong for complex tasks"
+GPT-OSS,openai/gpt-oss-120b,120B,8K tokens,"General language understanding, open source","Large model size, slower inference",78,75,70,Yes,30,OpenRouter,Free tier available,"Apache 2.0 license, community-driven"
+Llama 4 Maverick,Llama 4 Maverick 17B Instruct (128E),17B,128K tokens,"Long context, instruction following",Newer model - limited benchmarks,80,82,75,Yes,45,OpenRouter,Free tier available,"Extended context length, Meta's latest"
+MoonshotAI Kimi,moonshotai/kimi-dev-72b:free,72B,200K tokens,"Conversational AI, coding assistance","Chinese company, data privacy",82,85,78,Yes (CN/EN),40,OpenRouter,Free tier,"Long context capability, dev-focused"
+Qwen3 Coder,qwen/qwen3-coder:free,7B,32K tokens,"Code generation, programming tasks",Specialized for coding only,70,92,65,Yes,50,OpenRouter,Free tier,Alibaba's coding specialist model
+TNG DeepSeek R1T2 Chimera,tngtech/deepseek-r1t2-chimera:free,67B (MoE),163K tokens,"Reasoning, analysis, efficiency","Complex architecture, newer model",87,89,85,Yes,35,OpenRouter,Free tier,"2nd gen Chimera, strong reasoning performance"
