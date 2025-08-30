@@ -1,7 +1,16 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Brain, BookOpen, Mountain, Rocket, Code, Layers3, ExternalLink, Info } from 'lucide-react';
 import { models } from '../config/models';
-import { ExternalLink, Info } from 'lucide-react';
+
+const iconMap = {
+  Brain,
+  BookOpen,
+  Mountain,
+  Rocket,
+  Code,
+  Layers3,
+};
 
 const CapabilityChart: React.FC<{ capabilities: any }> = ({ capabilities }) => {
   const maxValue = 100;
@@ -29,6 +38,7 @@ const CapabilityChart: React.FC<{ capabilities: any }> = ({ capabilities }) => {
 const ModelCard: React.FC<{ model: any; index: number }> = ({ model, index }) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const IconComponent = iconMap[model.icon as keyof typeof iconMap];
 
   return (
     <>
@@ -50,7 +60,7 @@ const ModelCard: React.FC<{ model: any; index: number }> = ({ model, index }) =>
           <div className="absolute inset-0 backface-hidden bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 p-6 hover:bg-white/15 transition-colors">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-12 h-12 bg-gradient-to-r from-primary to-cyan rounded-xl flex items-center justify-center text-white font-bold text-lg">
-                {model.name.charAt(0)}
+                <IconComponent className="w-6 h-6" />
               </div>
               <div>
                 <h3 className="text-xl font-display font-bold text-white">{model.name}</h3>
@@ -129,26 +139,38 @@ const ModelCard: React.FC<{ model: any; index: number }> = ({ model, index }) =>
               <h3 className="text-2xl font-bold text-white mb-4">{model.name} Sample Response</h3>
               <div className="bg-white/10 rounded-lg p-4 mb-4">
                 <p className="text-white/80 text-sm font-mono">
-                  Query: "Write a Python function to calculate Fibonacci numbers"
+                  Model ID: {model.modelId}
                 </p>
               </div>
               <div className="bg-dark/50 rounded-lg p-4 mb-4 border border-white/10">
-                <pre className="text-white/80 text-sm">
-{`def fibonacci(n):
-    """Calculate the nth Fibonacci number using dynamic programming."""
-    if n <= 1:
-        return n
-    
-    a, b = 0, 1
-    for _ in range(2, n + 1):
-        a, b = b, a + b
-    
-    return b`}
-                </pre>
+                <p className="text-white/80 text-sm">
+                  <strong>Access:</strong> Available via OpenRouter API<br/>
+                  <strong>Best for:</strong> {model.bestFor.join(', ')}
+                </p>
               </div>
               <div className="flex items-center gap-2 text-sm text-white/60 mb-4">
                 <Info className="w-4 h-4" />
-                <span>Why this model? Excellent for {model.specialties[0]} with {model.capabilities.coding}% coding capability</span>
+                <span>Why this model? {model.description}</span>
+              </div>
+              <div className="flex gap-2 mb-4">
+                {model.links.huggingFace && (
+                  <a
+                    href={model.links.huggingFace}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-3 py-1 bg-white/20 rounded text-white text-sm hover:bg-white/30 transition-colors"
+                  >
+                    Hugging Face
+                  </a>
+                )}
+                <a
+                  href={model.links.openRouter}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-3 py-1 bg-white/20 rounded text-white text-sm hover:bg-white/30 transition-colors"
+                >
+                  OpenRouter
+                </a>
               </div>
               <button
                 onClick={() => setShowModal(false)}

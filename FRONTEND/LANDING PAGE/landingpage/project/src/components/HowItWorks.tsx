@@ -93,15 +93,15 @@ const Step: React.FC<{
               </div>
               <div className="flex items-center gap-2 text-sm text-white/60">
                 <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
-                Routing to: GLM-4.5 (confidence: 0.89)
+                Routing to: Qwen3 Coder (confidence: 0.89)
               </div>
             </div>
           )}
           {number === 2 && (
             <div className="space-y-2">
-              <div className="text-sm text-white/60">Claude: "Consider error handling"</div>
-              <div className="text-sm text-white/60">Gemini: "Add type annotations"</div>
-              <div className="text-sm text-white/60">GPT: "Optimize for readability"</div>
+              <div className="text-sm text-white/60">GLM4.5: "Consider error handling"</div>
+              <div className="text-sm text-white/60">Kimi: "Add type annotations"</div>
+              <div className="text-sm text-white/60">GPT‑OSS: "Optimize for readability"</div>
             </div>
           )}
           {number === 3 && (

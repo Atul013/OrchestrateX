@@ -33,9 +33,9 @@ const ComparisonChart: React.FC<{ activeTab: string }> = ({ activeTab }) => {
               <PolarGrid stroke="rgba(255,255,255,0.2)" />
               <PolarAngleAxis dataKey="capability" className="text-white/70 text-sm" />
               <PolarRadiusAxis domain={[0, 100]} tick={false} />
-              <Radar name="GLM-4.5" dataKey="GLM-4.5" stroke="#7A5AF8" fill="#7A5AF8" fillOpacity={0.1} />
-              <Radar name="Claude" dataKey="Anthropic Claude" stroke="#3DE5FF" fill="#3DE5FF" fillOpacity={0.1} />
-              <Radar name="Gemini" dataKey="Google Gemini" stroke="#FF2EA6" fill="#FF2EA6" fillOpacity={0.1} />
+              <Radar name="GLM4.5" dataKey="GLM4.5" stroke="#7A5AF8" fill="#7A5AF8" fillOpacity={0.1} />
+              <Radar name="Kimi" dataKey="MoonshotAI Kimi" stroke="#3DE5FF" fill="#3DE5FF" fillOpacity={0.1} />
+              <Radar name="Qwen3" dataKey="Qwen3 Coder" stroke="#FF2EA6" fill="#FF2EA6" fillOpacity={0.1} />
             </RadarChart>
           </ResponsiveContainer>
         );

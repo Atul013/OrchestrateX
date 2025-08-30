@@ -58,14 +58,17 @@ const CTA: React.FC = () => {
                   <ArrowRight className="w-5 h-5" />
                 </motion.button>
                 
-                <motion.button
+                <motion.a
+                  href="https://github.com/Atul013/OrchestrateX/blob/main/README.md"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className="px-8 py-4 bg-white/10 backdrop-blur-sm border border-white/30 rounded-full text-white font-semibold text-lg flex items-center justify-center gap-2 hover:bg-white/20 transition-colors"
                 >
                   <BookOpen className="w-5 h-5" />
                   See Docs
-                </motion.button>
+                </motion.a>
                 
                 <motion.button
                   whileHover={{ scale: 1.05 }}

@@ -103,7 +103,7 @@ const ModelBadge: React.FC<{ name: string; delay: number }> = ({ name, delay }) 
 );
 
 const Hero: React.FC = () => {
-  const models = ['GLM-4.5', 'GPT-OSS', 'LLaMA 3', 'Gemini', 'Claude', 'Falcon'];
+  const modelNames = ['GLM4.5', 'GPT‑OSS', 'Llama 4 Maverick', 'MoonshotAI Kimi', 'Qwen3 Coder', 'TNG DeepSeek R1T2 Chimera'];
 
   return (
     <section className="relative min-h-screen bg-gradient-to-br from-dark via-dark to-primary/20 overflow-hidden flex items-center">
@@ -179,7 +179,7 @@ const Hero: React.FC = () => {
 
           {/* Model badges */}
           <div className="flex flex-wrap justify-center gap-3 mb-12">
-            {models.map((model, index) => (
+            {modelNames.map((model, index) => (
               <div
                 key={model}
                 className="px-3 py-1 bg-white/10 backdrop-blur-sm rounded-full text-sm font-medium text-white/80 border border-white/20"
