@@ -18,7 +18,7 @@ def load_api_key(env_path, key_name):
 
 env_path = os.path.join(os.path.dirname(__file__), "orche.env")
 API_KEY = load_api_key(env_path, "PROVIDER_GPTOSS_API_KEY")
-MODEL = "openai/gpt-oss-120b:free"
+MODEL = load_api_key(env_path, "PROVIDER_GPTOSS_MODEL")
 API_URL = "https://openrouter.ai/api/v1/chat/completions"
 
 

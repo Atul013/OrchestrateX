@@ -58,7 +58,7 @@ Based on OrchestrateX requirements, you'll need these collections:
 {
   _id: ObjectId,
   prompt_id: "ObjectId - reference to prompts collection",
-  model_name: "String - gpt4|claude|llama|mistral|qwen",
+  model_name: "String - glm45|gptoss|llama4maverick|kimi|qwen3|deepseek",
   response: "String - AI model's response",
   response_time: "Number - milliseconds",
   tokens_used: "Number",
@@ -216,7 +216,7 @@ OrchestrateX/
 - [ ] Review the enhanced database schema (9 collections) in `/database/enhanced_schema.md`
 - [ ] Coordinate with Jinendran on MongoDB container setup
 - [ ] Implement all collections with proper indexes
-- [ ] Set up model profiles for GPT-4, Grok, Qwen, Claude, Llama, Mistral
+- [ ] Set up model profiles for GLM4.5, GPT-OSS, Llama 4 Maverick, MoonshotAI Kimi, Qwen3 Coder, TNG DeepSeek R1T2 Chimera
 
 ### **Day 3-4: Core Orchestration APIs**
 - [ ] Build session management system

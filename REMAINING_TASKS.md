@@ -46,9 +46,12 @@
 **Location:** New directory - `backend/app/ai_providers/`
 **Current Status:** Model profiles exist, but no actual API connections
 **Tasks:**
-- [ ] **OpenAI Integration** (GPT-4)
-- [ ] **Anthropic Integration** (Claude)
-- [ ] **X.AI Integration** (Grok) 
+- [ ] **GLM4.5 Integration** (Zhipu AI via OpenRouter)
+- [ ] **GPT-OSS Integration** (OpenAI Open Source via OpenRouter)
+- [ ] **Llama 4 Maverick Integration** (Meta via OpenRouter)
+- [ ] **MoonshotAI Kimi Integration** (Moonshot AI via OpenRouter)
+- [ ] **Qwen3 Coder Integration** (Alibaba via OpenRouter)
+- [ ] **TNG DeepSeek R1T2 Chimera Integration** (TNG Tech via OpenRouter)
 - [ ] **API Key Management** - Secure credential handling
 - [ ] **Rate Limiting & Error Handling** - Robust API management
 - [ ] **Cost Tracking** - Real-time usage monitoring
@@ -108,7 +111,7 @@
 
 ### **Start Immediately (Today - Aug 26 Evening):**
 1. **Model Selection Algorithm** - Core logic for choosing best AI model
-2. **AI API Integration** - Connect to at least OpenAI and Anthropic
+2. **AI API Integration** - Connect to all OpenRouter models (GLM4.5, GPT-OSS, Llama 4 Maverick, Kimi, Qwen3, DeepSeek)
 3. **Basic Orchestration Flow** - End-to-end prompt processing
 
 ### **Tomorrow (Aug 27):**

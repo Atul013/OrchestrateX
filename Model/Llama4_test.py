@@ -15,6 +15,7 @@ def load_api_key(env_path, key_name):
 
 env_path = os.path.join(os.path.dirname(__file__), "orche.env")
 API_KEY = load_api_key(env_path, "PROVIDER_LLAMA3_API_KEY")
+MODEL = load_api_key(env_path, "PROVIDER_LLAMA3_MODEL")
 
 headers = {
     "Authorization": f"Bearer {API_KEY}",
@@ -26,7 +27,7 @@ headers = {
 user_message = input("> ")
 
 payload = {
-    "model": "meta-llama/llama-4-maverick:free",  # Specify the Llama 4 Maverick free model
+    "model": MODEL,  # Use model from environment
     "messages": [
         {"role": "user", "content": user_message}
     ],

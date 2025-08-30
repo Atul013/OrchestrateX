@@ -66,12 +66,12 @@
 - ✅ **Uvicorn** ASGI server
 
 ### 📊 **AI Models Configured:**
-- ✅ **GPT-4** (OpenAI) - Coding, reasoning, general
-- ✅ **Claude 3.5** (Anthropic) - Creative, analysis, safety
-- ✅ **Grok** (X AI) - Humor, current events, general
-- ✅ **Qwen** (Alibaba) - Multilingual, math, coding
-- ✅ **LLaMA 3** (Meta) - Coding, reasoning, general
-- ✅ **Mistral** (Mistral AI) - Coding, reasoning, efficiency
+- ✅ **GLM4.5** (Zhipu AI) - Reasoning, coding, complex task solving
+- ✅ **GPT-OSS** (OpenAI Open Source) - General purpose language understanding
+- ✅ **Llama 4 Maverick** (Meta) - Instruction following, multilingual, reasoning
+- ✅ **MoonshotAI Kimi** (Moonshot AI) - Coding, reasoning, conversational tasks
+- ✅ **Qwen3 Coder** (Alibaba) - Code generation, programming assistance
+- ✅ **TNG DeepSeek R1T2 Chimera** (TNG Tech) - General NLP, reasoning, analysis
 
 ## 🎯 **CURRENT STATUS: 85% COMPLETE!**
 
