@@ -1,9 +1,6 @@
-#shit failed
-
+# MoonshotAI Kimi Dev 72B test script for OpenRouter
 import requests
 import json
-
-
 import os
 
 # Load API key from orche.env
@@ -15,9 +12,9 @@ def load_api_key(env_path, key_name):
     raise ValueError(f"{key_name} not found in {env_path}")
 
 env_path = os.path.join(os.path.dirname(__file__), "orche.env")
-API_KEY = load_api_key(env_path, "PROVIDER_FALCON_API_KEY")
-MODEL = "tiiuae/falcon-7b"
-API_URL = f"https://api-inference.huggingface.co/models/{MODEL}"
+API_KEY = load_api_key(env_path, "PROVIDER_KIMI_API_KEY")
+MODEL_NAME = load_api_key(env_path, "PROVIDER_KIMI_MODEL")
+API_URL = "https://openrouter.ai/api/v1/chat/completions"
 
 headers = {
     "Authorization": f"Bearer {API_KEY}",
@@ -26,19 +23,23 @@ headers = {
 
 user_message = input("> ")
 payload = {
-    "inputs": user_message,
-    "parameters": {
-        "max_new_tokens": 1000,
-        "return_full_text": False
-    }
+    "model": MODEL_NAME,
+    "messages": [
+        {"role": "user", "content": user_message}
+    ],
+    "max_tokens": 1000
 }
 
 response = requests.post(API_URL, headers=headers, data=json.dumps(payload))
 if response.status_code == 200:
     result = response.json()
-    if isinstance(result, list) and len(result) > 0 and 'generated_text' in result[0]:
-        print(result[0]['generated_text'])
-    else:
+    try:
+        print(result["choices"][0]["message"]["content"])
+    except Exception:
         print(result)
 else:
     print(f"Error: Request failed with status {response.status_code}")
+    try:
+        print(response.json())
+    except Exception:
+        print(response.text)
