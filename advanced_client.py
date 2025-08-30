@@ -100,34 +100,118 @@ class OrchestrationResult:
 class SecureAPIKeyManager:
     """Secure management of API keys"""
     
-    def __init__(self):
+    def __init__(self, env_file_path: str = "orche.env"):
         self.api_keys = {}
+        self.env_file_path = env_file_path
         self._load_keys()
     
     def _load_keys(self):
-        """Load API keys from environment variables"""
-        key_mappings = {
-            "openrouter": "OPENROUTER_API_KEY",
-            "model_selector": "MODEL_SELECTOR_API_KEY",
-            "backup_openai": "OPENAI_API_KEY",
-            "backup_anthropic": "ANTHROPIC_API_KEY"
+        """Load API keys from orche.env file and environment variables"""
+        # First load from orche.env file
+        self._load_from_env_file()
+        
+        # Then load from environment variables (they override file values)
+        self._load_from_environment()
+        
+        if not self.api_keys:
+            logger.warning("⚠️ No API keys found in orche.env or environment variables")
+            logger.info("💡 Make sure orche.env exists with valid API keys")
+    
+    def _load_from_env_file(self):
+        """Load API keys from orche.env file"""
+        if not os.path.exists(self.env_file_path):
+            logger.warning(f"⚠️ Environment file {self.env_file_path} not found")
+            return
+            
+        try:
+            with open(self.env_file_path, 'r', encoding='utf-8') as f:
+                for line in f:
+                    line = line.strip()
+                    if '=' in line and not line.startswith('#') and line:
+                        key, value = line.split('=', 1)
+                        key = key.strip()
+                        value = value.strip()
+                        
+                        # Map provider keys to model names
+                        if key == 'PROVIDER_GLM45_API_KEY' and value:
+                            self.api_keys['GLM4.5'] = value
+                        elif key == 'PROVIDER_GPTOSS_API_KEY' and value:
+                            self.api_keys['GPT-OSS'] = value
+                        elif key == 'PROVIDER_LLAMA3_API_KEY' and value:
+                            self.api_keys['Llama 4 Maverick'] = value
+                        elif key == 'PROVIDER_KIMI_API_KEY' and value:
+                            self.api_keys['MoonshotAI Kimi'] = value
+                        elif key == 'PROVIDER_QWEN3_API_KEY' and value:
+                            self.api_keys['Qwen3'] = value
+                        elif key == 'PROVIDER_FALCON_API_KEY' and value:
+                            self.api_keys['TNG DeepSeek'] = value
+                            
+            logger.info(f"✅ Loaded API keys for {len(self.api_keys)} models from {self.env_file_path}")
+            for model in self.api_keys.keys():
+                logger.info(f"  📋 {model}")
+                
+        except Exception as e:
+            logger.error(f"❌ Error reading {self.env_file_path}: {e}")
+    
+    def _load_from_environment(self):
+        """Load API keys from environment variables (overrides file values)"""
+        env_mappings = {
+            'PROVIDER_GLM45_API_KEY': 'GLM4.5',
+            'PROVIDER_GPTOSS_API_KEY': 'GPT-OSS', 
+            'PROVIDER_LLAMA3_API_KEY': 'Llama 4 Maverick',
+            'PROVIDER_KIMI_API_KEY': 'MoonshotAI Kimi',
+            'PROVIDER_QWEN3_API_KEY': 'Qwen3',
+            'PROVIDER_FALCON_API_KEY': 'TNG DeepSeek',
+            'OPENROUTER_API_KEY': 'openrouter'  # Generic fallback key
         }
         
-        for service, env_var in key_mappings.items():
-            key = os.getenv(env_var)
-            if key:
-                self.api_keys[service] = key
-                logger.info(f"✅ Loaded API key for {service}")
-            else:
-                logger.warning(f"⚠️ No API key found for {service} (env var: {env_var})")
+        env_override_count = 0
+        for env_key, model_name in env_mappings.items():
+            value = os.getenv(env_key)
+            if value:
+                self.api_keys[model_name] = value
+                env_override_count += 1
+                
+        if env_override_count > 0:
+            logger.info(f"✅ Environment variables override {env_override_count} API keys")
     
     def get_key(self, service: str) -> Optional[str]:
-        """Get API key for a service"""
-        return self.api_keys.get(service)
+        """Get API key for a service/model"""
+        # Direct service lookup
+        if service in self.api_keys:
+            return self.api_keys[service]
+        
+        # Model name mapping for backwards compatibility
+        model_mappings = {
+            "openrouter": "GPT-OSS",  # Use any available key as fallback
+            "model_selector": None,   # No key needed for local model selector
+        }
+        
+        mapped_service = model_mappings.get(service, service)
+        if mapped_service and mapped_service in self.api_keys:
+            return self.api_keys[mapped_service]
+        
+        # Return any available OpenRouter key as fallback
+        if service == "openrouter" and self.api_keys:
+            return next(iter(self.api_keys.values()))
+            
+        return None
+    
+    def get_model_key(self, model_name: str) -> Optional[str]:
+        """Get API key for specific model"""
+        return self.api_keys.get(model_name)
     
     def has_key(self, service: str) -> bool:
         """Check if API key exists for a service"""
-        return service in self.api_keys and bool(self.api_keys[service])
+        return self.get_key(service) is not None
+    
+    def has_model_key(self, model_name: str) -> bool:
+        """Check if API key exists for a model"""
+        return model_name in self.api_keys
+    
+    def list_available_models(self) -> List[str]:
+        """List models with available API keys"""
+        return list(self.api_keys.keys())
 
 class MultiModelOrchestrator:
     """
@@ -156,14 +240,14 @@ class MultiModelOrchestrator:
         # Initialize secure key manager
         self.key_manager = SecureAPIKeyManager()
         
-        # OpenRouter model mappings
+        # OpenRouter model mappings - using exact IDs from orche.env
         self.model_mappings = {
-            "TNG DeepSeek": "deepseek/deepseek-r1",
-            "GLM4.5": "zhipuai/glm-4-plus",
-            "GPT-OSS": "openai/gpt-4o-mini",
-            "MoonshotAI Kimi": "moonshot/moonshot-v1-32k",
-            "Llama 4 Maverick": "meta-llama/llama-3.2-90b-vision-instruct",
-            "Qwen3": "qwen/qwen-2.5-coder-32b-instruct"
+            "TNG DeepSeek": "tngtech/deepseek-r1t2-chimera:free",  # PROVIDER_FALCON_MODEL
+            "GLM4.5": "z-ai/glm-4.5-air:free",  # PROVIDER_GLM45_MODEL
+            "GPT-OSS": "openai/gpt-oss-120b:free",  # PROVIDER_GPTOSS_MODEL
+            "MoonshotAI Kimi": "moonshotai/kimi-dev-72b:free",  # PROVIDER_KIMI_MODEL
+            "Llama 4 Maverick": "meta-llama/llama-4-maverick:free",  # PROVIDER_LLAMA3_MODEL
+            "Qwen3": "qwen/qwen3-coder:free"  # PROVIDER_QWEN3_MODEL
         }
         
         # Model cost estimates (per 1K tokens)
@@ -267,8 +351,14 @@ class MultiModelOrchestrator:
         Returns:
             ModelResponse with result
         """
-        if not self.key_manager.has_key("openrouter"):
-            logger.warning(f"⚠️ No OpenRouter API key - simulating {model_name} response")
+        # Get model-specific API key
+        api_key = self.key_manager.get_model_key(model_name)
+        if not api_key:
+            # Fallback to any available key
+            api_key = self.key_manager.get_key("openrouter")
+        
+        if not api_key:
+            logger.warning(f"⚠️ No API key available for {model_name} - simulating response")
             return await self._simulate_model_response(model_name, prompt, is_critique)
         
         if model_name not in self.model_mappings:
@@ -314,7 +404,7 @@ Your critique:"""
             logger.info(f"🤖 Calling {model_name} ({response_type}) via OpenRouter...")
             
             headers = {
-                "Authorization": f"Bearer {self.key_manager.get_key('openrouter')}",
+                "Authorization": f"Bearer {api_key}",
                 "Content-Type": "application/json",
                 "HTTP-Referer": "https://orchestratex.app",
                 "X-Title": "OrchestrateX Advanced Client"
