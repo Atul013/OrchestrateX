@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+  
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+  }
+  
+  #root {
+    height: 100vh;
+  }
+}
+
+@layer components {
+  /* Custom scrollbar styles */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(51, 65, 85, 0.2);
+    border-radius: 2px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(139, 92, 246, 0.3);
+    border-radius: 2px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(139, 92, 246, 0.5);
+  }
+  
+  /* Firefox scrollbar */
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(139, 92, 246, 0.3) rgba(51, 65, 85, 0.2);
+  }
+
+  /* Glassmorphic effect */
+  .glass {
+    background: rgba(30, 41, 59, 0.4);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  /* Neon glow animation */
+  @keyframes neon-glow {
+    0%, 100% { box-shadow: 0 0 5px rgba(139, 92, 246, 0.3); }
+    50% { box-shadow: 0 0 20px rgba(139, 92, 246, 0.6), 0 0 30px rgba(139, 92, 246, 0.4); }
+  }
+  
+  .neon-glow {
+    animation: neon-glow 2s ease-in-out infinite;
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  /* Mobile-specific adjustments */
+  .md\:w-1\/2 {
+    width: 100% !important;
+  }
+  
+  /* Stack conversation and agent panels vertically on mobile */
+  .flex.flex-col.md\:flex-row {
+    flex-direction: column;
+  }
+  
+  /* Adjust agent panel height on mobile */
+  .md\:w-1\/2:last-child {
+    max-height: 40vh;
+    min-height: 300px;
+  }
+}
