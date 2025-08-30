@@ -48,7 +48,7 @@ if response.status_code == 200:
         raw_content = result["choices"][0]["message"]["content"]
         # Clean up special tokens from GPT-OSS output
         cleaned_content = raw_content
-        tokens_to_remove = ["<|start|>", "<|assistant|>", "<|channel|>", "<|final|>", "<|message|>", "<|end|>"]
+        tokens_to_remove = ["<|start|>", "<|assistant|>", "<|channel|>", "<|final|>", "<|message|>", "<|end|>", "assistant", "final", "channel"]
         for token in tokens_to_remove:
             cleaned_content = cleaned_content.replace(token, "")
         print(cleaned_content.strip())
