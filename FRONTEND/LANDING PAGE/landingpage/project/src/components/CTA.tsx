@@ -49,7 +49,7 @@ const CTA: React.FC = () => {
                 className="flex flex-col sm:flex-row gap-4 justify-center mb-8"
               >
                 <motion.a
-                  href="http://localhost:5173/"
+                  href="http://localhost:5175/"
                   target="_blank"
                   rel="noopener noreferrer"
                   whileHover={{ scale: 1.05, boxShadow: '0 20px 40px rgba(122, 90, 248, 0.3)' }}
