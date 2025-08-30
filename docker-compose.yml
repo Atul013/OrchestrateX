@@ -7,10 +7,10 @@ services:
     container_name: orchestratex_mongodb
     restart: unless-stopped
     ports:
-      - "${MONGO_HOST_PORT:-27018}:27017"
+      - "27018:27017"
     environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME:-root}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD:-rootPassword123}
     volumes:
       - orchestratex_data:/data/db
       - ./database/init_db.js:/docker-entrypoint-initdb.d/01-init_db.js:ro

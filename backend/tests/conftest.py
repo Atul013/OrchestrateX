@@ -3,13 +3,10 @@ Test configuration and fixtures
 """
 
 import pytest
+import asyncio
 from fastapi.testclient import TestClient
+from fastapi import FastAPI
 from motor.motor_asyncio import AsyncIOMotorClient
-
-# Import the app and database function
-from main import app
-from app.core.database import get_database
-from app.routes.sessions import get_db
 
 # Test database configuration
 TEST_DATABASE_NAME = "orchestratex_test"
@@ -29,14 +26,6 @@ def init_test_db():
     
     return test_database
 
-@pytest.fixture(scope="session", autouse=True)
-def setup_test_database():
-    """Set up test database for the entire test session"""
-    init_test_db()
-    print("✅ Test database initialized")
-    yield
-    # Cleanup will be handled by individual test cleanup
-
 # Override database dependency for testing
 async def override_get_database():
     """Override database dependency to use test database"""
@@ -48,9 +37,41 @@ async def override_get_db():
     """Override the sessions route database dependency"""
     return await override_get_database()
 
-# Apply the overrides
-app.dependency_overrides[get_database] = override_get_database
-app.dependency_overrides[get_db] = override_get_db
+def create_test_app():
+    """Create a test version of the FastAPI app without lifespan events"""
+    # Create a simple FastAPI app without the complex lifespan
+    test_app = FastAPI(
+        title="OrchestrateX Test API",
+        description="Test version of OrchestrateX API",
+        version="1.0.0-test"
+    )
+    
+    # Import and include routes
+    from app.routes import sessions
+    from app.core.database import get_database
+    from app.routes.sessions import get_db
+    
+    # Apply dependency overrides
+    test_app.dependency_overrides[get_database] = override_get_database
+    test_app.dependency_overrides[get_db] = override_get_db
+    
+    # Include the sessions router
+    test_app.include_router(sessions.router, prefix="/api/sessions", tags=["sessions"])
+    
+    return test_app
+
+@pytest.fixture(scope="session", autouse=True)
+def setup_test_database():
+    """Set up test database for the entire test session"""
+    init_test_db()
+    print("✅ Test database initialized")
+    yield
+    # Cleanup will be handled by individual test cleanup
+
+@pytest.fixture(scope="module")
+def app():
+    """Create test app instance"""
+    return create_test_app()
 
 @pytest.fixture
 def test_session_data():
