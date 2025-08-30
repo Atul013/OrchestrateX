@@ -11,8 +11,8 @@ def load_api_key(env_path, key_name):
     raise ValueError(f"{key_name} not found in {env_path}")
 
 env_path = os.path.join(os.path.dirname(__file__), "orche.env")
-API_KEY = load_api_key(env_path, "PROVIDER_FALCON_API_KEY")
-MODEL = load_api_key(env_path, "PROVIDER_FALCON_MODEL")
+API_KEY = load_api_key(env_path, "PROVIDER_DEEPSEEK_API_KEY")
+MODEL = load_api_key(env_path, "PROVIDER_DEEPSEEK_MODEL")
 
 # OpenRouter API configuration
 API_URL = "https://openrouter.ai/api/v1/chat/completions"
