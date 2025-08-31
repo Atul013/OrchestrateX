@@ -1,0 +1,103 @@
+2025-08-31 11:17:06,474 - INFO - werkzeug - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://192.168.1.39:8000
+2025-08-31 11:17:06,474 - INFO - werkzeug - [33mPress CTRL+C to quit[0m
+2025-08-31 11:17:06,476 - INFO - werkzeug -  * Restarting with stat
+2025-08-31 11:17:06,843 - WARNING - werkzeug -  * Debugger is active!
+2025-08-31 11:17:06,846 - INFO - werkzeug -  * Debugger PIN: 753-967-098
+2025-08-31 11:19:27,951 - INFO - werkzeug - 127.0.0.1 - - [31/Aug/2025 11:19:27] "OPTIONS /orchestrate HTTP/1.1" 200 -
+2025-08-31 11:19:49,272 - INFO - werkzeug - 127.0.0.1 - - [31/Aug/2025 11:19:49] "[35m[1mPOST /orchestrate HTTP/1.1[0m" 500 -
+2025-08-31 11:24:56,645 - INFO - werkzeug -  * Detected change in 'E:\\Projects\\OrchestrateX\\api_server.py', reloading
+2025-08-31 11:24:56,703 - INFO - werkzeug -  * Restarting with stat
+2025-08-31 11:24:57,255 - WARNING - werkzeug -  * Debugger is active!
+2025-08-31 11:24:57,258 - INFO - werkzeug -  * Debugger PIN: 753-967-098
+2025-08-31 11:25:29,767 - INFO - werkzeug - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://192.168.1.39:8000
+2025-08-31 11:25:29,767 - INFO - werkzeug - [33mPress CTRL+C to quit[0m
+2025-08-31 11:25:29,768 - INFO - werkzeug -  * Restarting with stat
+2025-08-31 11:25:30,129 - WARNING - werkzeug -  * Debugger is active!
+2025-08-31 11:25:30,132 - INFO - werkzeug -  * Debugger PIN: 753-967-098
+2025-08-31 11:25:53,176 - INFO - werkzeug - 127.0.0.1 - - [31/Aug/2025 11:25:53] "OPTIONS /orchestrate HTTP/1.1" 200 -
+2025-08-31 11:26:45,736 - INFO - werkzeug - 127.0.0.1 - - [31/Aug/2025 11:26:45] "[35m[1mPOST /orchestrate HTTP/1.1[0m" 500 -
+2025-08-31 11:27:47,284 - INFO - werkzeug - 127.0.0.1 - - [31/Aug/2025 11:27:47] "OPTIONS /orchestrate HTTP/1.1" 200 -
+2025-08-31 11:28:45,068 - INFO - werkzeug - 127.0.0.1 - - [31/Aug/2025 11:28:45] "[35m[1mPOST /orchestrate HTTP/1.1[0m" 500 -
+2025-08-31 11:29:30,221 - INFO - werkzeug - 127.0.0.1 - - [31/Aug/2025 11:29:30] "OPTIONS /orchestrate HTTP/1.1" 200 -
+2025-08-31 11:30:28,059 - INFO - werkzeug - 127.0.0.1 - - [31/Aug/2025 11:30:28] "[35m[1mPOST /orchestrate HTTP/1.1[0m" 500 -
+2025-08-31 11:32:44,403 - INFO - werkzeug - 127.0.0.1 - - [31/Aug/2025 11:32:44] "[35m[1mPOST /orchestrate HTTP/1.1[0m" 500 -
+2025-08-31 11:33:05,113 - INFO - werkzeug -  * Detected change in 'E:\\Projects\\OrchestrateX\\api_server.py', reloading
+2025-08-31 11:33:05,121 - INFO - werkzeug -  * Detected change in 'E:\\Projects\\OrchestrateX\\api_server.py', reloading
+2025-08-31 11:33:05,171 - INFO - werkzeug -  * Restarting with stat
+2025-08-31 11:33:05,183 - INFO - werkzeug -  * Restarting with stat
+2025-08-31 11:33:05,695 - WARNING - werkzeug -  * Debugger is active!
+2025-08-31 11:33:05,698 - INFO - werkzeug -  * Debugger PIN: 753-967-098
+2025-08-31 11:33:05,699 - INFO - werkzeug -  * Debugger PIN: 753-967-098
+2025-08-31 11:33:16,522 - INFO - werkzeug -  * Detected change in 'E:\\Projects\\OrchestrateX\\api_server.py', reloading
+2025-08-31 11:33:16,525 - INFO - werkzeug -  * Detected change in 'E:\\Projects\\OrchestrateX\\api_server.py', reloading
+2025-08-31 11:33:16,578 - INFO - werkzeug -  * Restarting with stat
+2025-08-31 11:33:16,579 - INFO - werkzeug -  * Restarting with stat
+2025-08-31 11:33:16,942 - WARNING - werkzeug -  * Debugger is active!
+2025-08-31 11:33:16,945 - INFO - werkzeug -  * Debugger PIN: 753-967-098
+2025-08-31 11:33:16,950 - WARNING - werkzeug -  * Debugger is active!
+2025-08-31 11:33:16,953 - INFO - werkzeug -  * Debugger PIN: 753-967-098
+2025-08-31 11:33:24,571 - INFO - werkzeug -  * Detected change in 'E:\\Projects\\OrchestrateX\\api_server.py', reloading
+2025-08-31 11:33:24,637 - INFO - werkzeug -  * Restarting with stat
+2025-08-31 11:33:25,043 - WARNING - werkzeug -  * Debugger is active!
+2025-08-31 11:33:25,048 - INFO - werkzeug -  * Debugger PIN: 753-967-098
+2025-08-31 11:33:25,625 - INFO - werkzeug -  * Detected change in 'E:\\Projects\\OrchestrateX\\api_server.py', reloading
+2025-08-31 11:33:25,691 - INFO - werkzeug -  * Restarting with stat
+2025-08-31 11:33:26,090 - WARNING - werkzeug -  * Debugger is active!
+2025-08-31 11:33:26,092 - INFO - werkzeug -  * Debugger PIN: 753-967-098
+2025-08-31 11:33:33,090 - INFO - werkzeug - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://192.168.1.39:8000
+2025-08-31 11:33:33,091 - INFO - werkzeug - [33mPress CTRL+C to quit[0m
+2025-08-31 11:33:33,092 - INFO - werkzeug -  * Restarting with stat
+2025-08-31 11:33:33,461 - WARNING - werkzeug -  * Debugger is active!
+2025-08-31 11:33:33,464 - INFO - werkzeug -  * Debugger PIN: 753-967-098
+2025-08-31 11:34:31,577 - INFO - werkzeug - 127.0.0.1 - - [31/Aug/2025 11:34:31] "[35m[1mPOST /orchestrate HTTP/1.1[0m" 500 -
+2025-08-31 11:34:42,417 - INFO - werkzeug -  * Detected change in 'E:\\Projects\\OrchestrateX\\api_server.py', reloading
+2025-08-31 11:34:42,433 - INFO - werkzeug -  * Detected change in 'E:\\Projects\\OrchestrateX\\api_server.py', reloading
+2025-08-31 11:34:42,486 - INFO - werkzeug -  * Restarting with stat
+2025-08-31 11:34:42,508 - INFO - werkzeug -  * Restarting with stat
+2025-08-31 11:34:43,011 - WARNING - werkzeug -  * Debugger is active!
+2025-08-31 11:34:43,011 - WARNING - werkzeug -  * Debugger is active!
+2025-08-31 11:34:43,014 - INFO - werkzeug -  * Debugger PIN: 753-967-098
+2025-08-31 11:34:43,014 - INFO - werkzeug -  * Debugger PIN: 753-967-098
+2025-08-31 11:34:48,496 - INFO - werkzeug -  * Detected change in 'E:\\Projects\\OrchestrateX\\api_server.py', reloading
+2025-08-31 11:34:48,500 - INFO - werkzeug -  * Detected change in 'E:\\Projects\\OrchestrateX\\api_server.py', reloading
+2025-08-31 11:34:48,553 - INFO - werkzeug -  * Restarting with stat
+2025-08-31 11:34:48,560 - INFO - werkzeug -  * Restarting with stat
+2025-08-31 11:34:48,930 - WARNING - werkzeug -  * Debugger is active!
+2025-08-31 11:34:48,933 - INFO - werkzeug -  * Debugger PIN: 753-967-098
+2025-08-31 11:34:48,934 - WARNING - werkzeug -  * Debugger is active!
+2025-08-31 11:34:48,937 - INFO - werkzeug -  * Debugger PIN: 753-967-098
+2025-08-31 11:34:56,525 - INFO - werkzeug - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://192.168.1.39:8000
+2025-08-31 11:34:56,526 - INFO - werkzeug - [33mPress CTRL+C to quit[0m
+2025-08-31 11:34:56,527 - INFO - werkzeug -  * Restarting with stat
+2025-08-31 11:34:56,895 - WARNING - werkzeug -  * Debugger is active!
+2025-08-31 11:34:56,898 - INFO - werkzeug -  * Debugger PIN: 753-967-098
+2025-08-31 11:36:26,146 - INFO - werkzeug - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://192.168.1.39:8000
+2025-08-31 11:36:26,146 - INFO - werkzeug - [33mPress CTRL+C to quit[0m
+2025-08-31 11:36:26,147 - INFO - werkzeug -  * Restarting with stat
+2025-08-31 11:36:26,508 - WARNING - werkzeug -  * Debugger is active!
+2025-08-31 11:36:26,511 - INFO - werkzeug -  * Debugger PIN: 753-967-098
+2025-08-31 11:38:26,351 - INFO - werkzeug - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://192.168.1.39:8000
+2025-08-31 11:38:26,351 - INFO - werkzeug - [33mPress CTRL+C to quit[0m
+2025-08-31 11:38:26,353 - INFO - werkzeug -  * Restarting with stat
+2025-08-31 11:38:26,730 - WARNING - werkzeug -  * Debugger is active!
+2025-08-31 11:38:26,733 - INFO - werkzeug -  * Debugger PIN: 753-967-098
+2025-08-31 11:39:14,973 - INFO - werkzeug - 127.0.0.1 - - [31/Aug/2025 11:39:14] "OPTIONS /orchestrate HTTP/1.1" 200 -
+2025-08-31 11:40:11,046 - INFO - werkzeug - 127.0.0.1 - - [31/Aug/2025 11:40:11] "POST /orchestrate HTTP/1.1" 200 -
