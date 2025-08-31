@@ -1,6 +1,6 @@
 // API Configuration for OrchestrateX Frontend
 export const API_CONFIG = {
-  BASE_URL: 'http://localhost:8000',
+  BASE_URL: 'http://localhost:8002',
   ENDPOINTS: {
     CHAT: '/chat',
     MODELS: '/models',

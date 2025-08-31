@@ -22,7 +22,7 @@ timeout /t 10 /nobreak >nul
 
 echo.
 echo ✅ Services started!
-echo 📊 MongoDB: http://localhost:27018
+echo 📊 MongoDB: http://localhost:27019
 echo 🌐 Mongo Express: http://localhost:8081 (admin/admin)
 echo.
 echo Opening Mongo Express in browser...

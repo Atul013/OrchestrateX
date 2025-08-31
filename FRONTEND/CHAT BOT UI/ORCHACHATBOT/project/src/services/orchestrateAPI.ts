@@ -30,19 +30,19 @@ class OrchestrateXAPI {
   private baseURL: string;
 
   constructor() {
-    // Using the Python client directly since it handles the orchestration
-    // We'll need to create a simple HTTP wrapper around advanced_client.py
-    this.baseURL = 'http://localhost:8000';
+    // Using the Bridge API that connects UI → Algorithm → MongoDB
+    // Points to the working ui_bridge_api.py
+    this.baseURL = 'http://localhost:8002';
   }
 
   async orchestrateQuery(prompt: string): Promise<OrchestrateResponse> {
     try {
-      const response = await fetch(`${this.baseURL}/orchestrate`, {
+      const response = await fetch(`${this.baseURL}/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ prompt }),
+        body: JSON.stringify({ message: prompt }),
       });
 
       if (!response.ok) {

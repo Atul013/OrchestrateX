@@ -12,7 +12,7 @@ def test_docker_storage():
     
     try:
         # Connect to your Docker MongoDB
-        client = MongoClient("mongodb://localhost:27018/")
+        client = MongoClient("mongodb://localhost:27017/")
         db = client.orchestratex
         
         # Test connection

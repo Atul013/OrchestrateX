@@ -14,7 +14,7 @@ app = Flask(__name__)
 
 # MongoDB Configuration
 MONGO_HOST = "localhost"
-MONGO_PORT = 27018
+MONGO_PORT = 27017
 MONGO_USERNAME = "project_admin"
 MONGO_PASSWORD = "project_password"
 DATABASE_NAME = "orchestratex_db"

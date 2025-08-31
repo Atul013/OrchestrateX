@@ -7,7 +7,7 @@ services:
     container_name: orchestratex_mongodb
     restart: unless-stopped
     ports:
-      - "27018:27017"
+      - "27019:27017"  # New port for different network
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME:-root}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD:-rootPassword123}

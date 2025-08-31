@@ -151,7 +151,7 @@ export const useChat = () => {
       // Show error message
       const errorMessage: Message = {
         id: generateId(),
-        content: '❌ **Connection Error**: Unable to connect to OrchestrateX backend. Please make sure the backend server is running on localhost:8000.\n\n**To start the backend:**\n```\ncd E:\\Projects\\OrchestrateX\npython api_server.py\n```',
+        content: '❌ **Connection Error**: Unable to connect to OrchestrateX backend. Please make sure the backend server is running on localhost:8002.\n\n**To start the backend:**\n```\ncd C:\\Users\\91903\\OneDrive\\Documents\\OrchestrateX\nvenv\\Scripts\\activate && python working_api.py\n```\n\n**Backend Status:** Latest Models with MongoDB Storage (GLM-4.5, GPT-OSS, Llama-4-Maverick, Kimi-K2, TNG-DeepSeek-R1T2)',
         type: 'assistant',
         timestamp: new Date()
       };
