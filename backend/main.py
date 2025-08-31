@@ -14,7 +14,7 @@ import os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from app.core.database import connect_to_mongo, close_mongo_connection
-from app.routes import sessions, threads, models, orchestration, analytics
+from app.routes import sessions, threads, models, orchestration, analytics, algorithm
 from app.websocket import routes as websocket_routes
 
 # Global database connection
@@ -81,6 +81,7 @@ app.include_router(threads.router, prefix="/api/threads", tags=["threads"])
 app.include_router(models.router, prefix="/api/models", tags=["models"])
 app.include_router(orchestration.router, prefix="/api/orchestrate", tags=["orchestration"])
 app.include_router(analytics.router, prefix="/api/analytics", tags=["analytics"])
+app.include_router(algorithm.router, prefix="/api/algorithm", tags=["algorithm"])
 app.include_router(websocket_routes.router, tags=["websocket"])
 
 @app.get("/")
