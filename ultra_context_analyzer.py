@@ -60,6 +60,11 @@ class UltraContextAnalyzer:
         
         # Enhanced intent patterns with confidence weighting
         self.intent_patterns = {
+            'casual_conversation': {
+                'strong_indicators': ['hey', 'hello', 'hi', 'sup', 'good morning', 'good evening', 'good afternoon', 'whats up', 'how are', 'thanks', 'thank you', 'bye', 'goodbye', 'see you', 'take care'],
+                'context_boosters': ['there', 'doing', 'going', 'ya', 'you', 'later', 'soon'],
+                'confidence_multiplier': 1.5
+            },
             'create_something': {
                 'strong_indicators': ['create', 'make', 'build', 'develop', 'implement', 'design', 'generate', 'write', 'code', 'program'],
                 'context_boosters': ['new', 'fresh', 'from scratch', 'custom', 'original'],
@@ -1015,7 +1020,23 @@ class UltraContextAnalyzer:
     def select_ultra_model(self, prompt: str) -> Tuple[str, float, str]:
         """Ultra-fine-tuned model selection with enhanced precision."""
         
-        # Get comprehensive context analysis
+        # Fast-path for casual conversation - no need for complex analysis
+        casual_patterns = [
+            'hey', 'hello', 'hi', 'sup', 'good morning', 'good evening', 
+            'good afternoon', 'whats up', 'how are', 'how ya', 'thanks', 
+            'thank you', 'bye', 'goodbye', 'see you', 'take care'
+        ]
+        
+        prompt_lower = prompt.lower().strip()
+        
+        # Check if it's a simple casual greeting (4 words or less)
+        words = prompt_lower.split()
+        if len(words) <= 4:
+            for pattern in casual_patterns:
+                if pattern in prompt_lower:
+                    return "GPT-OSS", 0.95, "Casual conversation detected - using conversational model"
+        
+        # Get comprehensive context analysis for complex prompts
         context = self.analyze_ultra_context(prompt)
         overall = context['overall_context']
         
@@ -1090,6 +1111,7 @@ class UltraContextAnalyzer:
     def _intent_matches_strength(self, intent: str, strength: str) -> bool:
         """Check if intent matches model strength."""
         intent_strength_map = {
+            'casual_conversation': ['general_knowledge', 'conversational', 'broad_topics', 'explanation'],
             'create_something': ['code_creation', 'technical_implementation', 'structured_building', 'creative_writing'],
             'learn_something': ['teaching', 'explanation', 'general_knowledge', 'educational'],
             'analyze_something': ['complex_analysis', 'reasoning', 'critical_thinking', 'evaluation'],
