@@ -30,7 +30,7 @@ async def simple_test():
             # Primary Response
             if result.primary_response and result.primary_response.success:
                 print(f"\n✅ PRIMARY RESPONSE ({result.primary_response.model_name}):")
-                print(f"📄 Content: {result.primary_response.response_text[:500]}...")
+                print(f"📄 Content: {result.primary_response.response_text}")
                 print(f"💰 Cost: ${result.primary_response.cost_usd:.4f}")
                 print(f"⚡ Latency: {result.primary_response.latency_ms}ms")
                 print(f"🔢 Tokens: {result.primary_response.tokens_used}")
@@ -41,7 +41,7 @@ async def simple_test():
             
             for i, critique in enumerate(successful_critiques, 1):
                 print(f"\n{i}. {critique.model_name}:")
-                print(f"   📄 {critique.response_text[:200]}...")
+                print(f"   📄 {critique.response_text}")
                 print(f"   💰 ${critique.cost_usd:.4f} | ⚡ {critique.latency_ms}ms | 🔢 {critique.tokens_used} tokens")
             
             # Summary

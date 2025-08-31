@@ -1,4 +1,3 @@
-#shit failed
 
 import requests
 import json

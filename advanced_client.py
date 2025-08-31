@@ -245,19 +245,19 @@ class MultiModelOrchestrator:
             "TNG DeepSeek": "tngtech/deepseek-r1t2-chimera:free",  # PROVIDER_FALCON_MODEL
             "GLM4.5": "z-ai/glm-4.5-air:free",  # PROVIDER_GLM45_MODEL
             "GPT-OSS": "openai/gpt-oss-120b:free",  # PROVIDER_GPTOSS_MODEL
-            "MoonshotAI Kimi": "moonshotai/kimi-dev-72b:free",  # PROVIDER_KIMI_MODEL
+            "MoonshotAI Kimi": "moonshotai/kimi-k2:free",  # PROVIDER_KIMI_MODEL
             "Llama 4 Maverick": "meta-llama/llama-4-maverick:free",  # PROVIDER_LLAMA3_MODEL
             "Qwen3": "qwen/qwen3-coder:free"  # PROVIDER_QWEN3_MODEL
         }
         
-        # Model cost estimates (per 1K tokens)
+        # Model cost estimates (per 1K tokens) - All models are free tier
         self.model_costs = {
-            "TNG DeepSeek": 0.002,
-            "GLM4.5": 0.003,
-            "GPT-OSS": 0.001,
-            "MoonshotAI Kimi": 0.002,
-            "Llama 4 Maverick": 0.0015,
-            "Qwen3": 0.002
+            "TNG DeepSeek": 0.0,  # Free tier
+            "GLM4.5": 0.0,        # Free tier
+            "GPT-OSS": 0.0,       # Free tier
+            "MoonshotAI Kimi": 0.0, # Free tier
+            "Llama 4 Maverick": 0.0, # Free tier
+            "Qwen3": 0.0          # Free tier
         }
         
         self.session = None
@@ -382,19 +382,15 @@ class MultiModelOrchestrator:
             
             # Prepare the prompt
             if is_critique and original_response:
-                critique_prompt = f"""Please analyze and critique the following response to the original prompt:
+                critique_prompt = f"""Critique this response to: {prompt}
 
-Original Prompt: {prompt}
+Response: {original_response}
 
-Response to Critique: {original_response}
+Provide a brief critique in exactly 2 sentences:
+1. What's good about it?
+2. What's the main weakness and how to fix it?
 
-Please provide:
-1. What this response does well
-2. Areas for improvement
-3. Any missing information or perspectives
-4. An improved version of the response
-
-Your critique:"""
+Keep it concise:"""
                 final_prompt = critique_prompt
                 response_type = "critique"
             else:
@@ -441,6 +437,13 @@ Your critique:"""
                     response_text = data["choices"][0]["message"]["content"]
                     usage = data.get("usage", {})
                     tokens_used = usage.get("total_tokens", 0)
+                    
+                    # Clean up special tokens from GPT-OSS output
+                    if "GPT-OSS" in model_name:
+                        tokens_to_remove = ["<|start|>", "<|assistant|>", "<|channel|>", "<|final|>", "<|message|>", "<|end|>", "assistant", "final", "channel"]
+                        for token in tokens_to_remove:
+                            response_text = response_text.replace(token, "")
+                        response_text = response_text.strip()
                     
                     # Calculate cost
                     cost_usd = (tokens_used / 1000) * self.model_costs.get(model_name, 0.002)
@@ -771,12 +774,12 @@ async def example_usage():
         print(f"\n🎯 Primary Response from {result.selected_model}:")
         print(f"Success: {result.primary_response.success}")
         if result.primary_response.success:
-            print(f"Response: {result.primary_response.response_text[:200]}...")
+            print(f"Response: {result.primary_response.response_text}")
         
         print(f"\n📝 Critiques from {len(result.critique_responses)} other models:")
         for critique in result.critique_responses:
             status = "✅" if critique.success else "❌"
-            print(f"{status} {critique.model_name}: {critique.response_text[:100] if critique.success else critique.error_message}...")
+            print(f"{status} {critique.model_name}: {critique.response_text if critique.success else critique.error_message}")
         
         # Show UI-formatted result
         ui_data = format_for_ui(result)
