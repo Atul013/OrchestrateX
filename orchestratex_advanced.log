@@ -101,3 +101,39 @@
 2025-08-31 11:38:26,733 - INFO - werkzeug -  * Debugger PIN: 753-967-098
 2025-08-31 11:39:14,973 - INFO - werkzeug - 127.0.0.1 - - [31/Aug/2025 11:39:14] "OPTIONS /orchestrate HTTP/1.1" 200 -
 2025-08-31 11:40:11,046 - INFO - werkzeug - 127.0.0.1 - - [31/Aug/2025 11:40:11] "POST /orchestrate HTTP/1.1" 200 -
+2025-08-31 12:35:40,945 - INFO - werkzeug -  * Detected change in 'E:\\Projects\\OrchestrateX\\Model\\model_selector_api.py', reloading
+2025-08-31 12:35:41,019 - INFO - werkzeug -  * Restarting with stat
+2025-08-31 12:35:41,398 - WARNING - werkzeug -  * Debugger is active!
+2025-08-31 12:35:41,401 - INFO - werkzeug -  * Debugger PIN: 753-967-098
+2025-08-31 12:35:47,944 - INFO - werkzeug -  * Detected change in 'E:\\Projects\\OrchestrateX\\api_server.py', reloading
+2025-08-31 12:35:48,005 - INFO - werkzeug -  * Restarting with stat
+2025-08-31 12:35:48,385 - WARNING - werkzeug -  * Debugger is active!
+2025-08-31 12:35:48,387 - INFO - werkzeug -  * Debugger PIN: 753-967-098
+2025-08-31 12:35:50,689 - INFO - werkzeug -  * Detected change in 'E:\\Projects\\OrchestrateX\\test_api.py', reloading
+2025-08-31 12:35:50,734 - INFO - werkzeug -  * Restarting with stat
+2025-08-31 12:35:51,090 - WARNING - werkzeug -  * Debugger is active!
+2025-08-31 12:35:51,093 - INFO - werkzeug -  * Debugger PIN: 753-967-098
+2025-08-31 12:42:34,834 - INFO - werkzeug -  * Detected change in 'E:\\Projects\\OrchestrateX\\Model\\analyze_performance.py', reloading
+2025-08-31 12:42:34,876 - INFO - werkzeug -  * Restarting with stat
+2025-08-31 12:42:35,213 - WARNING - werkzeug -  * Debugger is active!
+2025-08-31 12:42:35,215 - INFO - werkzeug -  * Debugger PIN: 753-967-098
+2025-08-31 12:44:01,683 - INFO - werkzeug -  * Detected change in 'E:\\Projects\\OrchestrateX\\Model\\create_enhanced_dataset.py', reloading
+2025-08-31 12:44:01,746 - INFO - werkzeug -  * Restarting with stat
+2025-08-31 12:44:02,205 - WARNING - werkzeug -  * Debugger is active!
+2025-08-31 12:44:02,209 - INFO - werkzeug -  * Debugger PIN: 753-967-098
+2025-08-31 12:46:10,571 - INFO - werkzeug -  * Detected change in 'E:\\Projects\\OrchestrateX\\Model\\hybrid_model_selector.py', reloading
+2025-08-31 12:46:10,631 - INFO - werkzeug -  * Restarting with stat
+2025-08-31 12:46:11,068 - WARNING - werkzeug -  * Debugger is active!
+2025-08-31 12:46:11,071 - INFO - werkzeug -  * Debugger PIN: 753-967-098
+2025-08-31 12:48:16,254 - INFO - werkzeug -  * Detected change in 'E:\\Projects\\OrchestrateX\\Model\\train_enhanced_model.py', reloading
+2025-08-31 12:48:16,296 - INFO - werkzeug -  * Restarting with stat
+2025-08-31 12:48:16,645 - WARNING - werkzeug -  * Debugger is active!
+2025-08-31 12:48:16,648 - INFO - werkzeug -  * Debugger PIN: 753-967-098
+2025-08-31 12:48:28,552 - INFO - werkzeug -  * Detected change in 'E:\\Projects\\OrchestrateX\\Model\\train_enhanced_model.py', reloading
+2025-08-31 12:48:28,600 - INFO - werkzeug -  * Restarting with stat
+2025-08-31 12:48:28,946 - WARNING - werkzeug -  * Debugger is active!
+2025-08-31 12:48:28,949 - INFO - werkzeug -  * Debugger PIN: 753-967-098
+2025-08-31 12:48:47,251 - INFO - werkzeug -  * Detected change in 'E:\\Projects\\OrchestrateX\\Model\\hybrid_model_selector.py', reloading
+2025-08-31 12:48:47,304 - INFO - werkzeug -  * Restarting with stat
+2025-08-31 12:48:47,695 - WARNING - werkzeug -  * Debugger is active!
+2025-08-31 12:48:47,698 - INFO - werkzeug -  * Debugger PIN: 753-967-098

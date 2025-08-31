@@ -1,0 +1,101 @@
+prompt,categories,topic_domain,intent_type,confidence,token_count,best_model
+Analyze economic implications of remote work (variation 52),['reasoning'],casual,reasoning_task,"{'category': 0.5, 'domain': 0.125, 'intent': 0.6666666666666666, 'overall': 0.4166666666666667}",8,MoonshotAI Kimi
+"Hello, how are you? (variation 72)",['general'],casual,question,"{'category': 0.75, 'domain': 0.125, 'intent': 1.0, 'overall': 0.6458333333333334}",6,GPT-OSS
+Analyze economic implications of remote work (variation 83),['reasoning'],casual,reasoning_task,"{'category': 0.5, 'domain': 0.125, 'intent': 0.6666666666666666, 'overall': 0.4166666666666667}",8,GPT-OSS
+"Hello, how are you? (variation 88)",['general'],casual,question,"{'category': 0.75, 'domain': 0.125, 'intent': 1.0, 'overall': 0.6458333333333334}",6,MoonshotAI Kimi
+Compare machine learning algorithms (variation 24),"['coding', 'reasoning']",casual,question,"{'category': 0.525, 'domain': 0.125, 'intent': 0.0, 'overall': 0.2604166666666667}",6,TNG DeepSeek
+Optimize SQL query performance (variation 2),['coding'],technical,question,"{'category': 1.0, 'domain': 0.875, 'intent': 0.0, 'overall': 0.9375}",6,GPT-OSS
+Help me plan a vacation (variation 38),['general'],casual,instruction,"{'category': 0.3, 'domain': 0.125, 'intent': 0.6666666666666666, 'overall': 0.3333333333333333}",7,MoonshotAI Kimi
+Tell me a fun fact about dolphins (variation 21),['general'],casual,instruction,"{'category': 0.25, 'domain': 0.125, 'intent': 0.6666666666666666, 'overall': 0.3125}",9,GPT-OSS
+Evaluate pros and cons of cryptocurrency (variation 22),['reasoning'],logical,reasoning_task,"{'category': 1.0, 'domain': 0.375, 'intent': 0.6666666666666666, 'overall': 0.9375}",8,GLM4.5
+Prove mathematical theorems (variation 49),['reasoning'],logical,reasoning_task,"{'category': 1.0, 'domain': 0.625, 'intent': 0.6666666666666666, 'overall': 0.7916666666666666}",5,Qwen3
+Give me cooking advice (variation 42),['general'],casual,question,"{'category': 0.3, 'domain': 0.375, 'intent': 0.0, 'overall': 0.25}",6,MoonshotAI Kimi
+Tell me a fun fact about dolphins (variation 80),['general'],casual,instruction,"{'category': 0.25, 'domain': 0.125, 'intent': 0.6666666666666666, 'overall': 0.3125}",9,MoonshotAI Kimi
+Help me plan a vacation (variation 47),['general'],casual,instruction,"{'category': 0.3, 'domain': 0.125, 'intent': 0.6666666666666666, 'overall': 0.3333333333333333}",7,GPT-OSS
+Tell me a fun fact about dolphins (variation 55),['general'],casual,instruction,"{'category': 0.25, 'domain': 0.125, 'intent': 0.6666666666666666, 'overall': 0.3125}",9,Llama 4 Maverick
+Prove mathematical theorems (variation 3),['reasoning'],logical,reasoning_task,"{'category': 1.0, 'domain': 0.625, 'intent': 0.6666666666666666, 'overall': 0.7916666666666666}",5,GPT-OSS
+Analyze economic implications of remote work (variation 21),['reasoning'],casual,reasoning_task,"{'category': 0.5, 'domain': 0.125, 'intent': 0.6666666666666666, 'overall': 0.4166666666666667}",8,GLM4.5
+Create a REST API using Django (variation 4),['coding'],technical,code_request,"{'category': 1.0, 'domain': 0.375, 'intent': 0.6666666666666666, 'overall': 1.0}",8,GPT-OSS
+Help me plan a vacation (variation 9),['general'],casual,instruction,"{'category': 0.3, 'domain': 0.125, 'intent': 0.6666666666666666, 'overall': 0.3333333333333333}",7,MoonshotAI Kimi
+Create a REST API using Django (variation 84),['coding'],technical,code_request,"{'category': 1.0, 'domain': 0.375, 'intent': 0.6666666666666666, 'overall': 1.0}",8,TNG DeepSeek
+Tell me a fun fact about dolphins (variation 71),['general'],casual,instruction,"{'category': 0.25, 'domain': 0.125, 'intent': 0.6666666666666666, 'overall': 0.3125}",9,GPT-OSS
+Compare machine learning algorithms (variation 47),"['coding', 'reasoning']",casual,question,"{'category': 0.525, 'domain': 0.125, 'intent': 0.0, 'overall': 0.2604166666666667}",6,GPT-OSS
+Write a Python function to sort arrays (variation 36),['coding'],technical,code_request,"{'category': 1.0, 'domain': 0.375, 'intent': 0.6666666666666666, 'overall': 0.9583333333333334}",9,TNG DeepSeek
+Implement a binary search algorithm (variation 2),['coding'],technical,code_request,"{'category': 1.0, 'domain': 0.375, 'intent': 0.6666666666666666, 'overall': 0.8541666666666666}",7,GLM4.5
+Explain why renewable energy is sustainable (variation 4),['reasoning'],logical,reasoning_task,"{'category': 1.0, 'domain': 0.375, 'intent': 0.6666666666666666, 'overall': 0.8333333333333334}",8,GLM4.5
+Give me cooking advice (variation 18),['general'],casual,question,"{'category': 0.3, 'domain': 0.375, 'intent': 0.0, 'overall': 0.25}",6,Llama 4 Maverick
+Create a REST API using Django (variation 74),['coding'],technical,code_request,"{'category': 1.0, 'domain': 0.375, 'intent': 0.6666666666666666, 'overall': 1.0}",8,GPT-OSS
+Help me plan a vacation (variation 95),['general'],casual,instruction,"{'category': 0.3, 'domain': 0.125, 'intent': 0.6666666666666666, 'overall': 0.3333333333333333}",7,Llama 4 Maverick
+Compare machine learning algorithms (variation 78),"['coding', 'reasoning']",casual,question,"{'category': 0.525, 'domain': 0.125, 'intent': 0.0, 'overall': 0.2604166666666667}",6,GPT-OSS
+Prove mathematical theorems (variation 62),['reasoning'],logical,reasoning_task,"{'category': 1.0, 'domain': 0.625, 'intent': 0.6666666666666666, 'overall': 0.7916666666666666}",5,GLM4.5
+What's the weather like? (variation 82),['general'],casual,question,"{'category': 0.55, 'domain': 0.375, 'intent': 1.0, 'overall': 0.6875}",7,GPT-OSS
+Compare machine learning algorithms (variation 26),"['coding', 'reasoning']",casual,question,"{'category': 0.525, 'domain': 0.125, 'intent': 0.0, 'overall': 0.2604166666666667}",6,Llama 4 Maverick
+Tell me a fun fact about dolphins (variation 41),['general'],casual,instruction,"{'category': 0.25, 'domain': 0.125, 'intent': 0.6666666666666666, 'overall': 0.3125}",9,MoonshotAI Kimi
+What's the weather like? (variation 65),['general'],casual,question,"{'category': 0.55, 'domain': 0.375, 'intent': 1.0, 'overall': 0.6875}",7,MoonshotAI Kimi
+Prove mathematical theorems (variation 88),['reasoning'],logical,reasoning_task,"{'category': 1.0, 'domain': 0.625, 'intent': 0.6666666666666666, 'overall': 0.7916666666666666}",5,GLM4.5
+Compare machine learning algorithms (variation 88),"['coding', 'reasoning']",casual,question,"{'category': 0.525, 'domain': 0.125, 'intent': 0.0, 'overall': 0.2604166666666667}",6,GPT-OSS
+Debug this JavaScript code (variation 81),['coding'],technical,question,"{'category': 1.0, 'domain': 0.375, 'intent': 0.0, 'overall': 0.625}",6,GPT-OSS
+Debug this JavaScript code (variation 33),['coding'],technical,question,"{'category': 1.0, 'domain': 0.375, 'intent': 0.0, 'overall': 0.625}",6,GLM4.5
+Evaluate pros and cons of cryptocurrency (variation 41),['reasoning'],logical,reasoning_task,"{'category': 1.0, 'domain': 0.375, 'intent': 0.6666666666666666, 'overall': 0.9375}",8,GPT-OSS
+Prove mathematical theorems (variation 72),['reasoning'],logical,reasoning_task,"{'category': 1.0, 'domain': 0.625, 'intent': 0.6666666666666666, 'overall': 0.7916666666666666}",5,Qwen3
+Write a Python function to sort arrays (variation 48),['coding'],technical,code_request,"{'category': 1.0, 'domain': 0.375, 'intent': 0.6666666666666666, 'overall': 0.9583333333333334}",9,TNG DeepSeek
+Help me plan a vacation (variation 88),['general'],casual,instruction,"{'category': 0.3, 'domain': 0.125, 'intent': 0.6666666666666666, 'overall': 0.3333333333333333}",7,GPT-OSS
+Tell me a fun fact about dolphins (variation 86),['general'],casual,instruction,"{'category': 0.25, 'domain': 0.125, 'intent': 0.6666666666666666, 'overall': 0.3125}",9,Llama 4 Maverick
+Write a Python function to sort arrays (variation 99),['coding'],technical,code_request,"{'category': 1.0, 'domain': 0.375, 'intent': 0.6666666666666666, 'overall': 0.9583333333333334}",9,TNG DeepSeek
+Help me plan a vacation (variation 3),['general'],casual,instruction,"{'category': 0.3, 'domain': 0.125, 'intent': 0.6666666666666666, 'overall': 0.3333333333333333}",7,Llama 4 Maverick
+Evaluate pros and cons of cryptocurrency (variation 14),['reasoning'],logical,reasoning_task,"{'category': 1.0, 'domain': 0.375, 'intent': 0.6666666666666666, 'overall': 0.9375}",8,Qwen3
+Prove mathematical theorems (variation 79),['reasoning'],logical,reasoning_task,"{'category': 1.0, 'domain': 0.625, 'intent': 0.6666666666666666, 'overall': 0.7916666666666666}",5,Qwen3
+Evaluate pros and cons of cryptocurrency (variation 77),['reasoning'],logical,reasoning_task,"{'category': 1.0, 'domain': 0.375, 'intent': 0.6666666666666666, 'overall': 0.9375}",8,GLM4.5
+Analyze economic implications of remote work (variation 52),['reasoning'],casual,reasoning_task,"{'category': 0.5, 'domain': 0.125, 'intent': 0.6666666666666666, 'overall': 0.4166666666666667}",8,GLM4.5
+Implement a binary search algorithm (variation 94),['coding'],technical,code_request,"{'category': 1.0, 'domain': 0.375, 'intent': 0.6666666666666666, 'overall': 0.8541666666666666}",7,TNG DeepSeek
+Analyze economic implications of remote work (variation 15),['reasoning'],casual,reasoning_task,"{'category': 0.5, 'domain': 0.125, 'intent': 0.6666666666666666, 'overall': 0.4166666666666667}",8,MoonshotAI Kimi
+Implement a binary search algorithm (variation 13),['coding'],technical,code_request,"{'category': 1.0, 'domain': 0.375, 'intent': 0.6666666666666666, 'overall': 0.8541666666666666}",7,TNG DeepSeek
+"Hello, how are you? (variation 86)",['general'],casual,question,"{'category': 0.75, 'domain': 0.125, 'intent': 1.0, 'overall': 0.6458333333333334}",6,Llama 4 Maverick
+Evaluate pros and cons of cryptocurrency (variation 45),['reasoning'],logical,reasoning_task,"{'category': 1.0, 'domain': 0.375, 'intent': 0.6666666666666666, 'overall': 0.9375}",8,GLM4.5
+Optimize SQL query performance (variation 6),['coding'],technical,question,"{'category': 1.0, 'domain': 0.875, 'intent': 0.0, 'overall': 0.9375}",6,GLM4.5
+Tell me a fun fact about dolphins (variation 44),['general'],casual,instruction,"{'category': 0.25, 'domain': 0.125, 'intent': 0.6666666666666666, 'overall': 0.3125}",9,GPT-OSS
+Help me plan a vacation (variation 75),['general'],casual,instruction,"{'category': 0.3, 'domain': 0.125, 'intent': 0.6666666666666666, 'overall': 0.3333333333333333}",7,MoonshotAI Kimi
+Analyze economic implications of remote work (variation 92),['reasoning'],casual,reasoning_task,"{'category': 0.5, 'domain': 0.125, 'intent': 0.6666666666666666, 'overall': 0.4166666666666667}",8,GPT-OSS
+Help me plan a vacation (variation 97),['general'],casual,instruction,"{'category': 0.3, 'domain': 0.125, 'intent': 0.6666666666666666, 'overall': 0.3333333333333333}",7,MoonshotAI Kimi
+"Hello, how are you? (variation 62)",['general'],casual,question,"{'category': 0.75, 'domain': 0.125, 'intent': 1.0, 'overall': 0.6458333333333334}",6,MoonshotAI Kimi
+What's the weather like? (variation 3),['general'],casual,question,"{'category': 0.55, 'domain': 0.375, 'intent': 1.0, 'overall': 0.6875}",7,MoonshotAI Kimi
+Compare machine learning algorithms (variation 27),"['coding', 'reasoning']",casual,question,"{'category': 0.525, 'domain': 0.125, 'intent': 0.0, 'overall': 0.2604166666666667}",6,TNG DeepSeek
+Optimize SQL query performance (variation 97),['coding'],technical,question,"{'category': 1.0, 'domain': 0.875, 'intent': 0.0, 'overall': 0.9375}",6,TNG DeepSeek
+Tell me a fun fact about dolphins (variation 24),['general'],casual,instruction,"{'category': 0.25, 'domain': 0.125, 'intent': 0.6666666666666666, 'overall': 0.3125}",9,Llama 4 Maverick
+Explain why renewable energy is sustainable (variation 32),['reasoning'],logical,reasoning_task,"{'category': 1.0, 'domain': 0.375, 'intent': 0.6666666666666666, 'overall': 0.8333333333333334}",8,Qwen3
+Prove mathematical theorems (variation 52),['reasoning'],logical,reasoning_task,"{'category': 1.0, 'domain': 0.625, 'intent': 0.6666666666666666, 'overall': 0.7916666666666666}",5,GLM4.5
+Write a Python function to sort arrays (variation 58),['coding'],technical,code_request,"{'category': 1.0, 'domain': 0.375, 'intent': 0.6666666666666666, 'overall': 0.9583333333333334}",9,GPT-OSS
+Help me plan a vacation (variation 39),['general'],casual,instruction,"{'category': 0.3, 'domain': 0.125, 'intent': 0.6666666666666666, 'overall': 0.3333333333333333}",7,GPT-OSS
+Write a Python function to sort arrays (variation 56),['coding'],technical,code_request,"{'category': 1.0, 'domain': 0.375, 'intent': 0.6666666666666666, 'overall': 0.9583333333333334}",9,TNG DeepSeek
+Write a Python function to sort arrays (variation 2),['coding'],technical,code_request,"{'category': 1.0, 'domain': 0.375, 'intent': 0.6666666666666666, 'overall': 0.9583333333333334}",9,GLM4.5
+Explain why renewable energy is sustainable (variation 87),['reasoning'],logical,reasoning_task,"{'category': 1.0, 'domain': 0.375, 'intent': 0.6666666666666666, 'overall': 0.8333333333333334}",8,GLM4.5
+Write a Python function to sort arrays (variation 1),['coding'],technical,code_request,"{'category': 1.0, 'domain': 0.375, 'intent': 0.6666666666666666, 'overall': 0.9583333333333334}",9,TNG DeepSeek
+Create a REST API using Django (variation 53),['coding'],technical,code_request,"{'category': 1.0, 'domain': 0.375, 'intent': 0.6666666666666666, 'overall': 1.0}",8,GLM4.5
+Explain why renewable energy is sustainable (variation 32),['reasoning'],logical,reasoning_task,"{'category': 1.0, 'domain': 0.375, 'intent': 0.6666666666666666, 'overall': 0.8333333333333334}",8,Qwen3
+Analyze economic implications of remote work (variation 75),['reasoning'],casual,reasoning_task,"{'category': 0.5, 'domain': 0.125, 'intent': 0.6666666666666666, 'overall': 0.4166666666666667}",8,GPT-OSS
+Write a Python function to sort arrays (variation 38),['coding'],technical,code_request,"{'category': 1.0, 'domain': 0.375, 'intent': 0.6666666666666666, 'overall': 0.9583333333333334}",9,TNG DeepSeek
+Implement a binary search algorithm (variation 98),['coding'],technical,code_request,"{'category': 1.0, 'domain': 0.375, 'intent': 0.6666666666666666, 'overall': 0.8541666666666666}",7,GLM4.5
+"Hello, how are you? (variation 16)",['general'],casual,question,"{'category': 0.75, 'domain': 0.125, 'intent': 1.0, 'overall': 0.6458333333333334}",6,Llama 4 Maverick
+Tell me a fun fact about dolphins (variation 59),['general'],casual,instruction,"{'category': 0.25, 'domain': 0.125, 'intent': 0.6666666666666666, 'overall': 0.3125}",9,MoonshotAI Kimi
+What's the weather like? (variation 3),['general'],casual,question,"{'category': 0.55, 'domain': 0.375, 'intent': 1.0, 'overall': 0.6875}",7,GPT-OSS
+"Hello, how are you? (variation 36)",['general'],casual,question,"{'category': 0.75, 'domain': 0.125, 'intent': 1.0, 'overall': 0.6458333333333334}",6,MoonshotAI Kimi
+Debug this JavaScript code (variation 19),['coding'],technical,question,"{'category': 1.0, 'domain': 0.375, 'intent': 0.0, 'overall': 0.625}",6,TNG DeepSeek
+Analyze economic implications of remote work (variation 52),['reasoning'],casual,reasoning_task,"{'category': 0.5, 'domain': 0.125, 'intent': 0.6666666666666666, 'overall': 0.4166666666666667}",8,MoonshotAI Kimi
+Compare machine learning algorithms (variation 39),"['coding', 'reasoning']",casual,question,"{'category': 0.525, 'domain': 0.125, 'intent': 0.0, 'overall': 0.2604166666666667}",6,Llama 4 Maverick
+Write a Python function to sort arrays (variation 11),['coding'],technical,code_request,"{'category': 1.0, 'domain': 0.375, 'intent': 0.6666666666666666, 'overall': 0.9583333333333334}",9,TNG DeepSeek
+Prove mathematical theorems (variation 50),['reasoning'],logical,reasoning_task,"{'category': 1.0, 'domain': 0.625, 'intent': 0.6666666666666666, 'overall': 0.7916666666666666}",5,GPT-OSS
+Help me plan a vacation (variation 42),['general'],casual,instruction,"{'category': 0.3, 'domain': 0.125, 'intent': 0.6666666666666666, 'overall': 0.3333333333333333}",7,MoonshotAI Kimi
+Tell me a fun fact about dolphins (variation 16),['general'],casual,instruction,"{'category': 0.25, 'domain': 0.125, 'intent': 0.6666666666666666, 'overall': 0.3125}",9,Llama 4 Maverick
+Prove mathematical theorems (variation 60),['reasoning'],logical,reasoning_task,"{'category': 1.0, 'domain': 0.625, 'intent': 0.6666666666666666, 'overall': 0.7916666666666666}",5,GLM4.5
+Write a Python function to sort arrays (variation 48),['coding'],technical,code_request,"{'category': 1.0, 'domain': 0.375, 'intent': 0.6666666666666666, 'overall': 0.9583333333333334}",9,GPT-OSS
+Optimize SQL query performance (variation 37),['coding'],technical,question,"{'category': 1.0, 'domain': 0.875, 'intent': 0.0, 'overall': 0.9375}",6,GPT-OSS
+Analyze economic implications of remote work (variation 9),['reasoning'],casual,reasoning_task,"{'category': 0.5, 'domain': 0.125, 'intent': 0.6666666666666666, 'overall': 0.4166666666666667}",8,GPT-OSS
+Debug this JavaScript code (variation 48),['coding'],technical,question,"{'category': 1.0, 'domain': 0.375, 'intent': 0.0, 'overall': 0.625}",6,GPT-OSS
+Implement a binary search algorithm (variation 24),['coding'],technical,code_request,"{'category': 1.0, 'domain': 0.375, 'intent': 0.6666666666666666, 'overall': 0.8541666666666666}",7,GLM4.5
+Write a Python function to sort arrays (variation 24),['coding'],technical,code_request,"{'category': 1.0, 'domain': 0.375, 'intent': 0.6666666666666666, 'overall': 0.9583333333333334}",9,GPT-OSS
+Write a Python function to sort arrays (variation 72),['coding'],technical,code_request,"{'category': 1.0, 'domain': 0.375, 'intent': 0.6666666666666666, 'overall': 0.9583333333333334}",9,GPT-OSS
+Compare machine learning algorithms (variation 84),"['coding', 'reasoning']",casual,question,"{'category': 0.525, 'domain': 0.125, 'intent': 0.0, 'overall': 0.2604166666666667}",6,TNG DeepSeek
+Help me plan a vacation (variation 89),['general'],casual,instruction,"{'category': 0.3, 'domain': 0.125, 'intent': 0.6666666666666666, 'overall': 0.3333333333333333}",7,GPT-OSS
+What's the weather like? (variation 18),['general'],casual,question,"{'category': 0.55, 'domain': 0.375, 'intent': 1.0, 'overall': 0.6875}",7,MoonshotAI Kimi
+Create a REST API using Django (variation 66),['coding'],technical,code_request,"{'category': 1.0, 'domain': 0.375, 'intent': 0.6666666666666666, 'overall': 1.0}",8,GLM4.5
+What's the weather like? (variation 41),['general'],casual,question,"{'category': 0.55, 'domain': 0.375, 'intent': 1.0, 'overall': 0.6875}",7,MoonshotAI Kimi
