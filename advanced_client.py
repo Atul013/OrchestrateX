@@ -382,15 +382,20 @@ class MultiModelOrchestrator:
             
             # Prepare the prompt
             if is_critique and original_response:
-                critique_prompt = f"""Critique this response to: {prompt}
+                # Add unique focus areas for each model to reduce redundancy
+                focus_areas = {
+                    "TNG DeepSeek": "technical accuracy and logical reasoning",
+                    "GLM4.5": "clarity and structure", 
+                    "GPT-OSS": "completeness and missing information",
+                    "MoonshotAI Kimi": "creativity and alternative perspectives",
+                    "Llama 4 Maverick": "practical applicability and real-world relevance",
+                    "Qwen3": "precision and factual correctness"
+                }
+                
+                focus = focus_areas.get(model_name, "overall quality")
+                critique_prompt = f"""Critique {focus}: {original_response}
 
-Response: {original_response}
-
-Provide a brief critique in exactly 2 sentences:
-1. What's good about it?
-2. What's the main weakness and how to fix it?
-
-Keep it concise:"""
+Give a 3-5 word critique about {focus}. Format: "Missing [specific thing]" or "Lacks [specific element]" or "Needs [specific improvement]"."""
                 final_prompt = critique_prompt
                 response_type = "critique"
             else:
