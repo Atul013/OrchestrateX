@@ -71,13 +71,28 @@ class UltraContextAnalyzer:
                 'confidence_multiplier': 1.1
             },
             'analyze_something': {
-                'strong_indicators': ['analyze', 'examine', 'evaluate', 'assess', 'review', 'study', 'compare', 'contrast'],
-                'context_boosters': ['pros and cons', 'advantages', 'disadvantages', 'trade-offs', 'comparison'],
+                'strong_indicators': ['analyze', 'examine', 'evaluate', 'assess', 'review', 'study'],
+                'context_boosters': ['pros and cons', 'advantages', 'disadvantages', 'trade-offs'],
                 'confidence_multiplier': 1.3
+            },
+            'compare_something': {
+                'strong_indicators': ['compare', 'contrast', 'versus', 'vs', 'difference between', 'similarities'],
+                'context_boosters': ['better', 'worse', 'advantages', 'disadvantages', 'which is'],
+                'confidence_multiplier': 1.2
             },
             'solve_problem': {
                 'strong_indicators': ['solve', 'fix', 'debug', 'troubleshoot', 'resolve', 'help with'],
                 'context_boosters': ['problem', 'issue', 'error', 'bug', 'challenge', 'difficulty'],
+                'confidence_multiplier': 1.2
+            },
+            'troubleshoot_something': {
+                'strong_indicators': ['troubleshoot', 'diagnose', 'identify problem', 'what\'s wrong', 'not working'],
+                'context_boosters': ['error', 'issue', 'broken', 'failing', 'malfunction'],
+                'confidence_multiplier': 1.3
+            },
+            'optimize_something': {
+                'strong_indicators': ['optimize', 'improve', 'enhance', 'boost', 'speed up', 'make faster'],
+                'context_boosters': ['performance', 'efficiency', 'better', 'faster', 'optimization'],
                 'confidence_multiplier': 1.2
             },
             'get_help': {
@@ -323,6 +338,31 @@ class UltraContextAnalyzer:
         domain_scores['creative'] = creative_score
         domain_evidence['creative'] = creative_evidence
         
+        # Medical/Health domain
+        medical_score, medical_evidence = self._analyze_medical_domain(prompt)
+        domain_scores['medical'] = medical_score
+        domain_evidence['medical'] = medical_evidence
+        
+        # Legal domain
+        legal_score, legal_evidence = self._analyze_legal_domain(prompt)
+        domain_scores['legal'] = legal_score
+        domain_evidence['legal'] = legal_evidence
+        
+        # Financial domain
+        financial_score, financial_evidence = self._analyze_financial_domain(prompt)
+        domain_scores['financial'] = financial_score
+        domain_evidence['financial'] = financial_evidence
+        
+        # Gaming domain
+        gaming_score, gaming_evidence = self._analyze_gaming_domain(prompt)
+        domain_scores['gaming'] = gaming_score
+        domain_evidence['gaming'] = gaming_evidence
+        
+        # Art/Design domain
+        design_score, design_evidence = self._analyze_design_domain(prompt)
+        domain_scores['design'] = design_score
+        domain_evidence['design'] = design_evidence
+        
         # Filter and rank domains
         active_domains = {k: v for k, v in domain_scores.items() if v > 0.1}
         primary_domain = max(active_domains.items(), key=lambda x: x[1])[0] if active_domains else 'general'
@@ -460,8 +500,98 @@ class UltraContextAnalyzer:
         
         return score, {'score': score, 'evidence': evidence}
     
+    def _analyze_medical_domain(self, prompt: str) -> Tuple[float, Dict]:
+        """Analyze medical/health domain."""
+        score = 0.0
+        evidence = []
+        
+        medical_terms = re.findall(r'\b(health|medical|doctor|patient|disease|treatment|medicine|therapy|diagnosis|symptom|hospital|clinic)\b', prompt.lower())
+        if medical_terms:
+            score += len(set(medical_terms)) * 0.5
+            evidence.append(f"Medical terms: {', '.join(set(medical_terms))}")
+        
+        # Medical procedures/concepts
+        procedures = re.findall(r'\b(surgery|vaccine|prescription|dosage|injection|examination)\b', prompt.lower())
+        if procedures:
+            score += len(set(procedures)) * 0.4
+            evidence.append(f"Medical procedures: {', '.join(set(procedures))}")
+        
+        return score, {'score': score, 'evidence': evidence}
+    
+    def _analyze_legal_domain(self, prompt: str) -> Tuple[float, Dict]:
+        """Analyze legal domain."""
+        score = 0.0
+        evidence = []
+        
+        legal_terms = re.findall(r'\b(legal|law|lawyer|attorney|court|judge|case|contract|agreement|rights|liability|lawsuit)\b', prompt.lower())
+        if legal_terms:
+            score += len(set(legal_terms)) * 0.5
+            evidence.append(f"Legal terms: {', '.join(set(legal_terms))}")
+        
+        # Legal processes
+        processes = re.findall(r'\b(litigation|negotiation|arbitration|settlement|verdict|testimony|evidence)\b', prompt.lower())
+        if processes:
+            score += len(set(processes)) * 0.4
+            evidence.append(f"Legal processes: {', '.join(set(processes))}")
+        
+        return score, {'score': score, 'evidence': evidence}
+    
+    def _analyze_financial_domain(self, prompt: str) -> Tuple[float, Dict]:
+        """Analyze financial domain (separate from general business)."""
+        score = 0.0
+        evidence = []
+        
+        financial_terms = re.findall(r'\b(finance|financial|money|currency|investment|trading|stocks|bonds|portfolio|banking)\b', prompt.lower())
+        if financial_terms:
+            score += len(set(financial_terms)) * 0.5
+            evidence.append(f"Financial terms: {', '.join(set(financial_terms))}")
+        
+        # Financial instruments/concepts
+        instruments = re.findall(r'\b(cryptocurrency|bitcoin|forex|derivatives|assets|liability|equity|loan|mortgage)\b', prompt.lower())
+        if instruments:
+            score += len(set(instruments)) * 0.4
+            evidence.append(f"Financial instruments: {', '.join(set(instruments))}")
+        
+        return score, {'score': score, 'evidence': evidence}
+    
+    def _analyze_gaming_domain(self, prompt: str) -> Tuple[float, Dict]:
+        """Analyze gaming domain."""
+        score = 0.0
+        evidence = []
+        
+        gaming_terms = re.findall(r'\b(game|gaming|player|gameplay|level|character|quest|achievement|multiplayer|fps|rpg)\b', prompt.lower())
+        if gaming_terms:
+            score += len(set(gaming_terms)) * 0.4
+            evidence.append(f"Gaming terms: {', '.join(set(gaming_terms))}")
+        
+        # Game development
+        gamedev_terms = re.findall(r'\b(unity|unreal|engine|sprite|texture|animation|physics|collision)\b', prompt.lower())
+        if gamedev_terms:
+            score += len(set(gamedev_terms)) * 0.5
+            evidence.append(f"Game development: {', '.join(set(gamedev_terms))}")
+        
+        return score, {'score': score, 'evidence': evidence}
+    
+    def _analyze_design_domain(self, prompt: str) -> Tuple[float, Dict]:
+        """Analyze art/design domain."""
+        score = 0.0
+        evidence = []
+        
+        design_terms = re.findall(r'\b(design|ui|ux|interface|layout|typography|color|aesthetic|visual|graphic|branding)\b', prompt.lower())
+        if design_terms:
+            score += len(set(design_terms)) * 0.4
+            evidence.append(f"Design terms: {', '.join(set(design_terms))}")
+        
+        # Design tools/concepts
+        tools = re.findall(r'\b(photoshop|figma|illustrator|wireframe|mockup|prototype|usability)\b', prompt.lower())
+        if tools:
+            score += len(set(tools)) * 0.5
+            evidence.append(f"Design tools/concepts: {', '.join(set(tools))}")
+        
+        return score, {'score': score, 'evidence': evidence}
+    
     def _check_enhanced_coherence(self, prompt: str) -> Dict[str, Any]:
-        """Enhanced coherence checking with detailed absurdity detection."""
+        """Enhanced coherence checking with detailed absurdity detection and valid combinations."""
         
         domain_analysis = self._reason_enhanced_domains(prompt)
         active_domains = domain_analysis['active_domains']
@@ -470,6 +600,13 @@ class UltraContextAnalyzer:
         absurdity_score = 0.0
         coherence_score = 1.0
         
+        # Check for valid domain combinations first
+        valid_combinations = self._check_valid_domain_combinations(prompt, active_domains)
+        if valid_combinations:
+            # Reduce absurdity for valid combinations
+            absurdity_score -= 0.2
+            coherence_score += 0.1
+        
         # Temporal impossibilities (anachronisms)
         temporal_issues = self._detect_temporal_impossibilities(prompt)
         if temporal_issues:
@@ -477,8 +614,15 @@ class UltraContextAnalyzer:
             absurdity_score += 0.8  # High absurdity for anachronisms
             coherence_score -= 0.8
         
-        # Cultural + Technical impossibilities
-        if 'cultural' in active_domains and 'technical' in active_domains:
+        # Context-dependent absurdity checks
+        context_issues = self._check_context_dependent_absurdity(prompt, active_domains)
+        if context_issues:
+            coherence_issues.extend(context_issues['issues'])
+            absurdity_score += context_issues['absurdity_boost']
+            coherence_score -= context_issues['coherence_penalty']
+        
+        # Cultural + Technical impossibilities (only if not valid combination)
+        if 'cultural' in active_domains and 'technical' in active_domains and not valid_combinations:
             if re.search(r'\b(festival|celebration|tradition|diwali|christmas|ramadan)\b.*\b(improve|enhance|optimize|boost|affect|influence)\b.*\b(database|performance|server|algorithm|api|sorting)\b', prompt.lower()):
                 coherence_issues.append("Impossible causal relationship: cultural events cannot affect technical systems")
                 absurdity_score += 0.7
@@ -491,9 +635,9 @@ class UltraContextAnalyzer:
                 absurdity_score += 0.8
                 coherence_score -= 0.8
         
-        # Biological + Technical mixing
+        # Biological + Technical mixing (with exceptions)
         if 'biological' in active_domains and 'technical' in active_domains:
-            if not any(term in prompt.lower() for term in ['bio', 'bioinformatics', 'computational', 'simulation']):
+            if not any(term in prompt.lower() for term in ['bio', 'bioinformatics', 'computational', 'simulation', 'analysis', 'modeling']):
                 coherence_issues.append("Unusual mixing of biological and technical domains")
                 absurdity_score += 0.3
                 coherence_score -= 0.3
@@ -504,54 +648,95 @@ class UltraContextAnalyzer:
             absurdity_score += 0.7
             coherence_score -= 0.7
         
-        # Weather + Programming impossibilities
-        if re.search(r'\b(weather|rain|snow|storm|hurricane)\b.*\b(affect|influence|impact|improve)\b.*\b(code|programming|algorithm|function|performance)\b', prompt.lower()):
-            coherence_issues.append("Weather cannot directly affect code performance")
-            absurdity_score += 0.6
-            coherence_score -= 0.6
-        
-        # Food + Technology impossibilities
-        if re.search(r'\b(pizza|burger|chocolate|coffee|food)\b.*\b(optimize|improve|enhance)\b.*\b(database|server|network|api)\b', prompt.lower()):
-            coherence_issues.append("Food cannot optimize technical systems")
-            absurdity_score += 0.6
-            coherence_score -= 0.6
-        
-        # Color + Performance impossibilities
-        if re.search(r'\b(red|blue|green|yellow|purple|color)\b.*\b(increase|boost|improve)\b.*\b(speed|performance|efficiency|processing)\b', prompt.lower()):
-            coherence_issues.append("Colors cannot improve system performance")
-            absurdity_score += 0.6
-            coherence_score -= 0.6
-        
-        # Music + Mathematical impossibilities
-        if re.search(r'\b(music|song|melody|rhythm)\b.*\b(solve|calculate|compute)\b.*\b(equation|mathematics|algebra|calculus)\b', prompt.lower()):
-            coherence_issues.append("Music cannot solve mathematical equations")
-            absurdity_score += 0.6
-            coherence_score -= 0.6
-        
-        # Sports + Academic impossibilities
-        if re.search(r'\b(football|basketball|soccer|tennis|sports)\b.*\b(improve|enhance|boost)\b.*\b(grades|academic|study|learning)\b', prompt.lower()):
-            coherence_issues.append("Sports cannot directly improve academic performance")
-            absurdity_score += 0.4
-            coherence_score -= 0.4
-        
-        # Astrology + Science impossibilities
-        if re.search(r'\b(horoscope|astrology|zodiac|stars)\b.*\b(predict|forecast|determine)\b.*\b(physics|chemistry|biology|science)\b', prompt.lower()):
-            coherence_issues.append("Astrology cannot predict scientific phenomena")
-            absurdity_score += 0.7
-            coherence_score -= 0.7
-        
-        # Multiple unrelated concepts
-        if len(active_domains) > 3:
+        # Multiple unrelated concepts (reduced threshold)
+        if len(active_domains) > 4:  # Increased from 3 to allow more flexibility
             coherence_issues.append("Too many unrelated domains in single request")
             absurdity_score += 0.4
             coherence_score -= 0.4
         
         return {
             'score': max(0.1, coherence_score),
-            'absurdity_score': min(1.0, absurdity_score),
+            'absurdity_score': min(1.0, max(0.0, absurdity_score)),
             'issues': coherence_issues,
             'is_coherent': len(coherence_issues) == 0,
-            'absurdity_level': 'high' if absurdity_score > 0.6 else 'medium' if absurdity_score > 0.3 else 'low'
+            'absurdity_level': 'high' if absurdity_score > 0.6 else 'medium' if absurdity_score > 0.3 else 'low',
+            'valid_combinations': valid_combinations
+        }
+    
+    def _check_valid_domain_combinations(self, prompt: str, active_domains: List[str]) -> List[str]:
+        """Check for valid domain combinations that might seem absurd but are actually reasonable."""
+        valid_combinations = []
+        prompt_lower = prompt.lower()
+        
+        # Bio + Tech valid combinations
+        if 'biological' in active_domains and 'technical' in active_domains:
+            if any(term in prompt_lower for term in ['bioinformatics', 'computational biology', 'biotech', 'analysis', 'modeling', 'simulation', 'sequence', 'genome']):
+                valid_combinations.append("Bioinformatics/Computational Biology")
+        
+        # Music + Programming valid combinations
+        if any(music in prompt_lower for music in ['music', 'audio', 'sound']) and 'technical' in active_domains:
+            if any(context in prompt_lower for context in ['productivity', 'focus', 'concentration', 'programming', 'development', 'coding']):
+                valid_combinations.append("Music for Programming Productivity")
+        
+        # Color + Tech valid combinations  
+        if any(color in prompt_lower for color in ['color', 'red', 'blue', 'green']) and 'technical' in active_domains:
+            if any(context in prompt_lower for context in ['psychology', 'ui', 'ux', 'interface', 'design', 'user experience']):
+                valid_combinations.append("Color Psychology in UI/UX")
+        
+        # Psychology + Performance combinations
+        if any(psych in prompt_lower for psych in ['psychology', 'psychological', 'mental']) and any(perf in prompt_lower for perf in ['performance', 'productivity', 'efficiency']):
+            valid_combinations.append("Psychology of Performance")
+        
+        # Food + Productivity combinations
+        if any(food in prompt_lower for food in ['food', 'nutrition', 'diet', 'coffee', 'caffeine']) and any(work in prompt_lower for work in ['productivity', 'performance', 'focus', 'work', 'coding']):
+            valid_combinations.append("Nutrition and Productivity")
+        
+        # Exercise + Mental combinations
+        if any(exercise in prompt_lower for exercise in ['exercise', 'fitness', 'physical activity']) and any(mental in prompt_lower for mental in ['mental', 'cognitive', 'brain', 'focus', 'productivity']):
+            valid_combinations.append("Exercise and Cognitive Performance")
+        
+        return valid_combinations
+    
+    def _check_context_dependent_absurdity(self, prompt: str, active_domains: List[str]) -> Dict[str, Any]:
+        """Check for context-dependent absurdities that consider the research/practical context."""
+        issues = []
+        absurdity_boost = 0.0
+        coherence_penalty = 0.0
+        prompt_lower = prompt.lower()
+        
+        # Weather + Programming (only absurd if claiming direct causation)
+        if any(weather in prompt_lower for weather in ['weather', 'rain', 'snow', 'storm']) and 'technical' in active_domains:
+            if any(direct in prompt_lower for direct in ['directly affect', 'cause', 'improve', 'optimize']) and not any(context in prompt_lower for context in ['mood', 'productivity', 'developer', 'team', 'workplace']):
+                issues.append("Weather cannot directly affect code performance")
+                absurdity_boost += 0.6
+                coherence_penalty += 0.6
+        
+        # Food + Technology (context matters)
+        if any(food in prompt_lower for food in ['pizza', 'burger', 'chocolate']) and 'technical' in active_domains:
+            if any(direct in prompt_lower for direct in ['optimize', 'improve', 'enhance']) and any(tech in prompt_lower for tech in ['database', 'server', 'network', 'api']):
+                if not any(context in prompt_lower for context in ['team', 'developer', 'productivity', 'workplace', 'culture']):
+                    issues.append("Food cannot directly optimize technical systems")
+                    absurdity_boost += 0.6
+                    coherence_penalty += 0.6
+        
+        # Color + Performance (valid in UI/UX context)
+        if any(color in prompt_lower for color in ['red', 'blue', 'green', 'yellow', 'purple', 'color']) and any(perf in prompt_lower for perf in ['speed', 'performance', 'efficiency']):
+            if not any(context in prompt_lower for context in ['ui', 'ux', 'interface', 'design', 'psychology', 'user', 'visual']):
+                issues.append("Colors cannot improve system performance without UI/UX context")
+                absurdity_boost += 0.4
+                coherence_penalty += 0.4
+        
+        # Music + Math (depends on context)
+        if any(music in prompt_lower for music in ['music', 'song', 'melody']) and any(math in prompt_lower for math in ['equation', 'mathematics', 'calculation']):
+            if any(solve in prompt_lower for solve in ['solve', 'calculate', 'compute']) and not any(context in prompt_lower for context in ['pattern', 'frequency', 'wave', 'harmonic', 'mathematical']):
+                issues.append("Music cannot solve mathematical equations without mathematical music theory context")
+                absurdity_boost += 0.5
+                coherence_penalty += 0.5
+        
+        return {
+            'issues': issues,
+            'absurdity_boost': absurdity_boost,
+            'coherence_penalty': coherence_penalty
         }
     
     def _detect_temporal_impossibilities(self, prompt: str) -> List[str]:
