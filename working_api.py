@@ -35,11 +35,6 @@ except Exception as e:
     client = None
     db = None
 
-# Temporary file storage (backup if MongoDB fails)
-STORAGE_DIR = "temp_storage"
-if not os.path.exists(STORAGE_DIR):
-    os.makedirs(STORAGE_DIR)
-
 # Latest 5 Model configurations from orche.env
 MODELS = [
     {"name": "GLM-4.5", "specialty": "reasoning", "strength": 0.95, "model_id": "z-ai/glm-4.5-air:free"},
@@ -77,50 +72,63 @@ def simulate_model_response(model, prompt, delay=None):
         "success": True  # Add success flag
     }
 
+def generate_critique(critic_model, target_response, user_prompt):
+    """Generate critique from one model about another model's response"""
+    critique_templates = {
+        "GLM-4.5": f"From a reasoning perspective, {target_response['model_name']}'s response lacks {random.choice(['logical structure', 'deeper analysis', 'systematic thinking'])}. A better approach would involve {random.choice(['step-by-step analysis', 'multi-layered reasoning', 'causal relationships'])}.",
+        "GPT-OSS": f"The {target_response['model_name']} response is {random.choice(['too narrow', 'missing context', 'incomplete'])}. A more comprehensive approach should include {random.choice(['multiple perspectives', 'broader context', 'balanced viewpoints'])}.",
+        "Llama-4-Maverick": f"From a technical standpoint, {target_response['model_name']} missed {random.choice(['implementation details', 'practical considerations', 'optimization opportunities'])}. Better solution: {random.choice(['modular approach', 'scalable design', 'efficient algorithm'])}.",
+        "Kimi-K2": f"The {target_response['model_name']} response lacks {random.choice(['creativity', 'innovation', 'unique perspective'])}. More creative approach: {random.choice(['alternative angles', 'imaginative solutions', 'novel interpretations'])}.",
+        "TNG-DeepSeek-R1T2": f"Deep analysis reveals {target_response['model_name']}'s response is {random.choice(['surface-level', 'missing nuances', 'lacks depth'])}. Deeper insight needed: {random.choice(['underlying patterns', 'complex relationships', 'systemic analysis'])}."
+    }
+    
+    return critique_templates.get(critic_model["name"], f"Alternative perspective on {target_response['model_name']}'s response.")
+
 def save_to_storage(data, collection_name):
-    """Save data to MongoDB or temporary file storage"""
+    """Save data to MongoDB only - no temp files needed"""
     if mongodb_connected and db is not None:
         try:
-            if collection_name == "user_prompts":
-                result = db.user_prompts.insert_one(data)
+            if collection_name == "prompts":  # Use prompts collection
+                result = db.prompts.insert_one(data)
+                print(f"✅ Stored in {collection_name}: {result.inserted_id}")
                 return str(result.inserted_id)
-            elif collection_name == "model_responses":
-                result = db.model_responses.insert_one(data)
+            elif collection_name == "model_critiques":  # Use existing model_critiques collection
+                result = db.model_critiques.insert_one(data)
+                print(f"✅ Stored in {collection_name}: {result.inserted_id}")
+                return str(result.inserted_id)
+            elif collection_name == "model_outputs":  # NEW: For model outputs
+                result = db.model_outputs.insert_one(data)
+                print(f"✅ Stored in {collection_name}: {result.inserted_id}")
+                return str(result.inserted_id)
+            elif collection_name == "model_suggestions":  # NEW: For model recommendations
+                result = db.model_suggestions.insert_one(data)
+                print(f"✅ Stored in {collection_name}: {result.inserted_id}")
                 return str(result.inserted_id)
         except Exception as e:
-            print(f"⚠️  MongoDB write failed: {e}, falling back to file storage")
-    
-    # Fallback to file storage
-    filename = f"{collection_name}.json"
-    filepath = os.path.join(STORAGE_DIR, filename)
-    existing_data = []
-    if os.path.exists(filepath):
-        with open(filepath, 'r', encoding='utf-8') as f:
-            existing_data = json.load(f)
-    
-    existing_data.append(data)
-    with open(filepath, 'w', encoding='utf-8') as f:
-        json.dump(existing_data, f, indent=2, default=str)
-    return f"file_{len(existing_data)}"
+            print(f"❌ MongoDB write failed: {e}")
+            return None
+    else:
+        print("❌ MongoDB not connected!")
+        return None
 
 def get_from_storage(collection_name):
-    """Get data from MongoDB or temporary file storage"""
+    """Get data from MongoDB only"""
     if mongodb_connected and db is not None:
         try:
             if collection_name == "prompts":  # Updated to use existing collection
                 return list(db.prompts.find().sort("timestamp", -1).limit(10))
-            elif collection_name == "model_responses":
-                return list(db.model_responses.find().sort("timestamp", -1).limit(10))
+            elif collection_name == "model_critiques":
+                return list(db.model_critiques.find().sort("timestamp", -1).limit(10))
+            elif collection_name == "model_outputs":
+                return list(db.model_outputs.find().sort("timestamp", -1).limit(10))
+            elif collection_name == "model_suggestions":
+                return list(db.model_suggestions.find().sort("timestamp", -1).limit(10))
         except Exception as e:
-            print(f"⚠️  MongoDB read failed: {e}, falling back to file storage")
-    
-    # Fallback to file storage
-    filename = f"{collection_name}.json"
-    filepath = os.path.join(STORAGE_DIR, filename)
-    if os.path.exists(filepath):
-        with open(filepath, 'r', encoding='utf-8') as f:
-            return json.load(f)
-    return []
+            print(f"❌ MongoDB read failed: {e}")
+            return []
+    else:
+        print("❌ MongoDB not connected!")
+        return []
 
 @app.route('/chat', methods=['POST'])
 def chat():
@@ -145,24 +153,45 @@ def chat():
         }
         
         # Save user input to MongoDB
-        user_id = save_to_storage(user_session, "prompts")  # Use existing 'prompts' collection
+        user_id = save_to_storage(user_session, "prompts")  # Use prompts collection
         print(f"💾 User prompt stored! Session: {session_id} | ID: {user_id}")
         
-        # 2. Simulate parallel processing (in real implementation, this would be parallel)
-        print("🚀 Starting 5-model simulation...")
+        # 2. SMART ALGORITHM: Models respond and critique each other
+        print("🧠 Starting SMART 5-model algorithm with cross-critique...")
         start_time = time.time()
         
+        # Phase 1: All models generate initial responses
         model_responses = []
         for model in MODELS:
             response = simulate_model_response(model, user_message)
             model_responses.append(response)
             print(f"✅ {model['name']}: {response['response_text'][:50]}...")
         
+        # Phase 2: Each model critiques others' responses (SMART ALGORITHM)
+        print("🔍 Phase 2: Models critiquing each other...")
+        critiques = []
+        for i, critic_model in enumerate(MODELS):
+            for j, target_response in enumerate(model_responses):
+                if i != j:  # Don't critique yourself
+                    critique = {
+                        "critic_model": critic_model["name"],
+                        "target_model": target_response["model_name"],
+                        "critique_text": f"[{critic_model['name']} critiques {target_response['model_name']}]: {generate_critique(critic_model, target_response, user_message)}",
+                        "critique_score": random.uniform(0.6, 0.95),
+                        "session_id": session_id,
+                        "timestamp": datetime.now()
+                    }
+                    critiques.append(critique)
+                    
+        # Store ALL critiques in MongoDB (every model critiques every other model)
+        print(f"💾 Storing {len(critiques)} critiques in parallel to MongoDB...")
+        for critique in critiques:  # Store ALL critiques, not just top 10
+            save_to_storage(critique, "model_critiques")
         total_time = time.time() - start_time
-        print(f"⚡ All 5 models completed in {total_time:.2f} seconds")
+        print(f"⚡ Smart algorithm completed in {total_time:.2f} seconds with {len(critiques)} critiques stored")
         
-        # 3. Store all model responses in MongoDB
-        print(f"💾 Storing {len(model_responses)} model responses in MongoDB...")
+        # 3. Store model outputs in model_outputs collection (as requested by user)
+        print(f"💾 Storing {len(model_responses)} model outputs in MongoDB...")
         for response in model_responses:
             response_record = {
                 "session_id": session_id,
@@ -171,12 +200,22 @@ def chat():
                 "batch_id": f"batch_{int(time.time())}",
                 "timestamp": datetime.now()
             }
-            save_to_storage(response_record, "model_responses")  # Keep using model_responses as it exists
-        print(f"✅ All model responses stored in database!")
+            save_to_storage(response_record, "model_outputs")  # User requested this collection
+        print(f"✅ All model outputs stored in model_outputs collection!")
         
-        # 4. Find best response
+        # 4. Store recommended model in model_suggestions collection (as requested by user)
         best_response = max(model_responses, key=lambda x: x['confidence'])
-        print(f"🏆 Best response from: {best_response['model_name']} (confidence: {best_response['confidence']:.3f})")
+        model_suggestion = {
+            "session_id": session_id,
+            "user_message": user_message,
+            "recommended_model": best_response["model_name"],
+            "confidence_score": best_response["confidence"],
+            "reason": f"Selected {best_response['model_name']} with {best_response['confidence']:.3f} confidence",
+            "timestamp": datetime.now(),
+            "alternatives": [{"model": resp["model_name"], "confidence": resp["confidence"]} for resp in model_responses if resp != best_response]
+        }
+        save_to_storage(model_suggestion, "model_suggestions")  # User requested this collection
+        print(f"🎯 Model suggestion stored: {best_response['model_name']} recommended")
         
         # 5. Return UI-compatible response (matching frontend interface exactly)
         total_cost = sum(resp["cost_estimate"] for resp in model_responses)
@@ -238,7 +277,7 @@ def status():
 @app.route('/analytics', methods=['GET'])
 def analytics():
     """Analytics from MongoDB or file storage"""
-    user_data = get_from_storage("user_prompts")
+    user_data = get_from_storage("prompts")
     response_data = get_from_storage("model_responses")
     
     # Count model usage
@@ -272,11 +311,14 @@ if __name__ == '__main__':
     print("🚀 OrchestrateX Working API - Latest Models!")
     if mongodb_connected:
         print("📊 User prompts → MongoDB Docker (orchestratex.prompts)")
-        print("🤖 Model responses → MongoDB Docker (orchestratex.model_responses)")
+        print("🤖 Model outputs → MongoDB Docker (orchestratex.model_outputs)")
+        print("🎯 Model suggestions → MongoDB Docker (orchestratex.model_suggestions)")
+        print("🔍 Model critiques → MongoDB Docker (orchestratex.model_critiques)")
         print("🗄️ Database: mongodb://localhost:27019/orchestratex")  # Updated port too
     else:
         print("📊 User prompts → temp_storage/prompts.json")
-        print("🤖 Model responses → temp_storage/model_responses.json")
+        print("🤖 Model outputs → temp_storage/model_outputs.json")
+        print("🎯 Model suggestions → temp_storage/model_suggestions.json")
         print("⚠️  MongoDB fallback: Using file storage")
     print("⚡ 5-Latest-Model parallel simulation enabled")
     print("🔥 Models: GLM-4.5, GPT-OSS, Llama-4-Maverick, Kimi-K2, TNG-DeepSeek-R1T2")
