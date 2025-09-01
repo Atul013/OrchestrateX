@@ -1,5 +1,12 @@
 #!/usr/bin/env python3
 """
+Check MongoDB data directly - see what's actually stored
+"""
+
+from pymongo import MongoClient
+import json
+from datetime import datetimein/env python3
+"""
 Check MongoDB data directly to see if your prompt was stored
 """
 

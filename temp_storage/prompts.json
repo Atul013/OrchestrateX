@@ -1,30 +1,154 @@
 [
   {
-    "user_message": "hii",
-    "timestamp": "2025-09-01 00:38:53.420042",
-    "session_id": "session_1756667333",
+    "user_message": "black clover",
+    "timestamp": "2025-09-01 11:03:50.801415",
+    "session_id": "session_1756704830",
     "source": "ui_interface",
-    "status": "processing"
+    "status": "processing",
+    "_id": "68b5303ee62c8e1fdb637a0d"
   },
   {
-    "user_message": "what is your hobby",
-    "timestamp": "2025-09-01 00:43:52.460197",
-    "session_id": "session_1756667632",
+    "user_message": "hiiiiiii",
+    "timestamp": "2025-09-01 11:06:10.810418",
+    "session_id": "session_1756704970",
     "source": "ui_interface",
-    "status": "processing"
+    "status": "processing",
+    "_id": "68b530cae62c8e1fdb637a28"
+  },
+  {
+    "user_message": "hello peter paker",
+    "timestamp": "2025-09-01 11:06:59.200089",
+    "session_id": "session_1756705019",
+    "source": "ui_interface",
+    "status": "processing",
+    "_id": "68b530fbe62c8e1fdb637a43"
+  },
+  {
+    "user_message": "my name is rahul nam tho suna hi hogaaa",
+    "timestamp": "2025-09-01 11:13:48.240849",
+    "session_id": "session_1756705428",
+    "source": "ui_interface",
+    "status": "processing",
+    "_id": "68b53294e62c8e1fdb637a5e"
+  },
+  {
+    "user_message": "kalyug",
+    "timestamp": "2025-09-01 11:15:54.783271",
+    "session_id": "session_1756705554",
+    "source": "ui_interface",
+    "status": "processing",
+    "_id": "68b53312e62c8e1fdb637a79"
+  },
+  {
+    "user_message": "popi kuda",
+    "timestamp": "2025-09-01 11:18:28.428424",
+    "session_id": "session_1756705708",
+    "source": "ui_interface",
+    "status": "processing",
+    "_id": "68b533ace62c8e1fdb637a94"
+  },
+  {
+    "user_message": "ali baba aur chalis chorr",
+    "timestamp": "2025-09-01 11:20:58.122332",
+    "session_id": "session_1756705858",
+    "source": "ui_interface",
+    "status": "processing",
+    "_id": "68b53442e62c8e1fdb637aaf"
   },
   {
     "user_message": "hey boy",
-    "timestamp": "2025-09-01 00:48:58.995007",
-    "session_id": "session_1756667938",
+    "timestamp": "2025-09-01 11:23:40.057377",
+    "session_id": "session_1756706020",
     "source": "ui_interface",
-    "status": "processing"
+    "status": "processing",
+    "_id": "68b534e4e62c8e1fdb637aca"
   },
   {
-    "user_message": "peter parker",
-    "timestamp": "2025-09-01 00:53:40.580981",
-    "session_id": "session_1756668220",
+    "user_message": "oli",
+    "timestamp": "2025-09-01 11:25:10.421539",
+    "session_id": "session_1756706110",
     "source": "ui_interface",
-    "status": "processing"
+    "status": "processing",
+    "_id": "68b5353ee62c8e1fdb637ae5"
+  },
+  {
+    "user_message": "Test for model_responses at 1756706415",
+    "timestamp": "2025-09-01 11:30:17.501036",
+    "session_id": "session_1756706417",
+    "source": "ui_interface",
+    "status": "processing",
+    "_id": "68b53671e62c8e1fdb637b00"
+  },
+  {
+    "user_message": "Test prompt storage",
+    "timestamp": "2025-09-01 11:31:21.005292",
+    "session_id": "session_1756706481",
+    "source": "ui_interface",
+    "status": "processing",
+    "_id": "68b536b1e62c8e1fdb637b1b"
+  },
+  {
+    "user_message": "my name is geri bhai from wanted",
+    "timestamp": "2025-09-01 11:43:16.829202",
+    "session_id": "session_1756707196",
+    "source": "ui_interface",
+    "status": "processing",
+    "_id": "68b5397ce62c8e1fdb637b36"
+  },
+  {
+    "user_message": "who is kirmada",
+    "timestamp": "2025-09-01 11:49:26.037300",
+    "session_id": "session_1756707566",
+    "source": "ui_interface",
+    "status": "processing",
+    "_id": "68b53aeee62c8e1fdb637b51"
+  },
+  {
+    "user_message": "ballveer",
+    "timestamp": "2025-09-01 11:51:13.540430",
+    "session_id": "session_1756707673",
+    "source": "ui_interface",
+    "status": "processing",
+    "_id": "68b53b59e62c8e1fdb637b6c"
+  },
+  {
+    "user_message": "company hululu",
+    "timestamp": "2025-09-01 11:53:01.380145",
+    "session_id": "session_1756707781",
+    "source": "ui_interface",
+    "status": "processing",
+    "_id": "68b53bc5e62c8e1fdb637b87"
+  },
+  {
+    "user_message": "bhaoiii",
+    "timestamp": "2025-09-01 11:55:38.681807",
+    "session_id": "session_1756707938",
+    "source": "ui_interface",
+    "status": "processing",
+    "_id": "68b53c62e62c8e1fdb637ba2"
+  },
+  {
+    "user_message": "roro noa zoro",
+    "timestamp": "2025-09-01 12:00:10.806044",
+    "session_id": "session_1756708210",
+    "source": "ui_interface",
+    "status": "processing",
+    "_id": "68b53d72e62c8e1fdb637bbd"
+  },
+  {
+    "user_message": "mingw",
+    "timestamp": "2025-09-01 12:02:50.463907",
+    "session_id": "session_1756708370",
+    "source": "ui_interface",
+    "status": "processing",
+    "_id": "68b53e12e62c8e1fdb637bd8"
+  },
+  {
+    "user_message": "test both storage types",
+    "timestamp": "2025-09-01 12:12:20.126287",
+    "session_id": "session_1756708940",
+    "source": "ui_interface",
+    "status": "processing",
+    "_id": "68b5404ce62c8e1fdb637bf3"
   }
 ]
