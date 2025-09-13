@@ -719,6 +719,133 @@ Give a 3-5 word critique about {focus}. Format: "Missing [specific thing]" or "L
             for model, count in sorted(self.stats['model_usage'].items()):
                 print(f"  {model}: {count}")
     
+    async def refine_response_with_critique(self, 
+                                          original_prompt: str,
+                                          primary_model: str,
+                                          original_response: str,
+                                          chosen_critique: str,
+                                          critique_model: str) -> ModelResponse:
+        """
+        Refine the primary model's response based on selected critique
+        
+        Args:
+            original_prompt: The original user prompt
+            primary_model: Name of the primary model to refine response
+            original_response: Original response that needs refinement
+            chosen_critique: The critique text from user's chosen model
+            critique_model: Name of the model that provided the critique
+            
+        Returns:
+            ModelResponse with refined response from primary model
+        """
+        logger.info(f"🔄 Refining {primary_model} response based on {critique_model}'s critique")
+        
+        # Create refinement prompt
+        refinement_prompt = f"""ORIGINAL PROMPT: {original_prompt}
+
+YOUR ORIGINAL RESPONSE: {original_response}
+
+FEEDBACK FROM {critique_model}: {chosen_critique}
+
+Please improve your original response by addressing the feedback above. Keep the same style and approach, but incorporate the suggestions to make it better. Provide only the improved response without any meta-commentary."""
+        
+        # Call the primary model again with refinement prompt
+        refined_response = await self._call_openrouter_api(
+            model_name=primary_model,
+            prompt=refinement_prompt,
+            is_critique=False,
+            temperature=0.7
+        )
+        
+        # Update response type to indicate it's refined
+        refined_response.response_type = "refined"
+        refined_response.metadata = refined_response.metadata or {}
+        refined_response.metadata.update({
+            "original_response_length": len(original_response),
+            "critique_source": critique_model,
+            "critique_text": chosen_critique,
+            "is_refinement": True
+        })
+        
+        logger.info(f"✨ Response refined: {len(refined_response.response_text)} chars")
+        return refined_response
+
+    async def orchestrate_with_user_refinement(self, 
+                                             prompt: str,
+                                             user_choice_callback = None) -> Dict[str, Any]:
+        """
+        Complete orchestration workflow with user-controlled refinement
+        
+        Args:
+            prompt: Input prompt
+            user_choice_callback: Optional callback function to get user's critique choice
+                                 Should return tuple (chosen_critique_index, should_refine)
+        
+        Returns:
+            Dictionary with complete workflow results including potential refinement
+        """
+        logger.info(f"🎭 Starting complete orchestration with refinement for: '{prompt[:50]}...'")
+        
+        # Step 1: Get initial orchestration with critiques
+        initial_result = await self.orchestrate_with_critiques(prompt)
+        
+        if not initial_result.success or not initial_result.primary_response.success:
+            logger.error("❌ Initial orchestration failed, cannot proceed with refinement")
+            return {
+                "stage": "initial_failed",
+                "initial_result": initial_result,
+                "refined_response": None,
+                "user_choice": None
+            }
+        
+        # Step 2: Present critiques to user (if callback provided)
+        successful_critiques = [c for c in initial_result.critique_responses if c.success]
+        
+        if not successful_critiques:
+            logger.warning("⚠️ No successful critiques available for refinement")
+            return {
+                "stage": "no_critiques",
+                "initial_result": initial_result,
+                "refined_response": None,
+                "user_choice": None
+            }
+        
+        user_choice = None
+        refined_response = None
+        
+        # Step 3: Get user choice (if callback provided)
+        if user_choice_callback:
+            try:
+                user_choice = user_choice_callback(successful_critiques)
+                
+                if user_choice and len(user_choice) == 2:
+                    chosen_index, should_refine = user_choice
+                    
+                    if should_refine and 0 <= chosen_index < len(successful_critiques):
+                        chosen_critique = successful_critiques[chosen_index]
+                        
+                        # Step 4: Refine response based on chosen critique
+                        refined_response = await self.refine_response_with_critique(
+                            original_prompt=prompt,
+                            primary_model=initial_result.selected_model,
+                            original_response=initial_result.primary_response.response_text,
+                            chosen_critique=chosen_critique.response_text,
+                            critique_model=chosen_critique.model_name
+                        )
+                        
+                        logger.info(f"✅ Refinement completed using {chosen_critique.model_name}'s feedback")
+                    
+            except Exception as e:
+                logger.error(f"❌ Error in user choice callback: {e}")
+        
+        return {
+            "stage": "complete",
+            "initial_result": initial_result,
+            "refined_response": refined_response,
+            "user_choice": user_choice,
+            "available_critiques": successful_critiques
+        }
+
     def save_result(self, result: OrchestrationResult, filename: str = None):
         """Save orchestration result to JSON file"""
         if not filename:
@@ -763,6 +890,88 @@ def format_for_ui(result: OrchestrationResult) -> Dict[str, Any]:
         }
     }
 
+def interactive_critique_selector(critiques: List[ModelResponse]) -> Tuple[int, bool]:
+    """
+    Interactive function to let user choose which critique to use for refinement
+    
+    Args:
+        critiques: List of successful critique responses
+        
+    Returns:
+        Tuple of (chosen_index, should_refine)
+    """
+    print("\n" + "="*60)
+    print("🎯 PRIMARY RESPONSE COMPLETED! Now review critiques:")
+    print("="*60)
+    
+    for i, critique in enumerate(critiques):
+        print(f"\n📝 Critique {i+1} from {critique.model_name}:")
+        print(f"   {critique.response_text[:200]}...")
+        print(f"   [Confidence: {critique.confidence_score:.2f}, Latency: {critique.latency_ms}ms]")
+    
+    print("\n" + "="*60)
+    print("🔄 REFINEMENT OPTIONS:")
+    print("="*60)
+    print("0. Skip refinement (use original response)")
+    for i, critique in enumerate(critiques):
+        print(f"{i+1}. Refine using {critique.model_name}'s feedback")
+    
+    while True:
+        try:
+            choice = input(f"\nChoose an option (0-{len(critiques)}): ").strip()
+            choice_num = int(choice)
+            
+            if choice_num == 0:
+                print("✅ Keeping original response without refinement")
+                return (0, False)
+            elif 1 <= choice_num <= len(critiques):
+                chosen_critique = critiques[choice_num - 1]
+                print(f"✅ Will refine using {chosen_critique.model_name}'s feedback")
+                return (choice_num - 1, True)
+            else:
+                print(f"❌ Please enter a number between 0 and {len(critiques)}")
+                
+        except ValueError:
+            print("❌ Please enter a valid number")
+        except KeyboardInterrupt:
+            print("\n❌ User cancelled, keeping original response")
+            return (0, False)
+
+def format_complete_result(workflow_result: Dict[str, Any]) -> str:
+    """Format the complete workflow result for display"""
+    stage = workflow_result["stage"]
+    initial = workflow_result["initial_result"]
+    refined = workflow_result["refined_response"]
+    
+    output = []
+    output.append("🎭 COMPLETE ORCHESTRATION RESULT")
+    output.append("="*50)
+    
+    # Primary response
+    output.append(f"\n🤖 PRIMARY MODEL: {initial.selected_model}")
+    output.append(f"Original Response: {initial.primary_response.response_text[:300]}...")
+    
+    # Critiques summary
+    successful_critiques = [c for c in initial.critique_responses if c.success]
+    output.append(f"\n📝 CRITIQUES: {len(successful_critiques)} models provided feedback")
+    
+    # Refinement result
+    if refined and refined.success:
+        output.append(f"\n✨ REFINED RESPONSE (improved by {refined.metadata.get('critique_source', 'unknown')}):")
+        output.append(f"{refined.response_text}")
+        output.append(f"\nImprovement: {len(refined.response_text)} chars vs {refined.metadata.get('original_response_length', 0)} chars original")
+    else:
+        output.append(f"\n📋 FINAL RESPONSE: Using original (no refinement applied)")
+    
+    # Summary
+    total_cost = initial.total_cost_usd + (refined.cost_usd if refined else 0)
+    total_time = initial.total_latency_ms + (refined.latency_ms if refined else 0)
+    output.append(f"\n💰 Total Cost: ${total_cost:.4f}")
+    output.append(f"⏱️ Total Time: {total_time}ms")
+    output.append(f"🎯 Stage: {stage}")
+    
+    return "\n".join(output)
+
 # Example usage and testing
 async def example_usage():
     """Example of how to use the advanced orchestrator"""
@@ -795,6 +1004,60 @@ async def example_usage():
         
         return result
 
+async def example_with_refinement():
+    """Example demonstrating the complete workflow with user-controlled refinement"""
+    
+    async with MultiModelOrchestrator() as orchestrator:
+        
+        # Test prompt that could benefit from refinement
+        prompt = "Explain machine learning algorithms in simple terms for beginners"
+        
+        print(f"🎭 Starting complete orchestration workflow...")
+        print(f"📝 Prompt: {prompt}")
+        
+        # Run complete workflow with interactive refinement
+        workflow_result = await orchestrator.orchestrate_with_user_refinement(
+            prompt=prompt,
+            user_choice_callback=interactive_critique_selector
+        )
+        
+        # Display complete result
+        print(format_complete_result(workflow_result))
+        
+        # Print stats
+        orchestrator.print_stats()
+        
+        return workflow_result
+
+async def example_programmatic_refinement():
+    """Example of programmatic refinement without user interaction"""
+    
+    async with MultiModelOrchestrator() as orchestrator:
+        
+        prompt = "Write a function to validate email addresses"
+        
+        # Automatic critique selection (e.g., always choose the first successful critique)
+        def auto_selector(critiques):
+            if critiques:
+                print(f"🤖 Auto-selecting {critiques[0].model_name}'s critique for refinement")
+                return (0, True)  # Choose first critique, do refine
+            return (0, False)
+        
+        workflow_result = await orchestrator.orchestrate_with_user_refinement(
+            prompt=prompt,
+            user_choice_callback=auto_selector
+        )
+        
+        print(format_complete_result(workflow_result))
+        return workflow_result
+
 if __name__ == "__main__":
-    # Run example
-    asyncio.run(example_usage())
+    # Run example with interactive refinement
+    print("🎯 Example 1: Interactive Refinement")
+    asyncio.run(example_with_refinement())
+    
+    print("\n" + "="*70 + "\n")
+    
+    # Run example with programmatic refinement
+    print("🤖 Example 2: Programmatic Refinement")
+    asyncio.run(example_programmatic_refinement())
