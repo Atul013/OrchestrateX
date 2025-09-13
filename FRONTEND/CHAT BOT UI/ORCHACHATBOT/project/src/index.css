@@ -61,6 +61,11 @@
   .neon-glow {
     animation: neon-glow 2s ease-in-out infinite;
   }
+
+  /* Hide top-left brand when message is sent */
+  .app.is-sent .top-left-brand {
+    display: none !important;
+  }
 }
 
 /* Responsive design */

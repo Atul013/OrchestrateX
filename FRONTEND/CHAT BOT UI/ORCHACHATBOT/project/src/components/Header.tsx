@@ -7,7 +7,7 @@ interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({ 
-  isInitialState 
+  isInitialState
 }) => {
   const headerLinks = [
     { label: 'Docs', icon: Book, href: '#' },
@@ -28,20 +28,21 @@ export const Header: React.FC<HeaderProps> = ({
       className="backdrop-blur-xl border-b border-slate-700/50 px-4 py-3 flex items-center justify-between relative z-10"
     >
       <div className="flex items-center gap-4">
-        {!isInitialState && (
-          <motion.a
-            href="/"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            whileHover={{ scale: 1.05 }}
-            className="flex items-center gap-3 cursor-pointer"
-          >
-            <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-cyan-500 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">OX</span>
-            </div>
-            <span className="text-white font-semibold">OrchestrateX</span>
-          </motion.a>
-        )}
+        <motion.a
+          href="http://localhost:5173"
+          target="_blank"
+          rel="noopener noreferrer"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          whileHover={{ scale: 1.05 }}
+          className="top-left-brand flex items-center cursor-pointer"
+        >
+          <img 
+            src="/finallogo.png" 
+            alt="OrchestrateX Logo" 
+            className="w-12 h-12 object-contain"
+          />
+        </motion.a>
       </div>
 
       <nav className="flex items-center gap-6">

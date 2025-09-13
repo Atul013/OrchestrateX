@@ -28,6 +28,7 @@ export interface AIAgent {
 export interface AppState {
   isInitialState: boolean;
   isSidebarOpen: boolean;
+  isSent: boolean;
   currentChat: Chat | null;
   chats: Chat[];
   currentPrompt: string;
