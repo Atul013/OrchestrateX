@@ -1,64 +1,71 @@
+
 import { AIAgent } from '../types';
+import openaiLogo from '../new-logos/openai1-removebg-preview.png';
+import zhipuLogo from '../new-logos/zhipu-removebg-preview.png';
+import metaLogo from '../new-logos/meta-removebg-preview.png';
+import moonshotLogo from '../new-logos/moonshot-removebg-preview.png';
+import tngtechLogo from '../new-logos/tngtech-removebg-preview.png';
+import alibabaLogo from '../new-logos/alibaba-removebg-preview.png';
 
 export const AI_AGENTS: AIAgent[] = [
   {
-    id: 'glm-4.5',
-    name: 'GLM-4.5',
-    shortDescription: 'Great for multi-step reasoning and analysis',
-    detailedSuggestion: 'Excels at complex logical reasoning, mathematical problem-solving, and multi-step analytical tasks. Best choice for structured thinking and detailed explanations.',
+    id: 'glm4.5',
+    name: 'GLM4.5',
+    shortDescription: '',
+    detailedSuggestion: '',
     color: '#8B5CF6',
     gradient: 'from-purple-500 to-violet-600',
-    icon: '⚡',
-    specialties: ['Reasoning', 'Analysis', 'Mathematics']
+    icon: zhipuLogo,
+    specialties: []
   },
   {
     id: 'gpt-oss',
-    name: 'GPT-OSS',
-    shortDescription: 'Flexible general language model',
-    detailedSuggestion: 'Versatile open-source model perfect for general conversation, creative writing, and balanced responses. Ideal for most everyday tasks requiring natural language understanding.',
-    color: '#10B981',
+    name: 'GPT‑OSS',
+    shortDescription: '',
+    detailedSuggestion: '',
+    color: '#10A37F',
     gradient: 'from-emerald-500 to-teal-600',
-    icon: '🚀',
-    specialties: ['General Purpose', 'Creative Writing', 'Conversation']
+    icon: openaiLogo,
+    specialties: []
   },
   {
-    id: 'llama-3',
-    name: 'LLaMA 3',
-    shortDescription: 'Fast, multilingual, open-source',
-    detailedSuggestion: 'High-performance model with excellent multilingual capabilities and fast inference. Perfect for code generation, translation tasks, and efficient processing.',
+    id: 'llama4-maverick',
+    name: 'Llama 4 Maverick',
+    shortDescription: '',
+    detailedSuggestion: '',
     color: '#3B82F6',
     gradient: 'from-blue-500 to-indigo-600',
-    icon: '⚡',
-    specialties: ['Multilingual', 'Code Generation', 'Fast Processing']
+    icon: metaLogo,
+    specialties: []
   },
   {
-    id: 'gemini',
-    name: 'Gemini',
-    shortDescription: 'Multimodal reasoning and understanding',
-    detailedSuggestion: 'Advanced multimodal capabilities for understanding images, documents, and complex data. Excellent for visual analysis, document processing, and creative tasks.',
+    id: 'moonshot-kimi',
+    name: 'MoonshotAI Kimi',
+    shortDescription: '',
+    detailedSuggestion: '',
     color: '#F59E0B',
     gradient: 'from-amber-500 to-orange-600',
-    icon: '💎',
-    specialties: ['Multimodal', 'Visual Analysis', 'Creative Tasks']
+    icon: moonshotLogo,
+    specialties: []
   },
   {
-    id: 'claude',
-    name: 'Claude',
-    shortDescription: 'Clear, safe dialogue and analysis',
-    detailedSuggestion: 'Focused on helpful, harmless, and honest responses. Excellent for detailed analysis, research tasks, and nuanced conversations requiring careful consideration.',
-    color: '#EC4899',
-    gradient: 'from-pink-500 to-rose-600',
-    icon: '🧠',
-    specialties: ['Analysis', 'Research', 'Safety']
-  },
-  {
-    id: 'falcon',
-    name: 'Falcon',
-    shortDescription: 'Open-source friendly alternative',
-    detailedSuggestion: 'Efficient open-source model with strong performance across various tasks. Great for privacy-conscious applications and customizable solutions.',
+    id: 'qwen3-coder',
+    name: 'Qwen3 Coder',
+    shortDescription: '',
+    detailedSuggestion: '',
     color: '#F97316',
     gradient: 'from-orange-500 to-red-600',
-    icon: '🦅',
-    specialties: ['Open Source', 'Privacy', 'Customizable']
+    icon: alibabaLogo,
+    specialties: []
+  },
+  {
+    id: 'deepseek-chimera',
+    name: 'TNG DeepSeek R1T2 Chimera',
+    shortDescription: '',
+    detailedSuggestion: '',
+    color: '#EC4899',
+    gradient: 'from-pink-500 to-rose-600',
+    icon: tngtechLogo,
+    specialties: []
   }
 ];

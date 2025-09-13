@@ -36,7 +36,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled = 
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             disabled={!message.trim() || disabled}
-            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gradient-to-r from-purple-500 to-cyan-500 text-white rounded-xl px-3 py-2 md:px-4 md:py-2 flex items-center gap-1 md:gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition-opacity font-medium text-sm"
+            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gradient-to-r from-purple-500 to-cyan-500 text-white rounded-xl px-3 py-2 md:px-4 md:py-2 flex items-center gap-1 md:gap-2 disabled:opacity-50 disabled:cursor-not-allowed font-medium text-sm transition-opacity"
           >
             <Send size={16} />
             <span className="hidden sm:inline">Send</span>

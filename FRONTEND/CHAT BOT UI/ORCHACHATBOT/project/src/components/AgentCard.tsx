@@ -44,9 +44,12 @@ export const AgentCard: React.FC<AgentCardProps> = ({ agent, onSelectAgent }) =>
               scale: isHovered ? 1.2 : 1,
               boxShadow: isHovered ? `0 0 20px ${agent.color}40` : '0 0 0px transparent'
             }}
-            className={`w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br ${agent.gradient} rounded-lg flex items-center justify-center text-white font-bold text-sm md:text-base`}
+            className="w-8 h-8 md:w-10 md:h-10 rounded-lg flex items-center justify-center text-white font-bold text-sm md:text-base"
+            style={{ backgroundColor: agent.color }}
           >
-            {agent.icon}
+            {typeof agent.icon === 'string' && agent.icon.endsWith('.png') || agent.icon.endsWith('.jpeg')
+              ? <img src={agent.icon} alt={agent.name + ' logo'} className="w-7 h-7 md:w-9 md:h-9 object-contain" />
+              : agent.icon}
           </motion.div>
           <div>
             <h3 className="text-white font-semibold text-sm md:text-base">{agent.name}</h3>
@@ -54,17 +57,6 @@ export const AgentCard: React.FC<AgentCardProps> = ({ agent, onSelectAgent }) =>
           </div>
         </div>
 
-        {/* Specialties */}
-        <div className="flex flex-wrap gap-1 md:gap-2 mb-3 md:mb-4">
-          {agent.specialties.map((specialty) => (
-            <span
-              key={specialty}
-              className="bg-slate-700/50 text-slate-300 px-2 py-1 rounded-md text-xs"
-            >
-              {specialty}
-            </span>
-          ))}
-        </div>
 
         {/* Detailed Suggestion (appears on hover) */}
         <motion.div

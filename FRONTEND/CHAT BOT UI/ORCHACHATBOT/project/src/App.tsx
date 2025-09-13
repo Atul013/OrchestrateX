@@ -27,14 +27,11 @@ function App() {
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-pink-900/20 via-transparent to-blue-900/20 pointer-events-none" />
 
       <Header 
-        onToggleSidebar={toggleSidebar}
-        isSidebarOpen={appState.isSidebarOpen}
         isInitialState={appState.isInitialState}
       />
 
       <div className="flex-1 flex overflow-hidden">
         <Sidebar
-          isOpen={appState.isSidebarOpen}
           chats={appState.chats}
           currentChat={appState.currentChat}
           onNewChat={() => {
@@ -45,7 +42,7 @@ function App() {
           onDeleteChat={deleteChat}
         />
 
-        <main className="flex-1 flex flex-col relative">
+        <main className="flex-1 flex flex-col relative ml-20">
           <AnimatePresence mode="wait">
             {appState.chats.length === 0 ? (
               <motion.div
