@@ -7,10 +7,11 @@ services:
     container_name: orchestratex_mongodb
     restart: unless-stopped
     ports:
-      - "27019:27017"  # New port for different network
+      - "27019:27017"  # Available on all network interfaces
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME:-root}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD:-rootPassword123}
+    command: ["mongod", "--bind_ip_all"]  # Allow connections from any IP
     volumes:
       - orchestratex_data:/data/db
       - ./database/init_db.js:/docker-entrypoint-initdb.d/01-init_db.js:ro
@@ -30,7 +31,7 @@ services:
       ME_CONFIG_BASICAUTH_USERNAME: ${MONGO_EXPRESS_USER:-admin}
       ME_CONFIG_BASICAUTH_PASSWORD: ${MONGO_EXPRESS_PASS:-admin}
     ports:
-      - "${MONGO_EXPRESS_PORT:-8081}:8081"
+      - "${MONGO_EXPRESS_PORT:-8081}:8081"  # Universal access
     depends_on:
       - project-mongodb
     networks:

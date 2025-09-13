@@ -149,7 +149,9 @@ def chat():
             "timestamp": datetime.now(),
             "session_id": session_id,
             "source": "ui_interface",
-            "status": "processing"
+            "status": "processing",
+            "user": "anonymous",  # User column as requested
+            "hash": f"hash_{session_id}"  # Add hash field to avoid index conflict
         }
         
         # Save user input to MongoDB
