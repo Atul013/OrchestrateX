@@ -26,13 +26,27 @@ export const ModelOutputDisplay: React.FC<ModelOutputDisplayProps> = ({
     }
   };
 
-  const successfulCritiques = result.critiques || [];
+  const allCritiques = result.critiques || [];
+  const successfulCritiques = allCritiques.filter(c => c.success);
+
+  // Helper function to get model icon/logo
+  const getModelIcon = (modelName: string) => {
+    const name = modelName.toLowerCase();
+    if (name.includes('glm')) return '🧠';
+    if (name.includes('tng') || name.includes('deepseek')) return '🤖';
+    if (name.includes('qwen')) return '💻';
+    if (name.includes('gpt') || name.includes('oss')) return '🔄';
+    if (name.includes('kimi') || name.includes('moonshot')) return '🌙';
+    if (name.includes('llama') || name.includes('maverick')) return '🦙';
+    return '🤖';
+  };
 
   return (
     <div className="bg-slate-800/50 rounded-lg border border-slate-700/50 p-4 space-y-4">
       {/* Primary Response Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-3">
+          <span className="text-xl">{getModelIcon(result.primary_response.model_name)}</span>
           <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
           <h3 className="text-white font-semibold">
             {result.primary_response.model_name}
@@ -72,7 +86,7 @@ export const ModelOutputDisplay: React.FC<ModelOutputDisplayProps> = ({
       </div>
 
       {/* Critiques Section */}
-      {successfulCritiques.length > 0 && (
+      {allCritiques.length > 0 && (
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <button
@@ -80,7 +94,8 @@ export const ModelOutputDisplay: React.FC<ModelOutputDisplayProps> = ({
               className="flex items-center space-x-2 text-slate-300 hover:text-white transition-colors"
             >
               <span className="font-medium">
-                {successfulCritiques.length} Model{successfulCritiques.length !== 1 ? 's' : ''} Provided Feedback
+                {allCritiques.length} Model{allCritiques.length !== 1 ? 's' : ''} Provided Feedback 
+                <span className="text-green-400 ml-1">({successfulCritiques.length} successful)</span>
               </span>
               <motion.svg
                 animate={{ rotate: showCritiques ? 180 : 0 }}
@@ -108,35 +123,45 @@ export const ModelOutputDisplay: React.FC<ModelOutputDisplayProps> = ({
                 exit={{ opacity: 0, height: 0 }}
                 className="space-y-3"
               >
-                {successfulCritiques.map((critique, index) => (
+                {allCritiques.map((critique, index) => (
                   <motion.div
                     key={critique.model_name}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1 }}
-                    className={`border rounded-lg p-3 cursor-pointer transition-all ${
-                      selectedCritiqueIndex === index
-                        ? 'border-blue-500 bg-blue-500/10'
-                        : 'border-slate-600 bg-slate-800/30 hover:border-slate-500'
+                    className={`border rounded-lg p-3 transition-all ${
+                      !critique.success 
+                        ? 'border-red-500/50 bg-red-500/10' 
+                        : selectedCritiqueIndex === index
+                        ? 'border-blue-500 bg-blue-500/10 cursor-pointer'
+                        : 'border-slate-600 bg-slate-800/30 hover:border-slate-500 cursor-pointer'
                     }`}
-                    onClick={() => setSelectedCritiqueIndex(
+                    onClick={() => critique.success && setSelectedCritiqueIndex(
                       selectedCritiqueIndex === index ? null : index
                     )}
                   >
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-slate-200 font-medium">
-                        {critique.model_name}
-                      </span>
+                      <div className="flex items-center space-x-2">
+                        <span className="text-lg">{getModelIcon(critique.model_name)}</span>
+                        <span className="text-slate-200 font-medium">
+                          {critique.model_name}
+                        </span>
+                        {critique.success ? (
+                          <span className="w-2 h-2 bg-green-400 rounded-full"></span>
+                        ) : (
+                          <span className="w-2 h-2 bg-red-400 rounded-full"></span>
+                        )}
+                      </div>
                       <div className="flex items-center space-x-2 text-xs text-slate-400">
                         <span>{critique.tokens_used} tokens</span>
                         <span>•</span>
                         <span>{critique.latency_ms}ms</span>
                       </div>
                     </div>
-                    <p className="text-slate-300 text-sm">
+                    <p className={`text-sm ${critique.success ? 'text-slate-300' : 'text-red-300'}`}>
                       {critique.critique_text}
                     </p>
-                    {selectedCritiqueIndex === index && (
+                    {critique.success && selectedCritiqueIndex === index && (
                       <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
@@ -151,7 +176,7 @@ export const ModelOutputDisplay: React.FC<ModelOutputDisplayProps> = ({
                 ))}
 
                 {/* Refinement Button */}
-                {selectedCritiqueIndex !== null && onRefineRequest && (
+                {selectedCritiqueIndex !== null && onRefineRequest && allCritiques[selectedCritiqueIndex]?.success && (
                   <motion.button
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}

@@ -47,7 +47,7 @@ export const AgentCard: React.FC<AgentCardProps> = ({ agent, onSelectAgent }) =>
             className="w-8 h-8 md:w-10 md:h-10 rounded-lg flex items-center justify-center text-white font-bold text-sm md:text-base"
             style={{ backgroundColor: agent.color }}
           >
-            {typeof agent.icon === 'string' && agent.icon.endsWith('.png') || agent.icon.endsWith('.jpeg')
+            {typeof agent.icon === 'string' && (agent.icon.endsWith('.png') || agent.icon.endsWith('.jpeg'))
               ? <img src={agent.icon} alt={agent.name + ' logo'} className="w-7 h-7 md:w-9 md:h-9 object-contain" />
               : agent.icon}
           </motion.div>
