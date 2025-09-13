@@ -2,12 +2,15 @@ import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { User, Bot } from 'lucide-react';
 import { Message } from '../types';
+import { ModelOutputDisplay } from './ModelOutputDisplay';
+import { RefinementRequest } from '../services/orchestrateAPI';
 
 interface ChatThreadProps {
   messages: Message[];
+  onRefineMessage?: (messageId: string, request: RefinementRequest) => void;
 }
 
-export const ChatThread: React.FC<ChatThreadProps> = ({ messages }) => {
+export const ChatThread: React.FC<ChatThreadProps> = ({ messages, onRefineMessage }) => {
   const bottomRef = useRef<HTMLDivElement>(null);
   const topRef = useRef<HTMLDivElement>(null);
   const [showScrollTop, setShowScrollTop] = useState(false);
@@ -54,13 +57,32 @@ export const ChatThread: React.FC<ChatThreadProps> = ({ messages }) => {
               </div>
             )}
             <div className={`max-w-[85%] md:max-w-[80%] ${message.type === 'user' ? 'order-1' : ''}`}>
-              <div className={`p-3 md:p-4 rounded-2xl ${
-                message.type === 'user'
-                  ? 'bg-gradient-to-r from-purple-500 to-cyan-500 text-white ml-auto'
-                  : 'bg-slate-800/50 backdrop-blur-xl border border-slate-600/30 text-slate-100'
-              }`}>
-                <p className="leading-relaxed text-sm md:text-base">{message.content}</p>
-              </div>
+              {message.type === 'assistant' && message.orchestrationResult ? (
+                // Show enhanced model output with critiques and refinement
+                <ModelOutputDisplay 
+                  result={message.orchestrationResult}
+                  onRefineRequest={onRefineMessage ? (request) => onRefineMessage(message.id, request) : undefined}
+                />
+              ) : (
+                // Show regular message
+                <div className={`p-3 md:p-4 rounded-2xl ${
+                  message.type === 'user'
+                    ? 'bg-gradient-to-r from-purple-500 to-cyan-500 text-white ml-auto'
+                    : 'bg-slate-800/50 backdrop-blur-xl border border-slate-600/30 text-slate-100'
+                }`}>
+                  <p className="leading-relaxed text-sm md:text-base whitespace-pre-wrap">{message.content}</p>
+                  {message.refinementData?.isRefined && (
+                    <div className="mt-2 pt-2 border-t border-slate-600/50">
+                      <span className="text-xs text-blue-400 flex items-center">
+                        <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        </svg>
+                        Refined Response
+                      </span>
+                    </div>
+                  )}
+                </div>
+              )}
               <p className="text-xs text-slate-500 mt-1 md:mt-2 px-2">
                 {message.timestamp.toLocaleTimeString()}
               </p>

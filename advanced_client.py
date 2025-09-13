@@ -146,12 +146,12 @@ class SecureAPIKeyManager:
                         elif key == 'PROVIDER_FALCON_API_KEY' and value:
                             self.api_keys['TNG DeepSeek'] = value
                             
-            logger.info(f"✅ Loaded API keys for {len(self.api_keys)} models from {self.env_file_path}")
+            logger.info(f"[OK] Loaded API keys for {len(self.api_keys)} models from {self.env_file_path}")
             for model in self.api_keys.keys():
-                logger.info(f"  📋 {model}")
+                logger.info(f"  [MODEL] {model}")
                 
         except Exception as e:
-            logger.error(f"❌ Error reading {self.env_file_path}: {e}")
+            logger.error(f"[ERROR] Error reading {self.env_file_path}: {e}")
     
     def _load_from_environment(self):
         """Load API keys from environment variables (overrides file values)"""

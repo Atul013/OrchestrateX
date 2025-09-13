@@ -3,6 +3,8 @@ export interface Message {
   content: string;
   type: 'user' | 'assistant';
   timestamp: Date;
+  orchestrationResult?: any; // Store the full orchestration result
+  refinementData?: any; // Store refinement information
 }
 
 export interface Chat {

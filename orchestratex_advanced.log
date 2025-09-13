@@ -137,3 +137,99 @@
 2025-08-31 12:48:47,304 - INFO - werkzeug -  * Restarting with stat
 2025-08-31 12:48:47,695 - WARNING - werkzeug -  * Debugger is active!
 2025-08-31 12:48:47,698 - INFO - werkzeug -  * Debugger PIN: 753-967-098
+2025-09-13 15:56:30,655 - INFO - werkzeug - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8002
+ * Running on http://10.205.43.38:8002
+2025-09-13 15:56:30,656 - INFO - werkzeug - [33mPress CTRL+C to quit[0m
+2025-09-13 15:56:30,662 - INFO - werkzeug -  * Restarting with stat
+2025-09-13 15:56:31,076 - WARNING - werkzeug -  * Debugger is active!
+2025-09-13 15:56:31,080 - INFO - werkzeug -  * Debugger PIN: 753-967-098
+2025-09-13 15:58:09,864 - ERROR - asyncio - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x000001FE34764830>
+2025-09-13 16:25:54,017 - INFO - werkzeug - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8002
+ * Running on http://10.205.43.38:8002
+2025-09-13 16:25:54,017 - INFO - werkzeug - [33mPress CTRL+C to quit[0m
+2025-09-13 16:25:54,018 - INFO - werkzeug -  * Restarting with stat
+2025-09-13 16:25:54,440 - WARNING - werkzeug -  * Debugger is active!
+2025-09-13 16:25:54,446 - INFO - werkzeug -  * Debugger PIN: 753-967-098
+2025-09-13 16:26:13,501 - ERROR - asyncio - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x000001F378024830>
+2025-09-13 16:29:02,126 - INFO - werkzeug - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8002
+ * Running on http://10.205.43.38:8002
+2025-09-13 16:29:02,127 - INFO - werkzeug - [33mPress CTRL+C to quit[0m
+2025-09-13 16:29:02,129 - INFO - werkzeug -  * Restarting with stat
+2025-09-13 16:29:02,544 - WARNING - werkzeug -  * Debugger is active!
+2025-09-13 16:29:02,548 - INFO - werkzeug -  * Debugger PIN: 753-967-098
+2025-09-13 16:30:14,304 - ERROR - asyncio - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x000002CB77E94830>
+2025-09-13 16:38:14,652 - INFO - werkzeug - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8002
+ * Running on http://10.205.43.38:8002
+2025-09-13 16:38:14,653 - INFO - werkzeug - [33mPress CTRL+C to quit[0m
+2025-09-13 16:38:14,654 - INFO - werkzeug -  * Restarting with stat
+2025-09-13 16:38:15,084 - WARNING - werkzeug -  * Debugger is active!
+2025-09-13 16:38:15,087 - INFO - werkzeug -  * Debugger PIN: 753-967-098
+2025-09-13 16:39:05,172 - ERROR - asyncio - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x00000269A9BC4830>
+2025-09-13 16:55:39,444 - INFO - advanced_client - [OK] Loaded API keys for 6 models from orche.env
+2025-09-13 16:55:39,444 - INFO - advanced_client -   [MODEL] GLM4.5
+2025-09-13 16:55:39,444 - INFO - advanced_client -   [MODEL] GPT-OSS
+2025-09-13 16:55:39,444 - INFO - advanced_client -   [MODEL] Llama 4 Maverick
+2025-09-13 16:55:39,444 - INFO - advanced_client -   [MODEL] MoonshotAI Kimi
+2025-09-13 16:55:39,444 - INFO - advanced_client -   [MODEL] Qwen3
+2025-09-13 16:55:39,444 - INFO - advanced_client -   [MODEL] TNG DeepSeek
+2025-09-13 16:55:51,796 - INFO - advanced_client - [OK] Loaded API keys for 6 models from orche.env
+2025-09-13 16:55:51,796 - INFO - advanced_client -   [MODEL] GLM4.5
+2025-09-13 16:55:51,796 - INFO - advanced_client -   [MODEL] GPT-OSS
+2025-09-13 16:55:51,796 - INFO - advanced_client -   [MODEL] Llama 4 Maverick
+2025-09-13 16:55:51,796 - INFO - advanced_client -   [MODEL] MoonshotAI Kimi
+2025-09-13 16:55:51,796 - INFO - advanced_client -   [MODEL] Qwen3
+2025-09-13 16:55:51,796 - INFO - advanced_client -   [MODEL] TNG DeepSeek
+2025-09-13 16:58:34,275 - INFO - advanced_client - [OK] Loaded API keys for 6 models from orche.env
+2025-09-13 16:58:34,275 - INFO - advanced_client -   [MODEL] GLM4.5
+2025-09-13 16:58:34,275 - INFO - advanced_client -   [MODEL] GPT-OSS
+2025-09-13 16:58:34,276 - INFO - advanced_client -   [MODEL] Llama 4 Maverick
+2025-09-13 16:58:34,276 - INFO - advanced_client -   [MODEL] MoonshotAI Kimi
+2025-09-13 16:58:34,276 - INFO - advanced_client -   [MODEL] Qwen3
+2025-09-13 16:58:34,276 - INFO - advanced_client -   [MODEL] TNG DeepSeek
+2025-09-13 17:02:26,473 - INFO - advanced_client - [OK] Loaded API keys for 6 models from orche.env
+2025-09-13 17:02:26,473 - INFO - advanced_client -   [MODEL] GLM4.5
+2025-09-13 17:02:26,474 - INFO - advanced_client -   [MODEL] GPT-OSS
+2025-09-13 17:02:26,474 - INFO - advanced_client -   [MODEL] Llama 4 Maverick
+2025-09-13 17:02:26,474 - INFO - advanced_client -   [MODEL] MoonshotAI Kimi
+2025-09-13 17:02:26,474 - INFO - advanced_client -   [MODEL] Qwen3
+2025-09-13 17:02:26,474 - INFO - advanced_client -   [MODEL] TNG DeepSeek
+2025-09-13 17:05:06,720 - INFO - advanced_client - [OK] Loaded API keys for 6 models from orche.env
+2025-09-13 17:05:06,721 - INFO - advanced_client -   [MODEL] GLM4.5
+2025-09-13 17:05:06,721 - INFO - advanced_client -   [MODEL] GPT-OSS
+2025-09-13 17:05:06,721 - INFO - advanced_client -   [MODEL] Llama 4 Maverick
+2025-09-13 17:05:06,721 - INFO - advanced_client -   [MODEL] MoonshotAI Kimi
+2025-09-13 17:05:06,721 - INFO - advanced_client -   [MODEL] Qwen3
+2025-09-13 17:05:06,721 - INFO - advanced_client -   [MODEL] TNG DeepSeek
+2025-09-13 17:06:09,755 - INFO - advanced_client - [OK] Loaded API keys for 6 models from orche.env
+2025-09-13 17:06:09,755 - INFO - advanced_client -   [MODEL] GLM4.5
+2025-09-13 17:06:09,755 - INFO - advanced_client -   [MODEL] GPT-OSS
+2025-09-13 17:06:09,755 - INFO - advanced_client -   [MODEL] Llama 4 Maverick
+2025-09-13 17:06:09,755 - INFO - advanced_client -   [MODEL] MoonshotAI Kimi
+2025-09-13 17:06:09,755 - INFO - advanced_client -   [MODEL] Qwen3
+2025-09-13 17:06:09,755 - INFO - advanced_client -   [MODEL] TNG DeepSeek
+2025-09-13 17:19:26,757 - INFO - advanced_client - [OK] Loaded API keys for 6 models from orche.env
+2025-09-13 17:19:26,757 - INFO - advanced_client -   [MODEL] GLM4.5
+2025-09-13 17:19:26,757 - INFO - advanced_client -   [MODEL] GPT-OSS
+2025-09-13 17:19:26,757 - INFO - advanced_client -   [MODEL] Llama 4 Maverick
+2025-09-13 17:19:26,757 - INFO - advanced_client -   [MODEL] MoonshotAI Kimi
+2025-09-13 17:19:26,757 - INFO - advanced_client -   [MODEL] Qwen3
+2025-09-13 17:19:26,757 - INFO - advanced_client -   [MODEL] TNG DeepSeek
+2025-09-13 17:21:11,307 - INFO - advanced_client - [OK] Loaded API keys for 6 models from orche.env
+2025-09-13 17:21:11,307 - INFO - advanced_client -   [MODEL] GLM4.5
+2025-09-13 17:21:11,307 - INFO - advanced_client -   [MODEL] GPT-OSS
+2025-09-13 17:21:11,307 - INFO - advanced_client -   [MODEL] Llama 4 Maverick
+2025-09-13 17:21:11,307 - INFO - advanced_client -   [MODEL] MoonshotAI Kimi
+2025-09-13 17:21:11,307 - INFO - advanced_client -   [MODEL] Qwen3
+2025-09-13 17:21:11,307 - INFO - advanced_client -   [MODEL] TNG DeepSeek

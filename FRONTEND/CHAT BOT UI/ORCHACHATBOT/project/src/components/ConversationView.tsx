@@ -4,19 +4,22 @@ import { ChatThread } from './ChatThread';
 import { ChatInput } from './ChatInput';
 import { AgentRecommendations } from './AgentRecommendations';
 import { Chat, AIAgent } from '../types';
+import { RefinementRequest } from '../services/orchestrateAPI';
 
 interface ConversationViewProps {
   currentChat: Chat;
   agents: AIAgent[];
   onSendMessage: (message: string) => void;
   onSelectAgent: (agent: AIAgent) => void;
+  onRefineMessage?: (messageId: string, request: RefinementRequest) => void;
 }
 
 export const ConversationView: React.FC<ConversationViewProps> = ({
   currentChat,
   agents,
   onSendMessage,
-  onSelectAgent
+  onSelectAgent,
+  onRefineMessage
 }) => {
   return (
   <main className="flex-1 flex flex-col md:flex-row h-screen min-h-0">
@@ -42,7 +45,7 @@ export const ConversationView: React.FC<ConversationViewProps> = ({
         
         <section className="flex-1 flex flex-col min-h-0 h-0">
           <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar focus:scrollbar-thumb-slate-600 hover:scrollbar-thumb-slate-600" tabIndex={0} aria-label="Chat Messages">
-            <ChatThread messages={currentChat.messages} />
+            <ChatThread messages={currentChat.messages} onRefineMessage={onRefineMessage} />
           </div>
           <div className="flex-shrink-0 sticky bottom-0 bg-slate-900/50 z-10">
             <ChatInput onSendMessage={onSendMessage} />

@@ -83,7 +83,12 @@ export const AgentCard: React.FC<AgentCardProps> = ({ agent, onSelectAgent }) =>
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            onClick={() => onSelectAgent(agent)}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              console.log('Button clicked for agent:', agent.name);
+              onSelectAgent(agent);
+            }}
             className={`w-full bg-gradient-to-r ${agent.gradient} text-white rounded-lg py-2 px-3 md:px-4 flex items-center justify-center gap-1 md:gap-2 font-medium hover:shadow-lg transition-shadow text-sm`}
             style={{ boxShadow: `0 4px 15px ${agent.color}25` }}
           >
@@ -98,7 +103,12 @@ export const AgentCard: React.FC<AgentCardProps> = ({ agent, onSelectAgent }) =>
           transition={{ duration: 0.3 }}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
-          onClick={() => onSelectAgent(agent)}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Default button clicked for agent:', agent.name);
+            onSelectAgent(agent);
+          }}
           className={`w-full bg-slate-700/50 text-slate-300 rounded-lg py-2 px-3 md:px-4 flex items-center justify-center gap-1 md:gap-2 font-medium hover:bg-slate-600/50 transition-colors text-sm ${
             isHovered ? 'pointer-events-none' : ''
           }`}

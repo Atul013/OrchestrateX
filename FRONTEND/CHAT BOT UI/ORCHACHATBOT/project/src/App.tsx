@@ -16,7 +16,8 @@ function App() {
     deleteChat,
     toggleSidebar,
     handleInitialPrompt,
-    selectAgent
+    selectAgent,
+    refineMessage
   } = useChat();
 
   return (
@@ -74,6 +75,7 @@ function App() {
                     agents={appState.agentRecommendations}
                     onSendMessage={sendMessage}
                     onSelectAgent={selectAgent}
+                    onRefineMessage={refineMessage}
                   />
                 ) : (
                   <div className="flex-1 flex items-center justify-center text-slate-400 select-none">
