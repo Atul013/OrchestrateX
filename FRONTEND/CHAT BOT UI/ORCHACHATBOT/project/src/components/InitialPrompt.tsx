@@ -48,23 +48,31 @@ export const InitialPrompt: React.FC<InitialPromptProps> = ({ onSubmitPrompt }) 
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
           onSubmit={handleSubmit}
-          className="relative mb-8"
+          className="mb-8"
         >
-          <div className="relative">
-            <Sparkles className="absolute left-4 top-1/2 transform -translate-y-1/2 text-purple-400" size={20} />
-            <input
-              type="text"
-              value={prompt}
-              onChange={(e) => setPrompt(e.target.value)}
-              placeholder="Ask anything about models, capabilities, or usage..."
-              className="w-full bg-slate-800/50 backdrop-blur-xl border border-slate-600/50 rounded-2xl pl-12 pr-16 py-4 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500/50 text-lg"
-            />
+          <div className="flex items-center gap-2">
+            <div className="relative flex-1">
+              <Sparkles className="absolute left-4 top-1/2 transform -translate-y-1/2 text-purple-400" size={20} />
+              <input
+                type="text"
+                value={prompt}
+                onChange={(e) => setPrompt(e.target.value)}
+                placeholder="Ask anything about models, capabilities, or usage..."
+                className="w-full bg-slate-800/50 backdrop-blur-xl border border-slate-600/50 rounded-2xl pl-12 pr-4 py-4 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500/50 text-lg"
+              />
+            </div>
             <motion.button
               type="submit"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ 
+                type: "spring", 
+                stiffness: 400, 
+                damping: 25,
+                duration: 0.15 
+              }}
               disabled={!prompt.trim()}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-gradient-to-r from-purple-500 to-cyan-500 text-white rounded-xl px-4 py-2 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition-opacity"
+              className="h-10 px-3.5 bg-gradient-to-r from-purple-500 to-cyan-500 text-white rounded-xl flex items-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed font-medium text-sm shadow-lg transition-colors duration-200 flex-shrink-0"
             >
               <Send size={16} />
               <span className="hidden sm:inline">Send</span>

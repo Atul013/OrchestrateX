@@ -11,6 +11,7 @@ function App() {
   const {
     appState,
     createNewChat,
+    startNewChat,
     sendMessage,
     selectChat,
     deleteChat,
@@ -21,7 +22,7 @@ function App() {
   } = useChat();
 
   return (
-    <div className="h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex flex-col overflow-hidden">
+    <div className={`app h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex flex-col overflow-hidden ${appState.isSent ? 'is-sent' : ''}`}>
       {/* Background Effects */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-purple-900/20 via-transparent to-cyan-900/20 pointer-events-none" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-pink-900/20 via-transparent to-blue-900/20 pointer-events-none" />
@@ -34,17 +35,14 @@ function App() {
         <Sidebar
           chats={appState.chats}
           currentChat={appState.currentChat}
-          onNewChat={() => {
-            const newChat = createNewChat();
-            selectChat(newChat);
-          }}
+          onNewChat={startNewChat}
           onSelectChat={selectChat}
           onDeleteChat={deleteChat}
         />
 
         <main className="flex-1 flex flex-col relative ml-20">
           <AnimatePresence mode="wait">
-            {appState.chats.length === 0 ? (
+            {appState.isInitialState ? (
               <motion.div
                 key="initial"
                 initial={{ opacity: 0 }}

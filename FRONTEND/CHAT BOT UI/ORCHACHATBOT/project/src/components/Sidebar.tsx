@@ -23,12 +23,19 @@ export const Sidebar: React.FC<SidebarProps> = ({
     >
       <div className="p-4 h-full flex flex-col">
         {/* Logo */}
-        <div className="flex items-center gap-3 mb-6 overflow-hidden">
-          <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-cyan-500 rounded-lg flex items-center justify-center flex-shrink-0">
-            <span className="text-white font-bold text-sm">OX</span>
-          </div>
+        <a 
+          href="http://localhost:5173"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-3 mb-6 overflow-hidden cursor-pointer hover:opacity-80 transition-opacity"
+        >
+          <img 
+            src="/finallogo.png" 
+            alt="OrchestrateX Logo" 
+            className="w-12 h-12 object-contain flex-shrink-0"
+          />
           <span className="text-white font-semibold text-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300">OrchestrateX</span>
-        </div>
+        </a>
 
         {/* New Chat Button */}
         <motion.button

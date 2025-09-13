@@ -7,6 +7,7 @@ export const useChat = () => {
   const [appState, setAppState] = useState<AppState>({
     isInitialState: true,
     isSidebarOpen: true,
+    isSent: false,
     currentChat: null,
     chats: [],
     currentPrompt: '',
@@ -36,6 +37,7 @@ export const useChat = () => {
     setAppState(prev => ({
       ...prev,
       isInitialState: false,
+      isSent: prev.isSent, // Keep existing sent state (don't reset)
       currentChat: newChat,
       chats: [newChat, ...prev.chats]
     }));
@@ -44,9 +46,16 @@ export const useChat = () => {
   }, []);
 
   const startNewChat = useCallback(() => {
+    // Log analytics event
+    console.log('Analytics: new_chat_started', { 
+      timestamp: new Date().toISOString(),
+      conversationId: null 
+    });
+    
     setAppState(prev => ({ 
       ...prev, 
       isInitialState: true, 
+      isSent: prev.isSent, // Keep existing sent state (don't reset)
       currentChat: null 
     }));
   }, []);
@@ -60,6 +69,7 @@ export const useChat = () => {
         return;
       }
 
+<<<<<<< HEAD
       console.log('🚀 [DEBUG] Creating user message...');
       const userMessage: Message = {
         id: generateId(),
@@ -69,7 +79,7 @@ export const useChat = () => {
       };
       console.log('🚀 [DEBUG] User message created:', userMessage);
 
-      // Add user message immediately
+      // Add user message immediately and set sent state
       console.log('🚀 [DEBUG] Adding user message to state...');
       setAppState(prev => {
         const isFirstMessage = prev.currentChat && prev.currentChat.messages.length === 0;
@@ -80,6 +90,7 @@ export const useChat = () => {
         };
         return {
           ...prev,
+          isSent: true, // Set sent state when message is sent
           currentChat: updatedCurrentChat,
           chats: prev.chats.map(chat =>
             chat.id === prev.currentChat!.id
@@ -373,6 +384,12 @@ export const useChat = () => {
     // Create a new chat with the initial prompt already included
     const newChat = createNewChat(prompt);
     
+    // Log analytics event
+    console.log('Analytics: new_chat_started', { 
+      timestamp: new Date().toISOString(),
+      conversationId: newChat.id 
+    });
+    
     // Set the current chat and immediately process the prompt
     setAppState(prev => ({
       ...prev,
@@ -396,6 +413,7 @@ export const useChat = () => {
 
     setAppState(prev => ({
       ...prev,
+      isSent: true, // Set sent state when initial message is sent
       currentChat: updatedChat,
       chats: prev.chats.map(chat =>
         chat.id === newChat.id ? updatedChat : chat
