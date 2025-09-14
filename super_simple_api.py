@@ -202,11 +202,16 @@ def chat():
         return jsonify(error_response), 500
 
 if __name__ == '__main__':
+    # For production deployment
+    port = int(os.environ.get('PORT', 8002))
+    host = os.environ.get('HOST', '0.0.0.0')
+    debug = os.environ.get('DEBUG', 'False').lower() == 'true'
+    
     print("=" * 60)
     print("🚀 ORCHESTRATEX API WITH INTELLIGENT MODEL SELECTION")
-    print("🌐 URL: http://localhost:8002")
+    print(f"🌐 URL: http://{host}:{port}")
     print("📍 Endpoint: POST /chat") 
     print(f"🤖 Advanced Client: {'✅ Available' if ADVANCED_CLIENT_AVAILABLE else '❌ Fallback mode'}")
     print("💡 Features: Intelligent model routing, confidence scoring")
     print("=" * 60)
-    app.run(host='0.0.0.0', port=8002, debug=False, threaded=True)
+    app.run(host=host, port=port, debug=debug, threaded=True)

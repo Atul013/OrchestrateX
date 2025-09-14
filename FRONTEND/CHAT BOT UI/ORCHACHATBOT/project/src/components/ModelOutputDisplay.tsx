@@ -31,14 +31,30 @@ export const ModelOutputDisplay: React.FC<ModelOutputDisplayProps> = ({
 
   // Helper function to get model icon/logo
   const getModelIcon = (modelName: string) => {
-    const name = modelName.toLowerCase();
-    if (name.includes('glm')) return '🧠';
-    if (name.includes('tng') || name.includes('deepseek')) return '🤖';
-    if (name.includes('qwen')) return '💻';
-    if (name.includes('gpt') || name.includes('oss')) return '🔄';
-    if (name.includes('kimi') || name.includes('moonshot')) return '🌙';
-    if (name.includes('llama') || name.includes('maverick')) return '🦙';
-    return '🤖';
+    const iconMap: Record<string, string> = {
+      "GLM4.5": "/icons/zhipu.png",
+      "TNG DeepSeek": "/icons/tngtech.png", 
+      "MoonshotAI Kimi": "/icons/moonshot.png",
+      "GPT-OSS": "/icons/openai.png",
+      "Llama 4 Maverick": "/icons/meta.png",
+      "Qwen3": "/icons/qwen.png"
+    };
+    
+    const iconPath = iconMap[modelName];
+    if (iconPath) {
+      return <img 
+        src={iconPath} 
+        alt={modelName} 
+        className="w-5 h-5 object-contain" 
+        onError={(e) => {
+          console.error(`Failed to load icon for ${modelName}:`, iconPath);
+          e.currentTarget.style.display = 'none';
+        }}
+      />;
+    }
+    
+    // Fallback for unknown models
+    return <span className="text-lg">🤖</span>;
   };
 
   return (

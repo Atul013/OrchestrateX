@@ -1,0 +1,95 @@
+# Node modules and build artifacts
+node_modules/
+.vite/
+dist/
+.next/
+.nuxt/
+
+# Python cache and virtual environments
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+venv/
+env/
+ENV/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+logs/
+orchestratex_*.log
+simple_bridge_api.log
+
+# Git and version control
+.git/
+.gitignore
+
+# Docker files (don't include in build)
+Dockerfile
+docker-compose*.yml
+.dockerignore
+
+# Documentation
+*.md
+DOCS/
+docs/
+
+# Testing
+test/
+tests/
+*_test.py
+test_*.py
+
+# Temporary files
+tmp/
+temp/
+.tmp/
+
+# Environment files (will be copied separately)
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Backup files
+*.bak
+backup-script.*
