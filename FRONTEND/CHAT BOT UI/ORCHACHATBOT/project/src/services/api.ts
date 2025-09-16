@@ -2,7 +2,7 @@
 export const API_CONFIG = {
   BASE_URL: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
     ? 'http://localhost:8002' 
-    : 'https://orchestratex-84388526388.us-central1.run.app',
+    : 'https://api.orchestratex.me',
   ENDPOINTS: {
     CHAT: '/chat',
     MODELS: '/models',

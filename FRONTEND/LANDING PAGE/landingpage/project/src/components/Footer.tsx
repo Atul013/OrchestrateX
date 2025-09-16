@@ -1,10 +1,10 @@
 import React from 'react';
-import zhipuLogo from '../../logos/zhipu.png';
-import openaiLogo from '../../logos/openai.png';
-import metaLogo from '../../logos/meta.jpeg';
-import moonshotLogo from '../../logos/moonshot.png';
-import alibabaLogo from '../../logos/alibaba.jpeg';
-import tngtechLogo from '../../logos/tngtech.png';
+import zhipuLogo from '../../logos/zhipu-removebg-preview.png';
+import openaiLogo from '../../logos/openai1-removebg-preview.png';
+import metaLogo from '../../logos/meta-removebg-preview.png';
+import moonshotLogo from '../../logos/moonshot-removebg-preview.png';
+import alibabaLogo from '../../logos/alibaba-removebg-preview.png';
+import tngtechLogo from '../../logos/tngtech-removebg-preview.png';
 import { motion } from 'framer-motion';
 import { Github, BookOpen, Activity, Shield, FileText, Users, ExternalLink } from 'lucide-react';
 

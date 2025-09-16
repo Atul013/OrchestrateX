@@ -1,0 +1,7 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-f', 'Dockerfile.backend', '-t', 'gcr.io/$PROJECT_ID/orchestratex-backend:latest', '.']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/$PROJECT_ID/orchestratex-backend:latest']
+images:
+- 'gcr.io/$PROJECT_ID/orchestratex-backend:latest'

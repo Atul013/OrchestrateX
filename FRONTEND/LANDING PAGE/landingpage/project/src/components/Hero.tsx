@@ -170,7 +170,7 @@ const Hero: React.FC = () => {
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
             <a
-              href="https://orchestratex-84388526388.us-central1.run.app/"
+              href="https://chat.orchestratex.me/"
               target="_blank"
               rel="noopener noreferrer"
               className="px-8 py-4 bg-gradient-to-r from-primary to-magenta rounded-full text-white font-semibold text-lg flex items-center gap-2 hover:opacity-90 transition-opacity"

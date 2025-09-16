@@ -96,25 +96,12 @@ export const AgentCard: React.FC<AgentCardProps> = ({ agent, onSelectAgent }) =>
                 onSelectAgent(agent);
               }
             }}
-<<<<<<< HEAD
-            className={`w-full rounded-lg py-2 px-3 md:px-4 flex items-center justify-center gap-1 md:gap-2 font-medium hover:shadow-lg transition-all duration-300 text-sm ${
-              agent.name === 'GLM4.5'
-                ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700'
-                : `bg-gradient-to-r ${agent.gradient} text-white`
-            }`}
-            style={{ 
-              boxShadow: agent.name === 'GLM4.5' 
-                ? '0 4px 15px rgba(59, 130, 246, 0.25)' 
-                : `0 4px 15px ${agent.color}25` 
-            }}
-=======
             className={`w-full ${
               agent.detailedSuggestion.includes("❌ Model unavailable")
                 ? 'bg-red-500/80 cursor-not-allowed' 
                 : `bg-gradient-to-r ${agent.gradient}`
             } text-white rounded-lg py-2 px-3 md:px-4 flex items-center justify-center gap-1 md:gap-2 font-medium hover:shadow-lg transition-shadow text-sm`}
             style={{ boxShadow: `0 4px 15px ${agent.color}25` }}
->>>>>>> b54f5fd2a6c5268e2d21c3c6f34dea5fb330feaf
           >
             {agent.detailedSuggestion.includes("❌ Model unavailable") ? "API call failed" : "Apply suggestion"}
             <ArrowRight size={16} />
