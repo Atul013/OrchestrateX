@@ -47,9 +47,22 @@ export const AgentCard: React.FC<AgentCardProps> = ({ agent, onSelectAgent }) =>
             className="w-8 h-8 md:w-10 md:h-10 rounded-lg flex items-center justify-center text-white font-bold text-sm md:text-base"
             style={{ backgroundColor: agent.color }}
           >
-            {typeof agent.icon === 'string' && (agent.icon.endsWith('.png') || agent.icon.endsWith('.jpeg'))
-              ? <img src={agent.icon} alt={agent.name + ' logo'} className="w-7 h-7 md:w-9 md:h-9 object-contain" />
-              : agent.icon}
+            {typeof agent.icon === 'string' && (agent.icon.startsWith('/icons/') || agent.icon.startsWith('/assets/') || agent.icon.includes('.png') || agent.icon.includes('.jpg') || agent.icon.includes('.jpeg'))
+              ? <img 
+                  src={agent.icon} 
+                  alt={agent.name + ' logo'} 
+                  className="w-7 h-7 md:w-9 md:h-9 object-contain rounded" 
+                  onError={(e) => {
+                    console.error(`Failed to load icon for ${agent.name}:`, agent.icon);
+                    // Keep the image element but make it invisible and show the text icon instead
+                    e.currentTarget.style.display = 'none';
+                    e.currentTarget.nextElementSibling?.removeAttribute('style');
+                  }}
+                />
+              : null}
+            <span className={`text-xl ${typeof agent.icon === 'string' && (agent.icon.startsWith('/icons/') || agent.icon.startsWith('/assets/')) ? 'hidden' : ''}`}>
+              {typeof agent.icon === 'string' && !agent.icon.startsWith('/icons/') && !agent.icon.startsWith('/assets/') ? agent.icon : '🤖'}
+            </span>
           </motion.div>
           <div>
             <h3 className="text-white font-semibold text-sm md:text-base">{agent.name}</h3>
@@ -78,9 +91,12 @@ export const AgentCard: React.FC<AgentCardProps> = ({ agent, onSelectAgent }) =>
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              console.log('Button clicked for agent:', agent.name);
-              onSelectAgent(agent);
+              if (!agent.detailedSuggestion.includes("❌ Model unavailable")) {
+                console.log('Button clicked for agent:', agent.name);
+                onSelectAgent(agent);
+              }
             }}
+<<<<<<< HEAD
             className={`w-full rounded-lg py-2 px-3 md:px-4 flex items-center justify-center gap-1 md:gap-2 font-medium hover:shadow-lg transition-all duration-300 text-sm ${
               agent.name === 'GLM4.5'
                 ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700'
@@ -91,8 +107,16 @@ export const AgentCard: React.FC<AgentCardProps> = ({ agent, onSelectAgent }) =>
                 ? '0 4px 15px rgba(59, 130, 246, 0.25)' 
                 : `0 4px 15px ${agent.color}25` 
             }}
+=======
+            className={`w-full ${
+              agent.detailedSuggestion.includes("❌ Model unavailable")
+                ? 'bg-red-500/80 cursor-not-allowed' 
+                : `bg-gradient-to-r ${agent.gradient}`
+            } text-white rounded-lg py-2 px-3 md:px-4 flex items-center justify-center gap-1 md:gap-2 font-medium hover:shadow-lg transition-shadow text-sm`}
+            style={{ boxShadow: `0 4px 15px ${agent.color}25` }}
+>>>>>>> b54f5fd2a6c5268e2d21c3c6f34dea5fb330feaf
           >
-            Apply suggestion
+            {agent.detailedSuggestion.includes("❌ Model unavailable") ? "API call failed" : "Apply suggestion"}
             <ArrowRight size={16} />
           </motion.button>
         </motion.div>
@@ -106,14 +130,20 @@ export const AgentCard: React.FC<AgentCardProps> = ({ agent, onSelectAgent }) =>
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            console.log('Default button clicked for agent:', agent.name);
-            onSelectAgent(agent);
+            if (!agent.detailedSuggestion.includes("❌ Model unavailable")) {
+              console.log('Default button clicked for agent:', agent.name);
+              onSelectAgent(agent);
+            }
           }}
-          className={`w-full bg-slate-700/50 text-slate-300 rounded-lg py-2 px-3 md:px-4 flex items-center justify-center gap-1 md:gap-2 font-medium hover:bg-slate-600/50 transition-colors text-sm ${
+          className={`w-full ${
+            agent.detailedSuggestion.includes("❌ Model unavailable")
+              ? 'bg-red-500/50 text-red-200 cursor-not-allowed' 
+              : 'bg-slate-700/50 text-slate-300 hover:bg-slate-600/50'
+          } rounded-lg py-2 px-3 md:px-4 flex items-center justify-center gap-1 md:gap-2 font-medium transition-colors text-sm ${
             isHovered ? 'pointer-events-none' : ''
           }`}
         >
-          Apply suggestion
+          {agent.detailedSuggestion.includes("❌ Model unavailable") ? "API call failed" : "Apply suggestion"}
           <ArrowRight size={16} />
         </motion.button>
       </motion.div>

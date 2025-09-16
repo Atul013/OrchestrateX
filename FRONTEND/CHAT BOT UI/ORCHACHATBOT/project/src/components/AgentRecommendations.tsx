@@ -31,10 +31,9 @@ export const AgentRecommendations: React.FC<AgentRecommendationsProps> = ({
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.5 }}
-        className="p-4 md:p-6 border-b border-slate-700/50 flex-shrink-0"
+        className="p-4 md:p-6 border-b border-slate-700/50 flex-shrink-0 relative z-10"
       >
-        <h2 className="text-white text-lg md:text-xl font-semibold mb-2">Model Insights & Actions</h2>
-        <p className="text-slate-400 text-sm md:text-base">Model Recommendations</p>
+        <h2 className="text-white text-lg md:text-xl font-semibold">Model Recommendations</h2>
       </motion.div>
 
       <section

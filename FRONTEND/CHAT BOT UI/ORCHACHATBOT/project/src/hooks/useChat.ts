@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import { Chat, Message, AppState, AIAgent } from '../types';
 import { AI_AGENTS } from '../constants/agents';
 import { orchestrateAPI, OrchestrateResponse } from '../services/orchestrateAPI';
+import { getModelConfig } from '../utils/logos';
 
 export const useChat = () => {
   const [appState, setAppState] = useState<AppState>({
@@ -69,7 +70,6 @@ export const useChat = () => {
         return;
       }
 
-<<<<<<< HEAD
       console.log('🚀 [DEBUG] Creating user message...');
       const userMessage: Message = {
         id: generateId(),
@@ -162,46 +162,6 @@ export const useChat = () => {
       
       // Update to show critique generation
       updateLoadingMessage('🔍 Generating critiques from other models...');
-      
-      // Model configurations with proper logos
-      const modelColors = [
-        { 
-          color: "blue", 
-          gradient: "from-blue-500 to-cyan-500", 
-          icon: "/icons/zhipu.png",
-          name: "GLM-4.5 Air"
-        },
-        { 
-          color: "purple", 
-          gradient: "from-purple-500 to-pink-500", 
-          icon: "/icons/tngtech.png",
-          name: "TNG DeepSeek"
-        },
-        { 
-          color: "green", 
-          gradient: "from-green-500 to-emerald-500", 
-          icon: "/icons/moonshot.png",
-          name: "MoonshotAI Kimi"
-        },
-        { 
-          color: "orange", 
-          gradient: "from-orange-500 to-red-500", 
-          icon: "/icons/openai.png",
-          name: "GPT-OSS 120B"
-        },
-        { 
-          color: "indigo", 
-          gradient: "from-indigo-500 to-purple-500", 
-          icon: "/icons/meta.png",
-          name: "Llama 4 Maverick"
-        },
-        { 
-          color: "teal", 
-          gradient: "from-teal-500 to-cyan-500", 
-          icon: "/icons/qwen.png",
-          name: "Qwen3 Coder"
-        }
-      ];
 
       // Immediately show the primary response
       const assistantMessage: Message = {
@@ -228,45 +188,40 @@ export const useChat = () => {
         };
       });
 
-      // Progressively show critiques for better UX
-      let critiquesProcessed = 0;
+      // Create recommendations that include ALL 6 models (primary + critiques + failed ones)
+      const allModels = ["GLM4.5", "TNG DeepSeek", "MoonshotAI Kimi", "GPT-OSS", "Llama 4 Maverick", "Qwen3"];
       
-      for (let i = 0; i < response.critiques.length; i++) {
-        await new Promise(resolve => setTimeout(resolve, 200 * i)); // Stagger critique appearance
+      // Create final agent recommendations with ALL 6 models
+      const finalAgentRecommendations: AIAgent[] = allModels.map((modelName, index) => {
+        const modelConfig = getModelConfig(modelName);
+        const critique = response.critiques.find(c => c.model_name === modelName);
+        const isPrimary = response.primary_response.model_name === modelName;
         
-        critiquesProcessed++;
-        const aiAgentRecommendations: AIAgent[] = response.critiques.slice(0, critiquesProcessed).map((critique, index) => ({
+        let detailedSuggestion = "";
+        if (isPrimary) {
+          detailedSuggestion = "✅ Primary Response Provider";
+        } else if (critique) {
+          detailedSuggestion = critique.critique_text;
+        } else {
+          detailedSuggestion = "❌ Model unavailable (rate limit or error)";
+        }
+        
+        return {
           id: `ai-agent-${index}`,
-          name: critique.model_name,
-          shortDescription: "AI Analysis & Feedback",
-          detailedSuggestion: critique.critique_text,
-          color: modelColors[index]?.color || "gray",
-          gradient: modelColors[index]?.gradient || "from-gray-500 to-slate-500",
-          icon: modelColors[index]?.icon || "🤖",
-          specialties: ["AI Analysis", "Response Critique", "Model Feedback"]
-        }));
-        
-        setAppState(prev => ({
-          ...prev,
-          agentRecommendations: aiAgentRecommendations
-        }));
-      }
-
-      // Final update with all critiques
-      const finalAgentRecommendations: AIAgent[] = response.critiques.map((critique, index) => ({
-        id: `ai-agent-${index}`,
-        name: critique.model_name,
-        shortDescription: "AI Analysis & Feedback", 
-        detailedSuggestion: critique.critique_text,
-        color: modelColors[index]?.color || "gray",
-        gradient: modelColors[index]?.gradient || "from-gray-500 to-slate-500",
-        icon: modelColors[index]?.icon || "🤖",
-        specialties: ["AI Analysis", "Response Critique", "Model Feedback"]
-      }));
+          name: modelName,
+          shortDescription: isPrimary ? "Primary Response" : "AI Analysis & Feedback",
+          detailedSuggestion: detailedSuggestion,
+          color: modelConfig.color,
+          gradient: modelConfig.gradient,
+          icon: modelConfig.icon,
+          specialties: isPrimary ? ["Primary Model", "Response Generation"] : ["AI Analysis", "Response Critique", "Model Feedback"]
+        };
+      });
       
+      // Set the final agent recommendations with all 6 models
       setAppState(prev => ({
         ...prev,
-        agentRecommendations: finalAgentRecommendations.length > 0 ? finalAgentRecommendations : prev.agentRecommendations
+        agentRecommendations: finalAgentRecommendations
       }));
 
     } catch (error) {
@@ -499,61 +454,25 @@ export const useChat = () => {
       });
 
       // Progressively show critiques for better UX
-      const modelColors = [
-        { 
-          color: "blue", 
-          gradient: "from-blue-500 to-cyan-500", 
-          icon: "/icons/zhipu.png",
-          name: "GLM-4.5 Air"
-        },
-        { 
-          color: "purple", 
-          gradient: "from-purple-500 to-pink-500", 
-          icon: "/icons/tngtech.png",
-          name: "TNG DeepSeek"
-        },
-        { 
-          color: "green", 
-          gradient: "from-green-500 to-emerald-500", 
-          icon: "/icons/moonshot.png",
-          name: "MoonshotAI Kimi"
-        },
-        { 
-          color: "orange", 
-          gradient: "from-orange-500 to-red-500", 
-          icon: "/icons/openai.png",
-          name: "GPT-OSS 120B"
-        },
-        { 
-          color: "indigo", 
-          gradient: "from-indigo-500 to-purple-500", 
-          icon: "/icons/meta.png",
-          name: "Llama 4 Maverick"
-        },
-        { 
-          color: "teal", 
-          gradient: "from-teal-500 to-cyan-500", 
-          icon: "/icons/qwen.png",
-          name: "Qwen3 Coder"
-        }
-      ];
-
       let critiquesProcessed = 0;
       
       for (let i = 0; i < response.critiques.length; i++) {
         await new Promise(resolve => setTimeout(resolve, 200 * i)); // Stagger critique appearance
         
         critiquesProcessed++;
-        const aiAgentRecommendations = response.critiques.slice(0, critiquesProcessed).map((critique, index) => ({
-          id: `ai-agent-${index}`,
-          name: critique.model_name,
-          shortDescription: "AI Analysis & Feedback",
-          detailedSuggestion: critique.critique_text,
-          color: modelColors[index]?.color || "gray",
-          gradient: modelColors[index]?.gradient || "from-gray-500 to-slate-500",
-          icon: modelColors[index]?.icon || "🤖",
-          specialties: ["AI Analysis", "Response Critique", "Model Feedback"]
-        }));
+        const aiAgentRecommendations = response.critiques.slice(0, critiquesProcessed).map((critique, index) => {
+          const modelConfig = getModelConfig(critique.model_name);
+          return {
+            id: `ai-agent-${index}`,
+            name: critique.model_name,
+            shortDescription: "AI Analysis & Feedback",
+            detailedSuggestion: critique.critique_text,
+            color: modelConfig.color,
+            gradient: modelConfig.gradient,
+            icon: modelConfig.icon,
+            specialties: ["AI Analysis", "Response Critique", "Model Feedback"]
+          };
+        });
         
         setAppState(prev => ({
           ...prev,
@@ -562,16 +481,19 @@ export const useChat = () => {
       }
 
       // Final update with all critiques
-      const finalAgentRecommendations = response.critiques.map((critique, index) => ({
-        id: `ai-agent-${index}`,
-        name: critique.model_name,
-        shortDescription: "AI Analysis & Feedback", 
-        detailedSuggestion: critique.critique_text,
-        color: modelColors[index]?.color || "gray",
-        gradient: modelColors[index]?.gradient || "from-gray-500 to-slate-500",
-        icon: modelColors[index]?.icon || "🤖",
-        specialties: ["AI Analysis", "Response Critique", "Model Feedback"]
-      }));
+      const finalAgentRecommendations = response.critiques.map((critique, index) => {
+        const modelConfig = getModelConfig(critique.model_name);
+        return {
+          id: `ai-agent-${index}`,
+          name: critique.model_name,
+          shortDescription: "AI Analysis & Feedback", 
+          detailedSuggestion: critique.critique_text,
+          color: modelConfig.color,
+          gradient: modelConfig.gradient,
+          icon: modelConfig.icon,
+          specialties: ["AI Analysis", "Response Critique", "Model Feedback"]
+        };
+      });
       
       setAppState(prev => ({
         ...prev,
