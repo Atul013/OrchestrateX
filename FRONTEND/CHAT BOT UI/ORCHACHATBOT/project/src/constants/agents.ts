@@ -13,8 +13,8 @@ export const AI_AGENTS: AIAgent[] = [
     name: 'GLM4.5',
     shortDescription: '',
     detailedSuggestion: '',
-    color: '#8B5CF6',
-    gradient: 'from-purple-500 to-violet-600',
+    color: '#FFFFFF',
+    gradient: 'from-white to-gray-100',
     icon: zhipuLogo,
     specialties: []
   },
@@ -33,8 +33,8 @@ export const AI_AGENTS: AIAgent[] = [
     name: 'Llama 4 Maverick',
     shortDescription: '',
     detailedSuggestion: '',
-    color: '#3B82F6',
-    gradient: 'from-blue-500 to-indigo-600',
+    color: '#FFC220',
+    gradient: 'from-yellow-400 to-amber-500',
     icon: metaLogo,
     specialties: []
   },
@@ -53,8 +53,8 @@ export const AI_AGENTS: AIAgent[] = [
     name: 'Qwen3 Coder',
     shortDescription: '',
     detailedSuggestion: '',
-    color: '#F97316',
-    gradient: 'from-orange-500 to-red-600',
+    color: '#6B7280',
+    gradient: 'from-gray-500 to-gray-600',
     icon: alibabaLogo,
     specialties: []
   },
