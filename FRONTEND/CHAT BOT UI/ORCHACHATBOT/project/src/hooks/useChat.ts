@@ -60,43 +60,59 @@ export const useChat = () => {
     }));
   }, []);
   const sendMessage = useCallback(async (content: string) => {
-    if (!appState.currentChat) return;
+    try {
+      console.log('🚀 [DEBUG] sendMessage called with content:', content);
+      console.log('🚀 [DEBUG] appState.currentChat:', appState.currentChat);
+      
+      if (!appState.currentChat) {
+        console.error('❌ [DEBUG] No currentChat found, returning early');
+        return;
+      }
 
-    const userMessage: Message = {
-      id: generateId(),
-      content,
-      type: 'user',
-      timestamp: new Date()
-    };
-
-    // Add user message immediately and set sent state
-    setAppState(prev => {
-      const isFirstMessage = prev.currentChat && prev.currentChat.messages.length === 0;
-      const updatedCurrentChat = {
-        ...prev.currentChat!,
-        title: isFirstMessage ? content.slice(0, 50) + (content.length > 50 ? '...' : '') : prev.currentChat!.title,
-        messages: [...prev.currentChat!.messages, userMessage]
+<<<<<<< HEAD
+      console.log('🚀 [DEBUG] Creating user message...');
+      const userMessage: Message = {
+        id: generateId(),
+        content,
+        type: 'user',
+        timestamp: new Date()
       };
-      return {
-        ...prev,
-        isSent: true, // Set sent state when message is sent
-        currentChat: updatedCurrentChat,
-        chats: prev.chats.map(chat =>
-          chat.id === prev.currentChat!.id
-            ? updatedCurrentChat
-            : chat
-        )
+      console.log('🚀 [DEBUG] User message created:', userMessage);
+
+      // Add user message immediately and set sent state
+      console.log('🚀 [DEBUG] Adding user message to state...');
+      setAppState(prev => {
+        const isFirstMessage = prev.currentChat && prev.currentChat.messages.length === 0;
+        const updatedCurrentChat = {
+          ...prev.currentChat!,
+          title: isFirstMessage ? content.slice(0, 50) + (content.length > 50 ? '...' : '') : prev.currentChat!.title,
+          messages: [...prev.currentChat!.messages, userMessage]
+        };
+        return {
+          ...prev,
+          isSent: true, // Set sent state when message is sent
+          currentChat: updatedCurrentChat,
+          chats: prev.chats.map(chat =>
+            chat.id === prev.currentChat!.id
+              ? updatedCurrentChat
+              : chat
+          )
+        };
+      });
+      
+      console.log('🚀 [DEBUG] User message added to state');
+
+      // Add loading message
+      console.log('🚀 [DEBUG] Creating loading message...');
+      const loadingMessage: Message = {
+        id: generateId(),
+        content: '🤖 Routing to the best model and generating response...',
+        type: 'assistant',
+        timestamp: new Date()
       };
-    });
+      console.log('🚀 [DEBUG] Loading message created:', loadingMessage);
 
-    // Add loading message
-    const loadingMessage: Message = {
-      id: generateId(),
-      content: '🤖 Routing to the best model and generating response...',
-      type: 'assistant',
-      timestamp: new Date()
-    };
-
+    console.log('🚀 [DEBUG] Adding loading message to state...');
     setAppState(prev => {
       const updatedCurrentChat = {
         ...prev.currentChat!,
@@ -112,9 +128,11 @@ export const useChat = () => {
         )
       };
     });
+    console.log('🚀 [DEBUG] Loading message added to state');
 
     // Update loading message to show critique generation progress
     const updateLoadingMessage = (message: string) => {
+      console.log('🚀 [DEBUG] Updating loading message:', message);
       setAppState(prev => {
         const messages = [...prev.currentChat!.messages];
         const loadingIndex = messages.findIndex(msg => msg.id === loadingMessage.id);
@@ -133,23 +151,56 @@ export const useChat = () => {
     };
 
     // Show progress updates
+    console.log('🚀 [DEBUG] About to update loading message...');
     updateLoadingMessage('🎯 Best model selected, generating primary response...');
     
     try {
+      console.log('🚀 [DEBUG] About to call orchestrateAPI.orchestrateQuery...');
       // Call the backend API
       const response: OrchestrateResponse = await orchestrateAPI.orchestrateQuery(content);
+      console.log('✅ [DEBUG] orchestrateAPI.orchestrateQuery completed successfully:', response);
       
       // Update to show critique generation
       updateLoadingMessage('🔍 Generating critiques from other models...');
       
-      // Simulate progressive critique loading for better UX
+      // Model configurations with proper logos
       const modelColors = [
-        { color: "blue", gradient: "from-blue-500 to-cyan-500", icon: "🧠" },
-        { color: "purple", gradient: "from-purple-500 to-pink-500", icon: "⚡" },
-        { color: "green", gradient: "from-green-500 to-emerald-500", icon: "🎯" },
-        { color: "orange", gradient: "from-orange-500 to-red-500", icon: "🔥" },
-        { color: "indigo", gradient: "from-indigo-500 to-purple-500", icon: "💎" },
-        { color: "teal", gradient: "from-teal-500 to-cyan-500", icon: "🚀" }
+        { 
+          color: "blue", 
+          gradient: "from-blue-500 to-cyan-500", 
+          icon: "/icons/zhipu.png",
+          name: "GLM-4.5 Air"
+        },
+        { 
+          color: "purple", 
+          gradient: "from-purple-500 to-pink-500", 
+          icon: "/icons/tngtech.png",
+          name: "TNG DeepSeek"
+        },
+        { 
+          color: "green", 
+          gradient: "from-green-500 to-emerald-500", 
+          icon: "/icons/moonshot.png",
+          name: "MoonshotAI Kimi"
+        },
+        { 
+          color: "orange", 
+          gradient: "from-orange-500 to-red-500", 
+          icon: "/icons/openai.png",
+          name: "GPT-OSS 120B"
+        },
+        { 
+          color: "indigo", 
+          gradient: "from-indigo-500 to-purple-500", 
+          icon: "/icons/meta.png",
+          name: "Llama 4 Maverick"
+        },
+        { 
+          color: "teal", 
+          gradient: "from-teal-500 to-cyan-500", 
+          icon: "/icons/qwen.png",
+          name: "Qwen3 Coder"
+        }
       ];
 
       // Immediately show the primary response
@@ -219,7 +270,10 @@ export const useChat = () => {
       }));
 
     } catch (error) {
-      console.error('Failed to get response from backend:', error);
+      console.error('❌ [DEBUG] Failed to get response from backend:', error);
+      console.error('❌ [DEBUG] Error type:', typeof error);
+      console.error('❌ [DEBUG] Error details:', error instanceof Error ? error.message : String(error));
+      console.error('❌ [DEBUG] Error stack:', error instanceof Error ? error.stack : 'No stack trace');
       
       // Show error message
       const errorMessage: Message = {
@@ -228,6 +282,8 @@ export const useChat = () => {
         type: 'assistant',
         timestamp: new Date()
       };
+
+      console.log('❌ [DEBUG] Creating error message:', errorMessage);
 
       setAppState(prev => {
         const updatedMessages = prev.currentChat!.messages.slice(0, -1); // Remove loading message
@@ -245,6 +301,12 @@ export const useChat = () => {
           )
         };
       });
+    }
+    } catch (outerError) {
+      console.error('❌ [DEBUG] CRITICAL ERROR in sendMessage:', outerError);
+      console.error('❌ [DEBUG] This is a critical frontend error that crashed the component');
+      // Try to recover by showing a simple error
+      alert(`Critical error in chat: ${outerError instanceof Error ? outerError.message : String(outerError)}`);
     }
   }, [appState.currentChat]);
 
@@ -438,12 +500,42 @@ export const useChat = () => {
 
       // Progressively show critiques for better UX
       const modelColors = [
-        { color: "blue", gradient: "from-blue-500 to-cyan-500", icon: "🧠" },
-        { color: "purple", gradient: "from-purple-500 to-pink-500", icon: "⚡" },
-        { color: "green", gradient: "from-green-500 to-emerald-500", icon: "🎯" },
-        { color: "orange", gradient: "from-orange-500 to-red-500", icon: "🔥" },
-        { color: "indigo", gradient: "from-indigo-500 to-purple-500", icon: "💎" },
-        { color: "teal", gradient: "from-teal-500 to-cyan-500", icon: "🚀" }
+        { 
+          color: "blue", 
+          gradient: "from-blue-500 to-cyan-500", 
+          icon: "/icons/zhipu.png",
+          name: "GLM-4.5 Air"
+        },
+        { 
+          color: "purple", 
+          gradient: "from-purple-500 to-pink-500", 
+          icon: "/icons/tngtech.png",
+          name: "TNG DeepSeek"
+        },
+        { 
+          color: "green", 
+          gradient: "from-green-500 to-emerald-500", 
+          icon: "/icons/moonshot.png",
+          name: "MoonshotAI Kimi"
+        },
+        { 
+          color: "orange", 
+          gradient: "from-orange-500 to-red-500", 
+          icon: "/icons/openai.png",
+          name: "GPT-OSS 120B"
+        },
+        { 
+          color: "indigo", 
+          gradient: "from-indigo-500 to-purple-500", 
+          icon: "/icons/meta.png",
+          name: "Llama 4 Maverick"
+        },
+        { 
+          color: "teal", 
+          gradient: "from-teal-500 to-cyan-500", 
+          icon: "/icons/qwen.png",
+          name: "Qwen3 Coder"
+        }
       ];
 
       let critiquesProcessed = 0;
