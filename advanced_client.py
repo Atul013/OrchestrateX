@@ -393,9 +393,21 @@ class MultiModelOrchestrator:
                 }
                 
                 focus = focus_areas.get(model_name, "overall quality")
-                critique_prompt = f"""Critique {focus}: {original_response}
+                
+                # Customize critique prompts for shorter, focused responses
+                if model_name == "TNG DeepSeek":
+                    critique_prompt = f"""Analyze ONLY technical accuracy and logical flow: {original_response}
+
+Provide a 15-word critique focusing on: logical gaps, technical errors, or reasoning flaws. Be specific and concise."""
+                elif model_name == "Qwen3":
+                    critique_prompt = f"""Check ONLY factual precision and data accuracy: {original_response}
+
+Provide a 15-word critique focusing on: factual errors, data precision, or citation needs. Avoid technical logic points."""
+                else:
+                    critique_prompt = f"""Critique {focus}: {original_response}
 
 Give a 3-5 word critique about {focus}. Format: "Missing [specific thing]" or "Lacks [specific element]" or "Needs [specific improvement]"."""
+                
                 final_prompt = critique_prompt
                 response_type = "critique"
             else:
@@ -411,6 +423,16 @@ Give a 3-5 word critique about {focus}. Format: "Missing [specific thing]" or "L
                 "X-Title": "OrchestrateX Advanced Client"
             }
             
+            # Model-specific configuration for response length
+            if model_name == "TNG DeepSeek" and is_critique:
+                max_tokens = 100  # Very short technical critiques
+            elif model_name == "Qwen3" and is_critique:
+                max_tokens = 80   # Very short factual critiques  
+            elif model_name in ["TNG DeepSeek", "Qwen3"]:
+                max_tokens = 1500  # Shorter primary responses
+            else:
+                max_tokens = 4000  # Standard length for other models
+            
             payload = {
                 "model": openrouter_model,
                 "messages": [
@@ -419,7 +441,7 @@ Give a 3-5 word critique about {focus}. Format: "Missing [specific thing]" or "L
                         "content": final_prompt
                     }
                 ],
-                "max_tokens": 4000,
+                "max_tokens": max_tokens,
                 "temperature": temperature,
                 "top_p": 0.9
             }

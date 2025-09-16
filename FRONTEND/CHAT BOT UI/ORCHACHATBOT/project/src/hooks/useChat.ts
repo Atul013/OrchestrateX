@@ -233,7 +233,7 @@ export const useChat = () => {
       // Show error message
       const errorMessage: Message = {
         id: generateId(),
-        content: '❌ **Connection Error**: Unable to connect to OrchestrateX backend. Please make sure the backend server is running.\n\n**Available backends:**\n• FastAPI: localhost:8000\n• Flask Bridge: localhost:8002\n\n**Backend Features:** Multi-model orchestration, criticism collection, refinement workflow, MongoDB storage',
+        content: '❌ **Connection Error**: Unable to connect to OrchestrateX backend. Please check your internet connection and try again.\n\n**Features:** Multi-model orchestration, intelligent routing, real-time critiques, and advanced AI analysis.',
         type: 'assistant',
         timestamp: new Date()
       };
@@ -506,7 +506,7 @@ export const useChat = () => {
       // Show error message
       const errorMessage: Message = {
         id: generateId(),
-        content: '❌ **Connection Error**: Unable to connect to OrchestrateX backend. Please make sure the backend server is running.\n\n**Available backends:**\n• FastAPI: localhost:8000\n• Flask Bridge: localhost:8002\n\n**Backend Features:** Multi-model orchestration, criticism collection, refinement workflow, MongoDB storage',
+        content: '❌ **Connection Error**: Unable to connect to OrchestrateX backend. Please check your internet connection and try again.\n\n**Features:** Multi-model orchestration, intelligent routing, real-time critiques, and advanced AI analysis.',
         type: 'assistant',
         timestamp: new Date()
       };

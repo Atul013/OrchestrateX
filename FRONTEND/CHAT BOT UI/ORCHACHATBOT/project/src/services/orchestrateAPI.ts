@@ -37,9 +37,16 @@ class OrchestrateXAPI {
   private baseURL: string;
 
   constructor() {
-    // Using the Bridge API that connects UI → Algorithm → MongoDB
-    // Points to the working ui_bridge_api.py
-    this.baseURL = 'http://localhost:8002';
+    // Detect if we're running in production (Cloud Run) or development
+    const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+    
+    if (isProduction) {
+      // In production, use the same origin (Cloud Run URL)
+      this.baseURL = window.location.origin;
+    } else {
+      // In development, use localhost
+      this.baseURL = 'http://localhost:8002';
+    }
   }
 
   async orchestrateQuery(prompt: string): Promise<OrchestrateResponse> {

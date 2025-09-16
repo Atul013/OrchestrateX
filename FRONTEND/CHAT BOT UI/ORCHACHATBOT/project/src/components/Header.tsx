@@ -29,7 +29,7 @@ export const Header: React.FC<HeaderProps> = ({
     >
       <div className="flex items-center gap-4">
         <motion.a
-          href="http://localhost:5173"
+          href="https://orchestratex-84388526388.us-central1.run.app"
           target="_blank"
           rel="noopener noreferrer"
           initial={{ opacity: 0, x: -20 }}
