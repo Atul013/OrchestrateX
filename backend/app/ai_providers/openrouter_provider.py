@@ -161,7 +161,7 @@ class OpenRouterProvider(BaseAIProvider):
         except:
             return False
     
-    def get_available_models(self) -> List[str]:
+    def get_available_models(self) -> List[str]: # pyright: ignore[reportUndefinedVariable]
         """Get list of available models"""
         return list(self.MODEL_CONFIGS.keys())
     

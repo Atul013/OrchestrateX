@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Plus, MessageSquare, Edit, Trash2 } from 'lucide-react';
+import { Plus, MessageSquare, Edit, Trash2, Castle } from 'lucide-react';
 import { Chat } from '../types';
 
 interface SidebarProps {
@@ -42,10 +42,30 @@ export const Sidebar: React.FC<SidebarProps> = ({
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           onClick={onNewChat}
-          className="w-full bg-gradient-to-r from-purple-500 to-cyan-500 text-white rounded-lg p-3 mb-6 flex items-center justify-center gap-2 font-medium hover:shadow-lg hover:shadow-purple-500/25 transition-shadow overflow-hidden"
+          className="w-full bg-gradient-to-r from-purple-500 to-cyan-500 text-white rounded-lg p-3 mb-3 flex items-center justify-center gap-2 font-medium hover:shadow-lg hover:shadow-purple-500/25 transition-shadow overflow-hidden"
         >
           <Plus size={20} className="flex-shrink-0" />
           <span className="whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300">New Chat</span>
+        </motion.button>
+
+        {/* Enter Infinity Castle Button */}
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          onClick={() => {
+            // Play sound effect
+            const audio = new Audio('/infinity-castle-sound.mp3');
+            audio.volume = 0.5;
+            audio.play().catch(e => console.log('Audio play failed:', e));
+            // Navigate to Infinity Castle - increased delay to let audio finish
+            setTimeout(() => {
+              window.location.href = 'http://localhost:8001';
+            }, 2000);
+          }}
+          className="w-full bg-gradient-to-r from-amber-500 via-orange-500 to-red-600 text-white rounded-lg p-3 mb-6 flex items-center justify-center gap-2 font-medium hover:shadow-lg hover:shadow-amber-500/25 transition-shadow overflow-hidden"
+        >
+          <Castle size={18} className="flex-shrink-0" />
+          <span className="whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300">Infinity Castle</span>
         </motion.button>
 
         {/* Chat History */}
