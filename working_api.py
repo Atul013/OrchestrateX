@@ -6,34 +6,143 @@ Latest models with proper database storage
 
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from pymongo import MongoClient
+from google.cloud import firestore
+import firebase_admin
+from firebase_admin import credentials
 from datetime import datetime
 import random
 import time
 import json
 import os
+import requests
 
 app = Flask(__name__)
-CORS(app, origins=['http://localhost:5176', 'http://localhost:5175', 'http://localhost:5174', 'http://127.0.0.1:5176', 'http://127.0.0.1:5175', 'http://127.0.0.1:5174'], 
+CORS(app, origins=['http://localhost:5176', 'http://localhost:5175', 'http://localhost:5174', 'http://127.0.0.1:5176', 'http://127.0.0.1:5175', 'http://127.0.0.1:5174', 'https://orchestratex-frontend-84388526388.us-central1.run.app', 'https://chat.orchestratex.me', 'https://orchestratex.me'], 
      methods=['GET', 'POST', 'OPTIONS'], 
      allow_headers=['Content-Type', 'Authorization'])
 
-# MongoDB Docker connection (using new port 27019 for different network)
-MONGO_CONNECTION = "mongodb://project_admin:project_password@localhost:27019/orchestratex?authSource=admin"
-
-# Try to connect to MongoDB, fallback to temp files if not available
+# Initialize Firebase Admin SDK and Firestore
 try:
-    client = MongoClient(MONGO_CONNECTION, serverSelectionTimeoutMS=5000)
-    client.admin.command('ping')
-    db = client.orchestratex
-    mongodb_connected = True
-    print("✅ MongoDB Docker connected successfully!")
+    # Initialize Firebase Admin if not already done
+    if not firebase_admin._apps:
+        # Try to use default credentials (if GOOGLE_APPLICATION_CREDENTIALS is set)
+        # or service account key file
+        try:
+            firebase_admin.initialize_app()
+            print("✅ Firebase initialized with default credentials")
+        except Exception as e:
+            print(f"⚠️ Default credentials failed: {e}")
+            # Try with service account key file if it exists
+            service_account_path = "service-account-key.json"
+            if os.path.exists(service_account_path):
+                cred = credentials.Certificate(service_account_path)
+                firebase_admin.initialize_app(cred)
+                print(f"✅ Firebase initialized with service account: {service_account_path}")
+            else:
+                print("❌ No Firebase credentials found")
+                raise Exception("Firebase credentials not configured")
+    
+    # Initialize Firestore client
+    db = firestore.Client()
+    firestore_connected = True
+    print("✅ Firestore connected successfully!")
+    
 except Exception as e:
-    print(f"⚠️  MongoDB connection failed: {e}")
+    print(f"⚠️ Firestore connection failed: {e}")
     print("📁 Using temporary file storage as fallback")
-    mongodb_connected = False
-    client = None
+    firestore_connected = False
     db = None
+
+# Load API keys from orche.env
+def load_api_config():
+    """Load API configuration from orche.env"""
+    config = {}
+    env_file = 'orche.env'
+    
+    if os.path.exists(env_file):
+        with open(env_file, 'r') as f:
+            for line in f:
+                line = line.strip()
+                if '=' in line and not line.startswith('#') and not line.startswith('—'):
+                    key, value = line.split('=', 1)
+                    config[key.strip()] = value.strip()
+    
+    # Extract model configurations
+    models = {
+        'Llama-4-Maverick': {
+            'api_key': config.get('PROVIDER_LLAMA3_API_KEY', '').strip(),
+            'model_id': config.get('PROVIDER_LLAMA3_MODEL', 'meta-llama/llama-4-maverick:free')
+        },
+        'GLM-4.5': {
+            'api_key': config.get('PROVIDER_GLM45_API_KEY', '').strip(),
+            'model_id': config.get('PROVIDER_GLM45_MODEL', 'z-ai/glm-4.5-air:free')
+        },
+        'GPT-OSS': {
+            'api_key': config.get('PROVIDER_GPTOSS_API_KEY', '').strip(),
+            'model_id': config.get('PROVIDER_GPTOSS_MODEL', 'openai/gpt-oss-20b:free')
+        },
+        'Kimi-K2': {
+            'api_key': config.get('PROVIDER_KIMI_API_KEY', '').strip(),
+            'model_id': config.get('PROVIDER_KIMI_MODEL', 'moonshotai/kimi-dev-72b:free')
+        },
+        'Qwen3-Coder': {
+            'api_key': config.get('PROVIDER_QWEN3_API_KEY', '').strip(),
+            'model_id': config.get('PROVIDER_QWEN3_MODEL', 'qwen/Qwen3-coder:free')
+        },
+        'TNG-DeepSeek-R1T2': {
+            'api_key': config.get('PROVIDER_FALCON_API_KEY', '').strip(),
+            'model_id': config.get('PROVIDER_FALCON_MODEL', 'tngtech/deepseek-r1t2-chimera:free')
+        }
+    }
+    
+    return models
+
+def call_openrouter_api(api_key, model_id, prompt, max_tokens=2000):
+    """Call OpenRouter API for real AI responses"""
+    try:
+        headers = {
+            'Authorization': f'Bearer {api_key}',
+            'Content-Type': 'application/json',
+            'HTTP-Referer': 'https://orchestratex-frontend-84388526388.us-central1.run.app',
+            'X-Title': 'OrchestrateX'
+        }
+        
+        data = {
+            'model': model_id,
+            'messages': [{'role': 'user', 'content': prompt}],
+            'max_tokens': max_tokens,
+            'temperature': 0.7
+        }
+        
+        response = requests.post(
+            'https://openrouter.ai/api/v1/chat/completions',
+            headers=headers,
+            json=data,
+            timeout=30
+        )
+        
+        if response.status_code == 200:
+            result = response.json()
+            content = result['choices'][0]['message']['content']
+            usage = result.get('usage', {})
+            
+            return {
+                'success': True,
+                'content': content,
+                'tokens_used': usage.get('total_tokens', 0),
+                'cost_usd': usage.get('total_tokens', 0) * 0.000001  # Rough estimate
+            }
+        else:
+            return {
+                'success': False,
+                'error': f'API error {response.status_code}: {response.text}'
+            }
+            
+    except Exception as e:
+        return {
+            'success': False,
+            'error': str(e)
+        }
 
 # Latest 5 Model configurations from orche.env
 MODELS = [
@@ -41,93 +150,175 @@ MODELS = [
     {"name": "GPT-OSS", "specialty": "general", "strength": 0.90, "model_id": "openai/gpt-oss-120b:free"},
     {"name": "Llama-4-Maverick", "specialty": "coding", "strength": 0.88, "model_id": "meta-llama/llama-4-maverick:free"},
     {"name": "Kimi-K2", "specialty": "creative", "strength": 0.85, "model_id": "moonshotai/kimi-k2:free"},
+    {"name": "Qwen3-Coder", "specialty": "coding", "strength": 0.87, "model_id": "qwen/Qwen3-coder:free"},
     {"name": "TNG-DeepSeek-R1T2", "specialty": "analysis", "strength": 0.92, "model_id": "tngtech/deepseek-r1t2-chimera:free"}
 ]
 
-def simulate_model_response(model, prompt, delay=None):
-    """Simulate AI model response with realistic but fast delay"""
-    if delay is None:
-        delay = random.uniform(0.1, 0.3)  # Much faster: 0.1-0.3 seconds instead of 1-3
+def real_model_response(model, prompt):
+    """Call real AI model API instead of simulation"""
+    start_time = time.time()
     
-    time.sleep(delay)
+    # Load API configuration
+    api_models = load_api_config()
+    model_name = model["name"]
     
-    responses = {
-        "GLM-4.5": f"[GLM-4.5 Reasoning] Advanced analysis of '{prompt[:30]}...' - Multi-step reasoning with {random.randint(1,10)} key insights identified.",
-        "GPT-OSS": f"[GPT-OSS General] Comprehensive response to '{prompt[:30]}...' - Balanced approach with {random.randint(3,8)} perspectives covered.",
-        "Llama-4-Maverick": f"[Llama-4-Maverick Coding] Technical solution for '{prompt[:30]}...' - {random.randint(2,6)} implementation strategies provided.",
-        "Kimi-K2": f"[Kimi-K2 Creative] Creative interpretation of '{prompt[:30]}...' - Novel approach with {random.randint(4,9)} unique angles explored.",
-        "TNG-DeepSeek-R1T2": f"[TNG-DeepSeek Analysis] Deep analytical response to '{prompt[:30]}...' - {random.randint(5,12)} analytical dimensions examined."
-    }
+    if model_name not in api_models:
+        return {
+            "model_name": model_name,
+            "specialty": model["specialty"],
+            "response_text": f"❌ Model {model_name} not configured in orche.env",
+            "confidence": 0.0,
+            "processing_time": 0.0,
+            "processing_time_ms": 0,
+            "timestamp": datetime.now(),
+            "tokens_used": 0,
+            "cost_estimate": 0.0,
+            "success": False
+        }
     
-    return {
-        "model_name": model["name"],
-        "specialty": model["specialty"],
-        "response_text": responses.get(model["name"], f"Response from {model['name']}"),
-        "confidence": model["strength"] + random.uniform(-0.05, 0.05),
-        "processing_time": delay,  # Add this field that's used later
-        "processing_time_ms": int(delay * 1000),
-        "timestamp": datetime.now(),
-        "tokens_used": random.randint(100, 500),
-        "cost_estimate": round(random.uniform(0.001, 0.01), 4),
-        "success": True  # Add success flag
-    }
+    model_config = api_models[model_name]
+    api_key = model_config['api_key']
+    model_id = model_config['model_id']
+    
+    if not api_key:
+        return {
+            "model_name": model_name,
+            "specialty": model["specialty"],
+            "response_text": f"❌ API key not found for {model_name} in orche.env",
+            "confidence": 0.0,
+            "processing_time": 0.0,
+            "processing_time_ms": 0,
+            "timestamp": datetime.now(),
+            "tokens_used": 0,
+            "cost_estimate": 0.0,
+            "success": False
+        }
+    
+    # Call real API
+    result = call_openrouter_api(api_key, model_id, prompt)
+    processing_time = time.time() - start_time
+    
+    if result['success']:
+        return {
+            "model_name": model_name,
+            "specialty": model["specialty"],
+            "response_text": result['content'],
+            "confidence": model["strength"] + random.uniform(-0.05, 0.05),
+            "processing_time": processing_time,
+            "processing_time_ms": int(processing_time * 1000),
+            "timestamp": datetime.now(),
+            "tokens_used": result['tokens_used'],
+            "cost_estimate": result['cost_usd'],
+            "success": True
+        }
+    else:
+        return {
+            "model_name": model_name,
+            "specialty": model["specialty"],
+            "response_text": f"❌ API Error: {result['error']}",
+            "confidence": 0.0,
+            "processing_time": processing_time,
+            "processing_time_ms": int(processing_time * 1000),
+            "timestamp": datetime.now(),
+            "tokens_used": 0,
+            "cost_estimate": 0.0,
+            "success": False
+        }
 
 def generate_critique(critic_model, target_response, user_prompt):
-    """Generate critique from one model about another model's response"""
-    critique_templates = {
-        "GLM-4.5": f"From a reasoning perspective, {target_response['model_name']}'s response lacks {random.choice(['logical structure', 'deeper analysis', 'systematic thinking'])}. A better approach would involve {random.choice(['step-by-step analysis', 'multi-layered reasoning', 'causal relationships'])}.",
-        "GPT-OSS": f"The {target_response['model_name']} response is {random.choice(['too narrow', 'missing context', 'incomplete'])}. A more comprehensive approach should include {random.choice(['multiple perspectives', 'broader context', 'balanced viewpoints'])}.",
-        "Llama-4-Maverick": f"From a technical standpoint, {target_response['model_name']} missed {random.choice(['implementation details', 'practical considerations', 'optimization opportunities'])}. Better solution: {random.choice(['modular approach', 'scalable design', 'efficient algorithm'])}.",
-        "Kimi-K2": f"The {target_response['model_name']} response lacks {random.choice(['creativity', 'innovation', 'unique perspective'])}. More creative approach: {random.choice(['alternative angles', 'imaginative solutions', 'novel interpretations'])}.",
-        "TNG-DeepSeek-R1T2": f"Deep analysis reveals {target_response['model_name']}'s response is {random.choice(['surface-level', 'missing nuances', 'lacks depth'])}. Deeper insight needed: {random.choice(['underlying patterns', 'complex relationships', 'systemic analysis'])}."
-    }
+    """Generate real critique from one model about another model's response"""
     
-    return critique_templates.get(critic_model["name"], f"Alternative perspective on {target_response['model_name']}'s response.")
+    # Create a critique prompt
+    critique_prompt = f"""Please provide a constructive critique of the following AI response to the user's question.
+
+User's original question: "{user_prompt}"
+
+{target_response['model_name']}'s response: "{target_response['response_text']}"
+
+Please analyze this response and provide specific feedback on what could be improved, what was done well, and suggest alternative approaches. Keep your critique concise and helpful."""
+
+    # Use the real model API to generate critique
+    critique_response = real_model_response(critic_model, critique_prompt)
+    
+    if critique_response['success']:
+        return critique_response['response_text']
+    else:
+        # Fallback to simple critique if API fails
+        return f"Alternative perspective: [{critic_model['name']} {critic_model['specialty']}] {target_response['model_name']}'s response could benefit from additional analysis."
 
 def save_to_storage(data, collection_name):
-    """Save data to MongoDB only - no temp files needed"""
-    if mongodb_connected and db is not None:
+    """Save data to Firestore with proper collection separation"""
+    if firestore_connected and db is not None:
         try:
-            if collection_name == "prompts":  # Use prompts collection
-                result = db.prompts.insert_one(data)
-                print(f"✅ Stored in {collection_name}: {result.inserted_id}")
-                return str(result.inserted_id)
-            elif collection_name == "model_critiques":  # Use existing model_critiques collection
-                result = db.model_critiques.insert_one(data)
-                print(f"✅ Stored in {collection_name}: {result.inserted_id}")
-                return str(result.inserted_id)
-            elif collection_name == "model_outputs":  # NEW: For model outputs
-                result = db.model_outputs.insert_one(data)
-                print(f"✅ Stored in {collection_name}: {result.inserted_id}")
-                return str(result.inserted_id)
-            elif collection_name == "model_suggestions":  # NEW: For model recommendations
-                result = db.model_suggestions.insert_one(data)
-                print(f"✅ Stored in {collection_name}: {result.inserted_id}")
-                return str(result.inserted_id)
+            # Ensure proper collection mapping
+            collection_map = {
+                "user_prompts": "user_prompts",      # User input prompts
+                "model_responses": "model_responses", # Individual model responses
+                "model_critiques": "model_critiques", # Model critiques
+                "model_suggestions": "model_suggestions", # Best model recommendations
+                "sessions": "sessions",               # Session metadata
+                # Legacy collection names for compatibility
+                "prompts": "user_prompts",
+                "model_outputs": "model_responses"
+            }
+            
+            if collection_name in collection_map:
+                firestore_collection = collection_map[collection_name]
+                # Convert datetime objects to Firestore timestamp format
+                data_copy = data.copy()
+                if 'timestamp' in data_copy and isinstance(data_copy['timestamp'], datetime):
+                    data_copy['timestamp'] = data_copy['timestamp']
+                
+                # Add document to Firestore collection
+                doc_ref = db.collection(firestore_collection).add(data_copy)
+                doc_id = doc_ref[1].id  # doc_ref is a tuple (timestamp, DocumentReference)
+                print(f"✅ Stored in Firestore {firestore_collection}: {doc_id}")
+                return doc_id
+            else:
+                print(f"❌ Unknown collection: {collection_name}")
+                return None
+                
         except Exception as e:
-            print(f"❌ MongoDB write failed: {e}")
+            print(f"❌ Firestore write failed: {e}")
             return None
     else:
-        print("❌ MongoDB not connected!")
+        print("❌ Firestore not connected!")
         return None
 
 def get_from_storage(collection_name):
-    """Get data from MongoDB only"""
-    if mongodb_connected and db is not None:
+    """Get data from Firestore only"""
+    if firestore_connected and db is not None:
         try:
-            if collection_name == "prompts":  # Updated to use existing collection
-                return list(db.prompts.find().sort("timestamp", -1).limit(10))
-            elif collection_name == "model_critiques":
-                return list(db.model_critiques.find().sort("timestamp", -1).limit(10))
-            elif collection_name == "model_outputs":
-                return list(db.model_outputs.find().sort("timestamp", -1).limit(10))
-            elif collection_name == "model_suggestions":
-                return list(db.model_suggestions.find().sort("timestamp", -1).limit(10))
+            # Collection mapping for consistency
+            collection_map = {
+                "user_prompts": "user_prompts",
+                "model_responses": "model_responses", 
+                "model_critiques": "model_critiques",
+                "model_suggestions": "model_suggestions",
+                "sessions": "sessions",
+                # Legacy mapping
+                "prompts": "user_prompts",
+                "model_outputs": "model_responses"
+            }
+            
+            firestore_collection = collection_map.get(collection_name, collection_name)
+            
+            # Query Firestore collection ordered by timestamp (newest first), limit 10
+            docs = db.collection(firestore_collection).order_by('timestamp', direction=firestore.Query.DESCENDING).limit(10).stream()
+            
+            results = []
+            for doc in docs:
+                doc_data = doc.to_dict()
+                doc_data['_id'] = doc.id  # Add document ID for compatibility
+                results.append(doc_data)
+            
+            return results
+            
         except Exception as e:
-            print(f"❌ MongoDB read failed: {e}")
+            print(f"❌ Firestore read failed: {e}")
             return []
     else:
-        print("❌ MongoDB not connected!")
+        print("❌ Firestore not connected!")
         return []
 
 @app.route('/chat', methods=['POST'])
@@ -165,7 +356,7 @@ def chat():
         # Phase 1: All models generate initial responses
         model_responses = []
         for model in MODELS:
-            response = simulate_model_response(model, user_message)
+            response = real_model_response(model, user_message)
             model_responses.append(response)
             print(f"✅ {model['name']}: {response['response_text'][:50]}...")
         
@@ -251,8 +442,8 @@ def chat():
                 "session_id": session_id,
                 "total_models": len(model_responses),
                 "processing_time_seconds": round(total_time, 2),
-                "storage_method": "mongodb_docker" if mongodb_connected else "temporary_files",
-                "mongodb_status": "connected" if mongodb_connected else "not_connected"
+                "storage_method": "firestore" if firestore_connected else "temporary_files",
+                "firestore_status": "connected" if firestore_connected else "not_connected"
             }
         })
         
@@ -268,12 +459,12 @@ def status():
     
     return jsonify({
         "status": "healthy",
-        "storage_method": "mongodb_docker" if mongodb_connected else "temporary_files",
-        "mongodb_connected": mongodb_connected,
+        "storage_method": "firestore" if firestore_connected else "temporary_files",
+        "firestore_connected": firestore_connected,
         "user_prompts_stored": len(user_data),
         "model_responses_stored": len(response_data),
         "models_available": [m["name"] for m in MODELS],
-        "database_info": "MongoDB Docker on port 27019" if mongodb_connected else "File storage backup"
+        "database_info": "Google Cloud Firestore" if firestore_connected else "File storage backup"
     })
 
 @app.route('/analytics', methods=['GET'])
@@ -294,8 +485,8 @@ def analytics():
         "model_usage": model_usage,
         "recent_prompts": user_data[-5:] if user_data else [],
         "storage_info": {
-            "mongodb_connected": mongodb_connected,
-            "storage_method": "mongodb_docker" if mongodb_connected else "temporary_files"
+            "firestore_connected": firestore_connected,
+            "storage_method": "firestore" if firestore_connected else "temporary_files"
         }
     })
 
@@ -306,25 +497,28 @@ def home():
         "status": "running",
         "description": "5-Model Parallel Processing System",
         "endpoints": ["/chat", "/status", "/analytics"],
-        "storage": "temporary_files_until_mongodb_connected"
+        "storage": "firestore" if firestore_connected else "temporary_files"
     })
 
 if __name__ == '__main__':
     print("🚀 OrchestrateX Working API - Latest Models!")
-    if mongodb_connected:
-        print("📊 User prompts → MongoDB Docker (orchestratex.prompts)")
-        print("🤖 Model outputs → MongoDB Docker (orchestratex.model_outputs)")
-        print("🎯 Model suggestions → MongoDB Docker (orchestratex.model_suggestions)")
-        print("🔍 Model critiques → MongoDB Docker (orchestratex.model_critiques)")
-        print("🗄️ Database: mongodb://localhost:27019/orchestratex")  # Updated port too
+    if firestore_connected:
+        print("📊 User prompts → Google Cloud Firestore (orchestratex.user_prompts)")
+        print("🤖 Model outputs → Google Cloud Firestore (orchestratex.model_responses)")
+        print("🎯 Model suggestions → Google Cloud Firestore (orchestratex.model_suggestions)")
+        print("🔍 Model critiques → Google Cloud Firestore (orchestratex.model_critiques)")
+        print("🗄️ Database: Google Cloud Firestore")
     else:
         print("📊 User prompts → temp_storage/prompts.json")
         print("🤖 Model outputs → temp_storage/model_outputs.json")
         print("🎯 Model suggestions → temp_storage/model_suggestions.json")
-        print("⚠️  MongoDB fallback: Using file storage")
+        print("⚠️  Firestore fallback: Using file storage")
     print("⚡ 5-Latest-Model parallel simulation enabled")
     print("🔥 Models: GLM-4.5, GPT-OSS, Llama-4-Maverick, Kimi-K2, TNG-DeepSeek-R1T2")
-    print("🌐 Frontend should connect to: http://localhost:8002")
+    
+    # Get port from environment variable for Cloud Run compatibility
+    port = int(os.environ.get('PORT', 8002))
+    print(f"🌐 API running on port: {port}")
     print("=" * 60)
     
-    app.run(host='0.0.0.0', port=8002, debug=True)
+    app.run(host='0.0.0.0', port=port, debug=False)

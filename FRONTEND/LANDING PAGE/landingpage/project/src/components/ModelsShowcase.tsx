@@ -1,16 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Brain, BookOpen, Mountain, Rocket, Code, Layers3, ExternalLink, Info } from 'lucide-react';
+import { ExternalLink, Info } from 'lucide-react';
 import { models } from '../config/models';
-
-const iconMap = {
-  Brain,
-  BookOpen,
-  Mountain,
-  Rocket,
-  Code,
-  Layers3,
-};
 
 const CapabilityChart: React.FC<{ capabilities: any }> = ({ capabilities }) => {
   const maxValue = 100;
@@ -24,11 +15,11 @@ const CapabilityChart: React.FC<{ capabilities: any }> = ({ capabilities }) => {
             <motion.div
               className="bg-gradient-to-r from-primary to-cyan h-full rounded-full"
               initial={{ width: 0 }}
-              animate={{ width: `${(value as number / maxValue) * 100}%` }}
+              animate={{ width: `${(Number(value) / maxValue) * 100}%` }}
               transition={{ duration: 1, delay: 0.2 }}
             />
           </div>
-          <span className="text-sm text-white/60 w-8">{value}%</span>
+          <span className="text-sm text-white/60 w-8">{Number(value)}%</span>
         </div>
       ))}
     </div>
@@ -38,7 +29,6 @@ const CapabilityChart: React.FC<{ capabilities: any }> = ({ capabilities }) => {
 const ModelCard: React.FC<{ model: any; index: number }> = ({ model, index }) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const IconComponent = iconMap[model.icon as keyof typeof iconMap];
 
   return (
     <>
@@ -59,16 +49,20 @@ const ModelCard: React.FC<{ model: any; index: number }> = ({ model, index }) =>
           {/* Front of card */}
           <div className="absolute inset-0 backface-hidden bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 p-6 hover:bg-white/15 transition-colors">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 bg-gradient-to-r from-primary to-cyan rounded-xl flex items-center justify-center text-white font-bold text-lg">
-                <IconComponent className="w-6 h-6" />
+              <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center border border-white/30">
+                <img 
+                  src={model.logo} 
+                  alt={`${model.provider} logo`}
+                  className="w-8 h-8 object-contain filter brightness-0 invert"
+                />
               </div>
               <div>
                 <h3 className="text-xl font-display font-bold text-white">{model.name}</h3>
-                <p className="text-sm text-white/60">{model.provider}</p>
+                <p className="text-sm text-white/70 font-medium">{model.provider}</p>
               </div>
             </div>
             
-            <p className="text-white/80 mb-4 leading-relaxed">{model.description}</p>
+            <p className="text-white/90 mb-4 leading-relaxed text-sm">{model.description}</p>
             
             <div className="flex flex-wrap gap-2 mb-4">
               {model.specialties.slice(0, 3).map((specialty: string) => (
@@ -79,10 +73,10 @@ const ModelCard: React.FC<{ model: any; index: number }> = ({ model, index }) =>
             </div>
 
             <div className="mt-auto">
-              <div className="text-sm text-white/70 mb-2">Best for:</div>
+              <div className="text-sm text-white/80 mb-2 font-semibold">Best for:</div>
               <ul className="space-y-1">
                 {model.bestFor.slice(0, 2).map((use: string) => (
-                  <li key={use} className="text-sm text-white/60 flex items-center gap-2">
+                  <li key={use} className="text-sm text-white/70 flex items-center gap-2">
                     <div className="w-1.5 h-1.5 bg-lime rounded-full"></div>
                     {use}
                   </li>
@@ -92,18 +86,27 @@ const ModelCard: React.FC<{ model: any; index: number }> = ({ model, index }) =>
           </div>
 
           {/* Back of card */}
-          <div className="absolute inset-0 backface-hidden rotate-y-180 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 p-6">
-            <h4 className="text-lg font-semibold text-white mb-4">Capabilities</h4>
+          <div className="absolute inset-0 backface-hidden rotate-y-180 bg-dark/90 backdrop-blur-xl rounded-2xl border border-white/30 p-6 shadow-2xl">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center border border-white/30">
+                <img 
+                  src={model.logo} 
+                  alt={`${model.provider} logo`}
+                  className="w-6 h-6 object-contain filter brightness-0 invert"
+                />
+              </div>
+              <h4 className="text-lg font-semibold text-white">Capabilities</h4>
+            </div>
             <CapabilityChart capabilities={model.capabilities} />
             
-            <div className="mt-6 pt-4 border-t border-white/10">
+            <div className="mt-6 pt-4 border-t border-white/20">
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
-                  <span className="text-white/60">Latency (p50)</span>
+                  <span className="text-white/70">Latency (p50)</span>
                   <div className="text-white font-semibold">{model.latency.p50}ms</div>
                 </div>
                 <div>
-                  <span className="text-white/60">Cost/1k tokens</span>
+                  <span className="text-white/70">Cost/1k tokens</span>
                   <div className="text-white font-semibold">${model.cost}</div>
                 </div>
               </div>
@@ -111,7 +114,7 @@ const ModelCard: React.FC<{ model: any; index: number }> = ({ model, index }) =>
 
             <button
               onClick={() => setShowModal(true)}
-              className="mt-4 w-full px-4 py-2 bg-gradient-to-r from-primary to-magenta rounded-lg text-white font-semibold hover:scale-105 transition-transform flex items-center justify-center gap-2"
+              className="mt-4 w-full px-4 py-2 bg-gradient-to-r from-primary to-magenta rounded-lg text-white font-semibold hover:scale-105 transition-transform flex items-center justify-center gap-2 shadow-lg"
             >
               Run Sample <ExternalLink className="w-4 h-4" />
             </button>

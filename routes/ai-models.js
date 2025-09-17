@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const AIModelManager = require('../models/AIModelManager');
+const AIOrchestrator = require('../models/AIOrchestrator');
 const { v4: uuidv4 } = require('uuid');
 
 // 1. Store prompt from frontend
@@ -193,34 +194,68 @@ router.get('/analytics/:timeRange?', async (req, res) => {
   }
 });
 
-// 8. Process prompt with all 6 models (main orchestration endpoint)
+// Chat endpoint (matching working_api.py interface)
+router.post('/chat', async (req, res) => {
+  try {
+    const { message, session_id } = req.body;
+    
+    if (!message || message.trim() === '') {
+      return res.status(400).json({
+        success: false,
+        error: 'Message is required'
+      });
+    }
+    
+    const sessionId = session_id || uuidv4();
+    
+    console.log(`💬 Chat request received for session: ${sessionId}`);
+    
+    // Process through AIOrchestrator
+    const result = await AIOrchestrator.processPrompt(
+      message.trim(),
+      sessionId,
+      'anonymous'
+    );
+    
+    res.json(result);
+    
+  } catch (error) {
+    console.error('❌ Chat error:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+// 8. Process prompt with all 5 models (main orchestration endpoint)
 router.post('/orchestrate', async (req, res) => {
   try {
     const { prompt, userId, sessionId } = req.body;
+    
+    if (!prompt || prompt.trim() === '') {
+      return res.status(400).json({
+        success: false,
+        message: 'Prompt is required'
+      });
+    }
+    
     const newSessionId = sessionId || uuidv4();
     
-    // Store the prompt
-    const promptResult = await AIModelManager.storePrompt({
-      content: prompt,
-      userId: userId || 'anonymous',
-      sessionId: newSessionId,
-      userAgent: req.get('User-Agent'),
-      ip: req.ip
-    });
-
-    // This would trigger processing with all 6 models
-    // (You'll implement the actual AI model calls here)
+    console.log(`🚀 Starting AI orchestration for session: ${newSessionId}`);
     
-    res.status(202).json({
-      success: true,
-      message: 'Prompt orchestration started - processing with all 6 models',
-      promptId: promptResult.id,
-      sessionId: newSessionId,
-      modelsToProcess: Object.keys(AIModelManager.models),
-      status: 'processing'
-    });
+    // Process prompt through all 5 models using AIOrchestrator
+    const result = await AIOrchestrator.processPrompt(
+      prompt.trim(),
+      newSessionId,
+      userId || 'anonymous'
+    );
+    
+    // Return the complete orchestration result
+    res.status(200).json(result);
     
   } catch (error) {
+    console.error('❌ Orchestration error:', error);
     res.status(500).json({
       success: false,
       message: 'Failed to orchestrate prompt processing',

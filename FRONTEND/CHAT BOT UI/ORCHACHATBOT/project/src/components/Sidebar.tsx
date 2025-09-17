@@ -44,19 +44,19 @@ export const Sidebar: React.FC<SidebarProps> = ({
           onClick={onNewChat}
           className="w-full bg-gradient-to-r from-purple-500 to-cyan-500 text-white rounded-lg p-3 mb-6 flex items-center justify-center gap-2 font-medium hover:shadow-lg hover:shadow-purple-500/25 transition-shadow overflow-hidden"
         >
-          <Plus size={18} className="flex-shrink-0" />
+          <Plus size={20} className="flex-shrink-0" />
           <span className="whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300">New Chat</span>
         </motion.button>
 
         {/* Chat History */}
         <div className="flex-1 overflow-y-auto custom-scrollbar">
           <div className="text-slate-400 text-sm font-medium mb-3 flex items-center gap-2 overflow-hidden">
-            <MessageSquare size={16} className="flex-shrink-0" />
+            <MessageSquare size={16} className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             <span className="whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300">Recent</span>
           </div>
           
           {chats.length === 0 ? (
-            <p className="text-slate-500 text-sm">No recent chats</p>
+            <p className="text-slate-500 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">No recent chats</p>
           ) : (
             <div className="space-y-2">
               {chats.map((chat) => (

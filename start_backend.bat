@@ -1,13 +1,20 @@
 @echo off
-echo Starting OrchestrateX Backend...
+echo Starting OrchestrateX Backend with Google Cloud Firestore...
 
-REM Check if virtual environment exists
-if not exist "venv" (
-    echo Creating virtual environment...
-    python -m venv venv
-)
+echo.
+echo ========================================
+echo    OrchestrateX Backend Starting
+echo ========================================
+echo.
+echo Database: Google Cloud Firestore
+echo Models: 6 AI Models Supported
+echo Port: 8002
+echo.
 
-REM Activate virtual environment
+cd /d "%~dp0"
+node app.js
+
+pause
 call venv\Scripts\activate
 
 REM Install dependencies if not already installed

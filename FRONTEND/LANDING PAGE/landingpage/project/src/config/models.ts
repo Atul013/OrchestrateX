@@ -23,6 +23,7 @@ export interface ModelConfig {
     openRouter: string;
   };
   icon: string;
+  logo: string; // Path to provider logo
 }
 
 export const models: ModelConfig[] = [
@@ -48,6 +49,7 @@ export const models: ModelConfig[] = [
       openRouter: 'https://openrouter.ai/models/zai-org/GLM-4.5',
     },
     icon: 'Brain',
+    logo: '/icons/zhipu-removebg-preview.png',
   },
   {
     id: 'gpt-oss',
@@ -70,6 +72,7 @@ export const models: ModelConfig[] = [
       openRouter: 'https://openrouter.ai/models/openai/gpt-oss-120b',
     },
     icon: 'BookOpen',
+    logo: '/icons/openai1-removebg-preview.png',
   },
   {
     id: 'llama4-maverick',
@@ -92,6 +95,7 @@ export const models: ModelConfig[] = [
       openRouter: 'https://openrouter.ai/models/meta-llama/llama-4-maverick',
     },
     icon: 'Mountain',
+    logo: '/icons/meta-removebg-preview.png',
   },
   {
     id: 'moonshot-kimi',
@@ -114,6 +118,7 @@ export const models: ModelConfig[] = [
       openRouter: 'https://openrouter.ai/models/moonshotai/kimi-dev-72b',
     },
     icon: 'Rocket',
+    logo: '/icons/moonshot-removebg-preview.png',
   },
   {
     id: 'qwen3-coder',
@@ -136,6 +141,7 @@ export const models: ModelConfig[] = [
       openRouter: 'https://openrouter.ai/models/qwen/qwen3-coder',
     },
     icon: 'Code',
+    logo: '/icons/alibaba-removebg-preview.png',
   },
   {
     id: 'deepseek-chimera',
@@ -158,6 +164,7 @@ export const models: ModelConfig[] = [
       openRouter: 'https://openrouter.ai/models/tngtech/deepseek-r1t2-chimera',
     },
     icon: 'Layers3',
+    logo: '/icons/tngtech-removebg-preview.png',
   },
 ];
 

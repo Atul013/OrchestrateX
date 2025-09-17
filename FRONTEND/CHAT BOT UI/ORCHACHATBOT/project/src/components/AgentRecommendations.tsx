@@ -44,7 +44,7 @@ export const AgentRecommendations: React.FC<AgentRecommendationsProps> = ({
       >
         <div ref={topRef} />
         <div
-          className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 w-full"
+          className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-2 md:gap-3 w-full"
           style={{ minHeight: 0 }}
         >
           {agents.map((agent, index) => (

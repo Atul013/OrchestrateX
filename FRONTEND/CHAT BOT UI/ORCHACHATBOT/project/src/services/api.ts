@@ -1,12 +1,10 @@
 // API Configuration for OrchestrateX Frontend
 export const API_CONFIG = {
-  BASE_URL: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
-    ? 'http://localhost:8002' 
-    : 'https://api.orchestratex.me',
+  BASE_URL: 'https://orchestratex-api-84388526388.us-central1.run.app',
   ENDPOINTS: {
     CHAT: '/chat',
     MODELS: '/models',
-    HEALTH: '/health'
+    HEALTH: '/status'
   }
 };
 
@@ -19,14 +17,23 @@ export const apiService = {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ message }),
+        body: JSON.stringify({ 
+          message: message
+        }),
       });
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       
-      return await response.json();
+      const data = await response.json();
+      return {
+        response: data.primary_response?.response_text || data.message || 'Response received',
+        model: data.primary_response?.model_name || 'auto-selected',
+        status: 'success',
+        critiques: data.critiques || [],
+        metadata: data.metadata || {}
+      };
     } catch (error) {
       console.error('API call failed:', error);
       // Fallback to mock response

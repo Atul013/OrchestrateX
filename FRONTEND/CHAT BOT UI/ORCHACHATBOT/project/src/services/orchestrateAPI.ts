@@ -37,16 +37,8 @@ class OrchestrateXAPI {
   private baseURL: string;
 
   constructor() {
-    // Detect if we're running in production (Cloud Run) or development
-    const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
-    
-    if (isProduction) {
-      // In production, use the same origin (Cloud Run URL)
-      this.baseURL = window.location.origin;
-    } else {
-      // In development, use localhost
-      this.baseURL = 'http://localhost:8002';
-    }
+    // Use the new Python API deployed to Cloud Run
+    this.baseURL = 'https://orchestratex-api-84388526388.us-central1.run.app';
   }
 
   async orchestrateQuery(prompt: string): Promise<OrchestrateResponse> {
@@ -54,9 +46,11 @@ class OrchestrateXAPI {
     console.log('🚀 [DEBUG] baseURL:', this.baseURL);
     
     try {
-      console.log('🚀 [DEBUG] Calling backend API at:', `${this.baseURL}/chat`);
+      console.log('🚀 [DEBUG] Calling Python API at:', `${this.baseURL}/chat`);
       
-      const requestBody = { message: prompt };
+      const requestBody = { 
+        message: prompt
+      };
       console.log('🚀 [DEBUG] Request body:', requestBody);
       
       const response = await fetch(`${this.baseURL}/chat`, {
@@ -91,7 +85,7 @@ class OrchestrateXAPI {
         primary_response: {
           success: false,
           model_name: 'Error',
-          response_text: `❌ Unable to connect to backend. Please ensure the backend API is running on port 8002. Error: ${error}`,
+          response_text: `❌ Unable to connect to backend API at ${this.baseURL}. Error: ${error}`,
           tokens_used: 0,
           cost_usd: 0,
           latency_ms: 0
@@ -109,12 +103,12 @@ class OrchestrateXAPI {
 
   async getModelRecommendation(prompt: string): Promise<ModelSelectorResponse> {
     try {
-      const response = await fetch(`${this.baseURL}/predict`, {
+      const response = await fetch(`${this.baseURL}/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ prompt }),
+        body: JSON.stringify({ message: prompt }),
       });
 
       if (!response.ok) {
@@ -134,7 +128,7 @@ class OrchestrateXAPI {
 
   async healthCheck(): Promise<boolean> {
     try {
-      const response = await fetch(`${this.baseURL}/health`);
+      const response = await fetch(`${this.baseURL}/status`);
       return response.ok;
     } catch (error) {
       console.error('Health check failed:', error);

@@ -32,9 +32,9 @@ class AIModelManager {
         timestamp: new Date().toISOString(),
         source: 'frontend',
         metadata: {
-          userAgent: promptData.userAgent,
-          ip: promptData.ip,
-          promptLength: promptData.content.length,
+          userAgent: promptData.userAgent || 'unknown',
+          ip: promptData.ip || 'unknown',
+          promptLength: promptData.content ? promptData.content.length : 0,
           language: promptData.language || 'en'
         }
       };
