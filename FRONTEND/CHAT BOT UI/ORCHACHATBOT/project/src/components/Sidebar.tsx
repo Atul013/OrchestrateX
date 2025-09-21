@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Plus, MessageSquare, Edit, Trash2, Castle } from 'lucide-react';
+import { Plus, MessageSquare, Edit, Trash2 } from 'lucide-react';
 import { Chat } from '../types';
 
 interface SidebarProps {
@@ -48,25 +48,22 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <span className="whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300">New Chat</span>
         </motion.button>
 
-        {/* Enter Infinity Castle Button */}
-        <motion.button
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          onClick={() => {
-            // Play sound effect
-            const audio = new Audio('/infinity-castle-sound.mp3');
-            audio.volume = 0.5;
-            audio.play().catch(e => console.log('Audio play failed:', e));
-            // Navigate to Infinity Castle - increased delay to let audio finish
-            setTimeout(() => {
-              window.location.href = 'http://localhost:8001';
-            }, 2000);
-          }}
-          className="w-full bg-gradient-to-r from-amber-500 via-orange-500 to-red-600 text-white rounded-lg p-3 mb-6 flex items-center justify-center gap-2 font-medium hover:shadow-lg hover:shadow-amber-500/25 transition-shadow overflow-hidden"
+        {/* Infinity Castle Image Button */}
+        <motion.a
+          href="https://castle.orchestratex.me"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block w-full mb-6 cursor-pointer group/castle"
         >
-          <Castle size={18} className="flex-shrink-0" />
-          <span className="whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300">Infinity Castle</span>
-        </motion.button>
+          <div className="w-full rounded-lg overflow-hidden shadow-lg hover:shadow-xl hover:shadow-red-500/30 transition-all duration-300 hover:ring-1 hover:ring-red-400/50 p-2 flex items-center gap-2">
+            <img 
+              src="/castle.png" 
+              alt="Infinity Castle" 
+              className="w-8 h-8 object-cover hover:brightness-125 transition-all duration-300 flex-shrink-0"
+            />
+            <span className="text-white text-sm font-medium opacity-0 group-hover/castle:opacity-100 transition-opacity duration-300 whitespace-nowrap overflow-hidden">Infinity Castle</span>
+          </div>
+        </motion.a>
 
         {/* Chat History */}
         <div className="flex-1 overflow-y-auto custom-scrollbar">

@@ -1,0 +1,36 @@
+# Multi-stage build for frontend
+FROM node:18-alpine as builder
+
+# Build chat frontend
+WORKDIR /app/chat
+COPY "FRONTEND/CHAT BOT UI/ORCHACHATBOT/project/package*.json" ./
+RUN npm install
+COPY "FRONTEND/CHAT BOT UI/ORCHACHATBOT/project/" ./
+RUN npm run build
+
+# Build castle frontend  
+WORKDIR /app/castle
+COPY "FRONTEND/CHAT BOT UI/ORCHACHATBOT_INFINITY_CASTLE/project/package*.json" ./
+RUN npm install
+COPY "FRONTEND/CHAT BOT UI/ORCHACHATBOT_INFINITY_CASTLE/project/" ./
+RUN npm run build
+
+# Nginx stage
+FROM nginx:alpine
+
+# Copy built assets (default to chat, can be overridden)
+COPY --from=builder /app/chat/dist/ /usr/share/nginx/html/
+
+# Create nginx config for SPA
+RUN echo 'server { \
+    listen 8080; \
+    server_name _; \
+    location / { \
+        root /usr/share/nginx/html; \
+        index index.html; \
+        try_files $uri $uri/ /index.html; \
+    } \
+}' > /etc/nginx/conf.d/default.conf
+
+EXPOSE 8080
+CMD ["nginx", "-g", "daemon off;"]

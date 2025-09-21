@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Working API for OrchestrateX - Connected to MongoDB Docker
-Latest models with proper database storage
+Working API for OrchestrateX - With API Key Rotation
+Latest models with proper database storage and automatic key rotation
 """
 
 from flask import Flask, request, jsonify
@@ -14,12 +14,25 @@ import random
 import time
 import json
 import os
-import requests
+
+# Import our new rotation system
+from rate_limit_handler import call_model_with_rotation
+from api_key_rotation import get_status
 
 app = Flask(__name__)
 CORS(app, origins=['http://localhost:5176', 'http://localhost:5175', 'http://localhost:5174', 'http://127.0.0.1:5176', 'http://127.0.0.1:5175', 'http://127.0.0.1:5174', 'https://orchestratex-frontend-84388526388.us-central1.run.app', 'https://chat.orchestratex.me', 'https://orchestratex.me'], 
      methods=['GET', 'POST', 'OPTIONS'], 
      allow_headers=['Content-Type', 'Authorization'])
+
+# Model provider mappings for the rotation system
+PROVIDER_MAPPINGS = {
+    'Llama-4-Maverick': ('LLAMA3', 'meta-llama/llama-4-maverick:free'),
+    'GLM-4.5': ('GLM45', 'z-ai/glm-4.5-air:free'),
+    'GPT-OSS': ('GPTOSS', 'openai/gpt-oss-20b:free'),
+    'Kimi-K2': ('KIMI', 'moonshotai/kimi-dev-72b:free'),
+    'Qwen3-Coder': ('QWEN3', 'qwen/Qwen3-coder:free'),
+    'TNG-DeepSeek-R1T2': ('FALCON', 'tngtech/deepseek-r1t2-chimera:free')
+}
 
 # Initialize Firebase Admin SDK and Firestore
 try:
@@ -53,95 +66,57 @@ except Exception as e:
     firestore_connected = False
     db = None
 
-# Load API keys from orche.env
 def load_api_config():
-    """Load API configuration from orche.env"""
-    config = {}
-    env_file = 'orche.env'
-    
-    if os.path.exists(env_file):
-        with open(env_file, 'r') as f:
-            for line in f:
-                line = line.strip()
-                if '=' in line and not line.startswith('#') and not line.startswith('—'):
-                    key, value = line.split('=', 1)
-                    config[key.strip()] = value.strip()
-    
-    # Extract model configurations
-    models = {
-        'Llama-4-Maverick': {
-            'api_key': config.get('PROVIDER_LLAMA3_API_KEY', '').strip(),
-            'model_id': config.get('PROVIDER_LLAMA3_MODEL', 'meta-llama/llama-4-maverick:free')
-        },
-        'GLM-4.5': {
-            'api_key': config.get('PROVIDER_GLM45_API_KEY', '').strip(),
-            'model_id': config.get('PROVIDER_GLM45_MODEL', 'z-ai/glm-4.5-air:free')
-        },
-        'GPT-OSS': {
-            'api_key': config.get('PROVIDER_GPTOSS_API_KEY', '').strip(),
-            'model_id': config.get('PROVIDER_GPTOSS_MODEL', 'openai/gpt-oss-20b:free')
-        },
-        'Kimi-K2': {
-            'api_key': config.get('PROVIDER_KIMI_API_KEY', '').strip(),
-            'model_id': config.get('PROVIDER_KIMI_MODEL', 'moonshotai/kimi-dev-72b:free')
-        },
-        'Qwen3-Coder': {
-            'api_key': config.get('PROVIDER_QWEN3_API_KEY', '').strip(),
-            'model_id': config.get('PROVIDER_QWEN3_MODEL', 'qwen/Qwen3-coder:free')
-        },
-        'TNG-DeepSeek-R1T2': {
-            'api_key': config.get('PROVIDER_FALCON_API_KEY', '').strip(),
-            'model_id': config.get('PROVIDER_FALCON_MODEL', 'tngtech/deepseek-r1t2-chimera:free')
+    """Load API configuration (kept for compatibility)"""
+    # This function is now mainly for compatibility
+    # The actual API key management is handled by the rotation system
+    models = {}
+    for model_name, (provider, model_id) in PROVIDER_MAPPINGS.items():
+        models[model_name] = {
+            'provider': provider,
+            'model_id': model_id
         }
-    }
-    
     return models
 
-def call_openrouter_api(api_key, model_id, prompt, max_tokens=2000):
-    """Call OpenRouter API for real AI responses"""
-    try:
-        headers = {
-            'Authorization': f'Bearer {api_key}',
-            'Content-Type': 'application/json',
-            'HTTP-Referer': 'https://orchestratex-frontend-84388526388.us-central1.run.app',
-            'X-Title': 'OrchestrateX'
-        }
-        
-        data = {
-            'model': model_id,
-            'messages': [{'role': 'user', 'content': prompt}],
-            'max_tokens': max_tokens,
-            'temperature': 0.7
-        }
-        
-        response = requests.post(
-            'https://openrouter.ai/api/v1/chat/completions',
-            headers=headers,
-            json=data,
-            timeout=30
-        )
-        
-        if response.status_code == 200:
-            result = response.json()
-            content = result['choices'][0]['message']['content']
-            usage = result.get('usage', {})
-            
-            return {
-                'success': True,
-                'content': content,
-                'tokens_used': usage.get('total_tokens', 0),
-                'cost_usd': usage.get('total_tokens', 0) * 0.000001  # Rough estimate
-            }
-        else:
-            return {
-                'success': False,
-                'error': f'API error {response.status_code}: {response.text}'
-            }
-            
-    except Exception as e:
+def call_openrouter_api(model_name, prompt, max_tokens=2000):
+    """
+    Call OpenRouter API with automatic key rotation
+    This function now uses the new rotation system
+    """
+    if model_name not in PROVIDER_MAPPINGS:
         return {
             'success': False,
-            'error': str(e)
+            'error': f'Unknown model: {model_name}',
+            'model_name': model_name
+        }
+    
+    provider, model_id = PROVIDER_MAPPINGS[model_name]
+    
+    # Use the new rotation-aware API client
+    result = call_model_with_rotation(
+        provider=provider,
+        model_id=model_id,
+        prompt=prompt,
+        max_tokens=max_tokens,
+        temperature=0.7
+    )
+    
+    # Convert to the expected format for backward compatibility
+    if result['success']:
+        return {
+            'success': True,
+            'content': result['response'],
+            'model_name': model_name,
+            'provider': provider,
+            'tokens_used': result['metadata']['total_tokens'],
+            'cost_usd': result['metadata']['total_tokens'] * 0.000001
+        }
+    else:
+        return {
+            'success': False,
+            'error': result['error'],
+            'model_name': model_name,
+            'provider': provider
         }
 
 # Latest 5 Model configurations from orche.env
@@ -158,15 +133,15 @@ def real_model_response(model, prompt):
     """Call real AI model API instead of simulation"""
     start_time = time.time()
     
-    # Load API configuration
+    # Load API configuration (for compatibility checks)
     api_models = load_api_config()
     model_name = model["name"]
     
-    if model_name not in api_models:
+    if model_name not in PROVIDER_MAPPINGS:
         return {
             "model_name": model_name,
             "specialty": model["specialty"],
-            "response_text": f"❌ Model {model_name} not configured in orche.env",
+            "response_text": f"❌ Model {model_name} not supported by rotation system",
             "confidence": 0.0,
             "processing_time": 0.0,
             "processing_time_ms": 0,
@@ -176,26 +151,8 @@ def real_model_response(model, prompt):
             "success": False
         }
     
-    model_config = api_models[model_name]
-    api_key = model_config['api_key']
-    model_id = model_config['model_id']
-    
-    if not api_key:
-        return {
-            "model_name": model_name,
-            "specialty": model["specialty"],
-            "response_text": f"❌ API key not found for {model_name} in orche.env",
-            "confidence": 0.0,
-            "processing_time": 0.0,
-            "processing_time_ms": 0,
-            "timestamp": datetime.now(),
-            "tokens_used": 0,
-            "cost_estimate": 0.0,
-            "success": False
-        }
-    
-    # Call real API
-    result = call_openrouter_api(api_key, model_id, prompt)
+    # Call real API using the new rotation system
+    result = call_openrouter_api(model_name, prompt)
     processing_time = time.time() - start_time
     
     if result['success']:
@@ -453,7 +410,7 @@ def chat():
 
 @app.route('/status', methods=['GET'])
 def status():
-    """System status"""
+    """System status with API key rotation info"""
     user_data = get_from_storage("prompts")  # Updated collection name
     response_data = get_from_storage("model_responses")
     
@@ -464,8 +421,26 @@ def status():
         "user_prompts_stored": len(user_data),
         "model_responses_stored": len(response_data),
         "models_available": [m["name"] for m in MODELS],
-        "database_info": "Google Cloud Firestore" if firestore_connected else "File storage backup"
+        "database_info": "Google Cloud Firestore" if firestore_connected else "File storage backup",
+        "api_key_rotation": True,
+        "rotation_status": get_status()
     })
+
+@app.route('/api/key-status', methods=['GET'])
+def get_key_status():
+    """Get detailed API key rotation status"""
+    try:
+        status_data = get_status()
+        return jsonify({
+            'success': True,
+            'status': status_data,
+            'timestamp': datetime.now().isoformat()
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
 
 @app.route('/analytics', methods=['GET'])
 def analytics():

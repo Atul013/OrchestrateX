@@ -28,7 +28,7 @@ export const ConversationView: React.FC<ConversationViewProps> = ({
         initial={{ width: '100%' }}
         animate={{ width: '100%' }}
         transition={{ duration: 0.6, ease: "easeInOut" }}
-        className="flex flex-col md:w-1/2 border-r border-amber-600/30 min-h-0 h-screen"
+        className="flex flex-col md:w-3/5 border-r border-amber-600/30 min-h-0 h-screen"
         aria-label="Chat Section"
       >
         <div className="p-4 md:p-6 border-b border-amber-600/30 flex-shrink-0 bg-gradient-to-r from-amber-900/20 via-orange-900/30 to-red-950/20 backdrop-blur-xl">
@@ -58,7 +58,7 @@ export const ConversationView: React.FC<ConversationViewProps> = ({
         initial={{ width: '0%', opacity: 0 }}
         animate={{ width: '100%', opacity: 1 }}
         transition={{ duration: 0.6, ease: "easeInOut", delay: 0.2 }}
-        className="bg-gradient-to-b from-amber-900/20 via-orange-900/30 to-red-950/40 backdrop-blur-xl md:w-1/2 flex flex-col min-h-0 sticky top-0 h-screen border-l border-amber-600/30"
+        className="bg-gradient-to-b from-amber-900/20 via-orange-900/30 to-red-950/40 backdrop-blur-xl md:w-2/5 flex flex-col min-h-0 sticky top-0 h-screen border-l border-amber-600/30"
         aria-label="Agent Recommendations"
         style={{ alignSelf: 'flex-start' }}
       >

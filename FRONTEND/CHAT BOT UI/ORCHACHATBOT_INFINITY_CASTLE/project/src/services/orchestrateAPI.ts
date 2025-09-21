@@ -37,16 +37,8 @@ class OrchestrateXAPI {
   private baseURL: string;
 
   constructor() {
-    // Detect if we're running in production (Cloud Run) or development
-    const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
-    
-    if (isProduction) {
-      // In production, use the same origin (Cloud Run URL)
-      this.baseURL = window.location.origin;
-    } else {
-      // In development, use localhost
-      this.baseURL = 'http://localhost:8002';
-    }
+    // Always use the working API endpoint
+    this.baseURL = 'https://orchestratex-api-84388526388.us-central1.run.app';
   }
 
   async orchestrateQuery(prompt: string): Promise<OrchestrateResponse> {
@@ -54,12 +46,12 @@ class OrchestrateXAPI {
     console.log('🚀 [DEBUG] baseURL:', this.baseURL);
     
     try {
-      console.log('🚀 [DEBUG] Calling backend API at:', `${this.baseURL}/chat`);
+      console.log('🚀 [DEBUG] Calling backend API at:', `${this.baseURL}/api/orchestration/process`);
       
-      const requestBody = { message: prompt };
+      const requestBody = { prompt: prompt };
       console.log('🚀 [DEBUG] Request body:', requestBody);
       
-      const response = await fetch(`${this.baseURL}/chat`, {
+      const response = await fetch(`${this.baseURL}/api/orchestration/process`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -91,7 +83,7 @@ class OrchestrateXAPI {
         primary_response: {
           success: false,
           model_name: 'Error',
-          response_text: `❌ Unable to connect to backend. Please ensure the backend API is running on port 8002. Error: ${error}`,
+          response_text: `❌ Unable to connect to backend API. Please check your internet connection. Error: ${error}`,
           tokens_used: 0,
           cost_usd: 0,
           latency_ms: 0

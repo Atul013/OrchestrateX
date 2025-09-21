@@ -1,0 +1,16 @@
+# This file specifies files that are *not* uploaded to Google Cloud
+# We want to include everything needed for the build
+
+# Don't upload these
+.git/
+.gitignore
+node_modules/
+*.log
+.env*
+
+# But DO upload dist/ and src/ and all build files
+!dist/
+!src/
+!package*.json
+!Dockerfile
+!public/

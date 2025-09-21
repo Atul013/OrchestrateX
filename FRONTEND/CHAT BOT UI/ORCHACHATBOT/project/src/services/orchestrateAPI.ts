@@ -46,14 +46,14 @@ class OrchestrateXAPI {
     console.log('🚀 [DEBUG] baseURL:', this.baseURL);
     
     try {
-      console.log('🚀 [DEBUG] Calling Python API at:', `${this.baseURL}/chat`);
+      console.log('🚀 [DEBUG] Calling Python API at:', `${this.baseURL}/api/orchestration/process`);
       
       const requestBody = { 
-        message: prompt
+        prompt: prompt
       };
       console.log('🚀 [DEBUG] Request body:', requestBody);
       
-      const response = await fetch(`${this.baseURL}/chat`, {
+      const response = await fetch(`${this.baseURL}/api/orchestration/process`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -108,7 +108,7 @@ class OrchestrateXAPI {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ message: prompt }),
+        body: JSON.stringify({ prompt: prompt }),
       });
 
       if (!response.ok) {

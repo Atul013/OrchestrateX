@@ -1,10 +1,8 @@
 // API Configuration for OrchestrateX Frontend
 export const API_CONFIG = {
-  BASE_URL: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
-    ? 'http://localhost:8002' 
-    : 'https://api.orchestratex.me',
+  BASE_URL: 'https://orchestratex-api-84388526388.us-central1.run.app',
   ENDPOINTS: {
-    CHAT: '/chat',
+    CHAT: '/api/orchestration/process',
     MODELS: '/models',
     HEALTH: '/health'
   }
@@ -19,7 +17,7 @@ export const apiService = {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ message }),
+        body: JSON.stringify({ prompt: message }),
       });
       
       if (!response.ok) {

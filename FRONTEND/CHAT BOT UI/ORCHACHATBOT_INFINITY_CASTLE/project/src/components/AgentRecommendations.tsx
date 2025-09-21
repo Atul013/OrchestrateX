@@ -44,7 +44,7 @@ export const AgentRecommendations: React.FC<AgentRecommendationsProps> = ({
       >
         <div ref={topRef} />
         <div
-          className="grid grid-cols-2 gap-3 md:gap-4 w-full"
+          className="grid grid-cols-2 gap-3 md:gap-4 w-full auto-rows-fr"
           style={{ minHeight: 0 }}
         >
           {agents.map((agent, index) => (
@@ -53,7 +53,7 @@ export const AgentRecommendations: React.FC<AgentRecommendationsProps> = ({
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="flex"
+              className="flex h-full"
             >
               <AgentCard agent={agent} onSelectAgent={onSelectAgent} />
             </motion.div>

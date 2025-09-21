@@ -26,7 +26,7 @@ export const AgentCard: React.FC<AgentCardProps> = ({ agent, onSelectAgent }) =>
       whileHover={{ scale: 1.05 }}
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
-      className="relative group cursor-pointer"
+      className="relative group cursor-pointer h-full"
     >
       <motion.div
         animate={{
@@ -35,10 +35,10 @@ export const AgentCard: React.FC<AgentCardProps> = ({ agent, onSelectAgent }) =>
             : 'linear-gradient(135deg, rgba(249,225,121,0.1), rgba(228,138,50,0.1), rgba(133,93,61,0.1))'
         }}
         transition={{ duration: 0.3 }}
-        className="backdrop-blur-xl border border-amber-600/30 rounded-xl p-3 md:p-4 h-full hover:border-amber-500/50 hover:shadow-xl hover:shadow-amber-500/20 transition-all duration-300"
+        className="backdrop-blur-xl border border-amber-600/30 rounded-xl p-3 md:p-4 h-full hover:border-amber-500/50 hover:shadow-xl hover:shadow-amber-500/20 transition-all duration-300 flex flex-col min-h-[180px]"
       >
         {/* Agent Header */}
-        <div className="flex items-center gap-2 md:gap-3 mb-3">
+        <div className="flex items-center gap-2 md:gap-3 mb-3 flex-shrink-0">
           <motion.div
             animate={{
               scale: isHovered ? 1.2 : 1,
@@ -64,11 +64,14 @@ export const AgentCard: React.FC<AgentCardProps> = ({ agent, onSelectAgent }) =>
               {typeof agent.icon === 'string' && !agent.icon.startsWith('/icons/') && !agent.icon.startsWith('/assets/') ? agent.icon : '🤖'}
             </span>
           </motion.div>
-          <div>
-            <h3 className="text-amber-200 font-semibold text-sm md:text-base">{agent.name}</h3>
-            <p className="text-amber-300/70 text-xs md:text-sm">{agent.shortDescription}</p>
+          <div className="flex-1 min-w-0">
+            <h3 className="text-amber-200 font-semibold text-sm md:text-base truncate">{agent.name}</h3>
+            <p className="text-amber-300/70 text-xs md:text-sm line-clamp-2">{agent.shortDescription}</p>
           </div>
         </div>
+
+        {/* Spacer to push button to bottom */}
+        <div className="flex-1"></div>
 
 
         {/* Detailed Suggestion (appears on hover) */}

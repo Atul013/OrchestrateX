@@ -1,0 +1,5 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-f', 'Dockerfile.simple', '-t', 'gcr.io/orchestratex-app/frontend-simple', '.']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/orchestratex-app/frontend-simple']

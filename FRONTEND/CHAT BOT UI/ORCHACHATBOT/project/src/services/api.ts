@@ -2,9 +2,9 @@
 export const API_CONFIG = {
   BASE_URL: 'https://orchestratex-api-84388526388.us-central1.run.app',
   ENDPOINTS: {
-    CHAT: '/chat',
+    CHAT: '/api/orchestration/process',
     MODELS: '/models',
-    HEALTH: '/status'
+    HEALTH: '/health'
   }
 };
 
@@ -18,7 +18,7 @@ export const apiService = {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ 
-          message: message
+          prompt: message
         }),
       });
       

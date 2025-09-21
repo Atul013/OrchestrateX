@@ -31,7 +31,7 @@ export class ModelSelector {
     "GPT-OSS 120B": {
       id: "openai/gpt-oss-120b:free",
       displayName: "GPT-OSS 120B",
-      auth: "Bearer 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",
+      auth: "Backend-Managed", // API key rotation handled by backend
       keywords: ["fact", "accurate", "correct", "verify", "truth", "research", "academic"],
       domains: ["academic", "research", "fact-checking", "knowledge"],
       confidenceBase: 0.85
@@ -39,7 +39,7 @@ export class ModelSelector {
     "GLM-4.5 Air": {
       id: "z-ai/glm-4.5-air:free",
       displayName: "GLM-4.5 Air",
-      auth: "Bearer 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",
+      auth: "Backend-Managed", // API key rotation handled by backend
       keywords: ["logic", "reason", "solve", "problem", "structure", "analyze", "think"],
       domains: ["logical-reasoning", "problem-solving", "analysis"],
       confidenceBase: 0.90
@@ -47,7 +47,7 @@ export class ModelSelector {
     "Qwen3 Coder": {
       id: "qwen/qwen3-coder:free",
       displayName: "Qwen3 Coder",
-      auth: "Bearer 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",
+      auth: "Backend-Managed", // API key rotation handled by backend
       keywords: ["code", "python", "javascript", "programming", "function", "debug", "software", "api"],
       domains: ["programming", "technical", "coding", "development"],
       confidenceBase: 0.95
@@ -55,7 +55,7 @@ export class ModelSelector {
     "TNG DeepSeek": {
       id: "tngtech/deepseek-r1t2-chimera:free",
       displayName: "TNG DeepSeek",
-      auth: "Bearer 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",
+      auth: "Backend-Managed", // API key rotation handled by backend
       keywords: ["deep", "detailed", "comprehensive", "thorough", "complex", "research"],
       domains: ["deep-analysis", "research", "comprehensive"],
       confidenceBase: 0.92
@@ -63,7 +63,7 @@ export class ModelSelector {
     "MoonshotAI Kimi": {
       id: "moonshotai/kimi-k2:free",
       displayName: "MoonshotAI Kimi",
-      auth: "Bearer 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",
+      auth: "Backend-Managed", // API key rotation handled by backend
       keywords: ["creative", "story", "idea", "innovative", "unique", "artistic", "imagine"],
       domains: ["creative", "storytelling", "innovation"],
       confidenceBase: 0.88
@@ -71,7 +71,7 @@ export class ModelSelector {
     "Llama 4 Maverick": {
       id: "meta-llama/llama-4-maverick:free",
       displayName: "Llama 4 Maverick",
-      auth: "Bearer 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",
+      auth: "Backend-Managed", // API key rotation handled by backend
       keywords: ["explain", "clear", "simple", "understand", "communicate", "teach"],
       domains: ["explanation", "communication", "teaching"],
       confidenceBase: 0.87
