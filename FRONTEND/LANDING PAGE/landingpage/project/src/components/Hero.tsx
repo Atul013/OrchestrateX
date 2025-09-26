@@ -109,14 +109,14 @@ const Hero: React.FC = () => {
     <section className="relative min-h-screen bg-gradient-to-br from-dark via-dark to-primary/20 overflow-hidden flex items-center">
       <ParticleField />
       
-      <div className="container mx-auto px-6 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center max-w-5xl mx-auto">
           {/* Logo */}
           <motion.div
-            className="mb-8"
+            className="mb-6 lg:mb-8"
           >
             <motion.h1
-              className="text-6xl md:text-8xl font-display font-bold bg-gradient-to-r from-primary via-cyan to-magenta bg-clip-text text-transparent"
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-display font-bold bg-gradient-to-r from-primary via-cyan to-magenta bg-clip-text text-transparent"
               initial={{ opacity: 1 }}
               animate={{
                 y: [0, -8, 2, -4, 0],
@@ -155,69 +155,86 @@ const Hero: React.FC = () => {
 
           {/* Main headline */}
           <h2
-            className="text-3xl md:text-5xl font-display font-bold text-white mb-6"
+            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-bold text-white mb-4 lg:mb-6 px-2 lg:px-0"
           >
             Multi‑Model AI Orchestration
           </h2>
 
           {/* Subheadline */}
           <p
-            className="text-xl md:text-2xl text-white/80 mb-12 leading-relaxed"
+            className="text-lg sm:text-xl lg:text-2xl text-white/80 mb-8 lg:mb-12 leading-relaxed px-4 lg:px-0"
           >
             Route each query to the model that excels, then refine responses via cross‑model critiques.
           </p>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8 lg:mb-16 px-4 lg:px-0">
             <a
               href="https://chat.orchestratex.me/"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-8 py-4 bg-gradient-to-r from-primary to-magenta rounded-full text-white font-semibold text-lg flex items-center gap-2 hover:opacity-90 transition-opacity"
+              className="px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-primary to-magenta rounded-full text-white font-semibold text-base sm:text-lg flex items-center justify-center gap-2 hover:opacity-90 transition-opacity min-h-[48px] touch-manipulation"
             >
-              Try Demo <ArrowRight className="w-5 h-5" />
+              Try Demo <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
             </a>
-            <button className="px-8 py-4 border-2 border-white/30 rounded-full text-white font-semibold text-lg hover:bg-white/10 transition-colors">
+            <button className="px-6 sm:px-8 py-3 sm:py-4 border-2 border-white/30 rounded-full text-white font-semibold text-base sm:text-lg hover:bg-white/10 transition-colors min-h-[48px] touch-manipulation">
               View API
             </button>
           </div>
 
-          {/* Model badges */}
-          <div className="flex flex-wrap justify-center gap-3 mb-12">
-            {modelNames.map((model, index) => (
-              <div
-                key={model}
-                className="px-3 py-1 bg-white/10 backdrop-blur-sm rounded-full text-sm font-medium text-white/80 border border-white/20"
-              >
-                {model}
+          {/* Model badges - Mobile: horizontal scroll, Desktop: wrap */}
+          <div className="mb-8 lg:mb-12 px-2 lg:px-0">
+            {/* Mobile: Horizontal scroll */}
+            <div className="lg:hidden overflow-x-auto pb-2">
+              <div className="flex gap-3 min-w-max px-2">
+                {modelNames.map((model, index) => (
+                  <div
+                    key={model}
+                    className="px-3 py-1 bg-white/10 backdrop-blur-sm rounded-full text-sm font-medium text-white/80 border border-white/20 whitespace-nowrap"
+                  >
+                    {model}
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
+            
+            {/* Desktop: Flex wrap */}
+            <div className="hidden lg:flex flex-wrap justify-center gap-3">
+              {modelNames.map((model, index) => (
+                <div
+                  key={model}
+                  className="px-3 py-1 bg-white/10 backdrop-blur-sm rounded-full text-sm font-medium text-white/80 border border-white/20"
+                >
+                  {model}
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Live metrics */}
-          <div className="bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 p-6 max-w-4xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-              <div className="flex items-center justify-center gap-3">
-                <Zap className="w-6 h-6 text-cyan" />
+          <div className="bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 p-4 sm:p-6 max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6 text-center">
+              <div className="flex items-center justify-center gap-3 p-2">
+                <Zap className="w-5 h-5 sm:w-6 sm:h-6 text-cyan flex-shrink-0" />
                 <div>
-                  <div className="text-2xl font-bold text-white">
+                  <div className="text-xl sm:text-2xl font-bold text-white">
                     {mockMetrics.requestsToday.toLocaleString()}
                   </div>
-                  <div className="text-sm text-white/70">Requests routed today</div>
+                  <div className="text-xs sm:text-sm text-white/70">Requests routed today</div>
                 </div>
               </div>
-              <div className="flex items-center justify-center gap-3">
-                <Users className="w-6 h-6 text-lime" />
+              <div className="flex items-center justify-center gap-3 p-2">
+                <Users className="w-5 h-5 sm:w-6 sm:h-6 text-lime flex-shrink-0" />
                 <div>
-                  <div className="text-2xl font-bold text-white">{mockMetrics.avgLatency}ms</div>
-                  <div className="text-sm text-white/70">Average latency</div>
+                  <div className="text-xl sm:text-2xl font-bold text-white">{mockMetrics.avgLatency}ms</div>
+                  <div className="text-xs sm:text-sm text-white/70">Average latency</div>
                 </div>
               </div>
-              <div className="flex items-center justify-center gap-3">
-                <TrendingUp className="w-6 h-6 text-magenta" />
+              <div className="flex items-center justify-center gap-3 p-2">
+                <TrendingUp className="w-5 h-5 sm:w-6 sm:h-6 text-magenta flex-shrink-0" />
                 <div>
-                  <div className="text-2xl font-bold text-white">{mockMetrics.costSaved}%</div>
-                  <div className="text-sm text-white/70">Cost saved vs single‑model</div>
+                  <div className="text-xl sm:text-2xl font-bold text-white">{mockMetrics.costSaved}%</div>
+                  <div className="text-xs sm:text-sm text-white/70">Cost saved vs single‑model</div>
                 </div>
               </div>
             </div>

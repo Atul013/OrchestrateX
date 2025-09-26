@@ -118,3 +118,123 @@ a:focus-visible {
     border-color: rgba(255, 255, 255, 0.5);
   }
 }
+
+/* Mobile scrollbar utilities */
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .snap-x {
+    scroll-snap-type: x mandatory;
+  }
+  
+  .snap-center {
+    scroll-snap-align: center;
+  }
+  
+  .snap-start {
+    scroll-snap-align: start;
+  }
+  
+  .touch-manipulation {
+    touch-action: manipulation;
+  }
+  
+  /* Line clamp utilities */
+  .line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+  
+  .line-clamp-3 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+}
+
+/* Mobile-specific styles */
+@media (max-width: 600px) {
+  /* Mobile 2-column grid for model showcase */
+  .mobile-model-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.75rem !important;
+    padding: 0 0.5rem !important;
+  }
+  
+  .mobile-model-card {
+    background: rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(12px) !important;
+    border-radius: 0.75rem !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    padding: 0.75rem !important;
+    min-height: 280px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    transition: all 0.3s ease !important;
+  }
+  
+  .mobile-model-card:hover {
+    background: rgba(255, 255, 255, 0.15) !important;
+    transform: scale(1.02) !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2) !important;
+  }
+  
+  /* Hide horizontal scroll on mobile */
+  .mobile-hide-scroll {
+    display: none !important;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 1023px) {
+  /* Show horizontal scroll for tablets */
+  .mobile-model-grid {
+    display: none !important;
+  }
+}
+
+@media (max-width: 1023px) {
+  /* Ensure smooth scrolling on mobile */
+  .overflow-x-auto {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+  
+  /* Better touch targets */
+  button, 
+  a, 
+  [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Improved readability on small screens */
+  body {
+    -webkit-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Tablet and desktop optimizations */
+@media (min-width: 1024px) {
+  /* Enhanced hover effects for desktop */
+  .group:hover .group-hover\:scale-110 {
+    transform: scale(1.1);
+  }
+  
+  /* Better spacing for desktop */
+  .container {
+    max-width: 1280px;
+  }
+}

@@ -47,26 +47,26 @@ const ModelCard: React.FC<{ model: any; index: number }> = ({ model, index }) =>
           transition={{ duration: 0.6, type: "spring" }}
         >
           {/* Front of card */}
-          <div className="absolute inset-0 backface-hidden bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 p-6 hover:bg-white/15 transition-colors">
+          <div className="absolute inset-0 backface-hidden bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 p-4 lg:p-6 hover:bg-white/15 transition-colors">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center border border-white/30">
+              <div className="w-10 h-10 lg:w-12 lg:h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center border border-white/30 flex-shrink-0">
                 <img 
                   src={model.logo} 
                   alt={`${model.provider} logo`}
-                  className="w-8 h-8 object-contain filter brightness-0 invert"
+                  className="w-6 h-6 lg:w-8 lg:h-8 object-contain filter brightness-0 invert max-w-[24px] lg:max-w-[32px]"
                 />
               </div>
-              <div>
-                <h3 className="text-xl font-display font-bold text-white">{model.name}</h3>
-                <p className="text-sm text-white/70 font-medium">{model.provider}</p>
+              <div className="min-w-0">
+                <h3 className="text-lg lg:text-xl font-display font-bold text-white truncate">{model.name}</h3>
+                <p className="text-sm text-white/70 font-medium truncate">{model.provider}</p>
               </div>
             </div>
             
-            <p className="text-white/90 mb-4 leading-relaxed text-sm">{model.description}</p>
+            <p className="text-white/90 mb-4 leading-relaxed text-sm line-clamp-3">{model.description}</p>
             
             <div className="flex flex-wrap gap-2 mb-4">
               {model.specialties.slice(0, 3).map((specialty: string) => (
-                <span key={specialty} className="px-2 py-1 bg-primary/20 text-primary text-xs rounded-full border border-primary/30">
+                <span key={specialty} className="px-2 py-1 bg-primary/20 text-primary text-xs rounded-full border border-primary/30 whitespace-nowrap">
                   {specialty}
                 </span>
               ))}
@@ -76,9 +76,9 @@ const ModelCard: React.FC<{ model: any; index: number }> = ({ model, index }) =>
               <div className="text-sm text-white/80 mb-2 font-semibold">Best for:</div>
               <ul className="space-y-1">
                 {model.bestFor.slice(0, 2).map((use: string) => (
-                  <li key={use} className="text-sm text-white/70 flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 bg-lime rounded-full"></div>
-                    {use}
+                  <li key={use} className="text-sm text-white/70 flex items-start gap-2">
+                    <div className="w-1.5 h-1.5 bg-lime rounded-full mt-1.5 flex-shrink-0"></div>
+                    <span className="line-clamp-2">{use}</span>
                   </li>
                 ))}
               </ul>
@@ -86,35 +86,35 @@ const ModelCard: React.FC<{ model: any; index: number }> = ({ model, index }) =>
           </div>
 
           {/* Back of card */}
-          <div className="absolute inset-0 backface-hidden rotate-y-180 bg-dark/90 backdrop-blur-xl rounded-2xl border border-white/30 p-6 shadow-2xl">
+          <div className="absolute inset-0 backface-hidden rotate-y-180 bg-dark/90 backdrop-blur-xl rounded-2xl border border-white/30 p-4 lg:p-6 shadow-2xl">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center border border-white/30">
+              <div className="w-8 h-8 lg:w-10 lg:h-10 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center border border-white/30 flex-shrink-0">
                 <img 
                   src={model.logo} 
                   alt={`${model.provider} logo`}
-                  className="w-6 h-6 object-contain filter brightness-0 invert"
+                  className="w-5 h-5 lg:w-6 lg:h-6 object-contain filter brightness-0 invert max-w-[20px] lg:max-w-[24px]"
                 />
               </div>
-              <h4 className="text-lg font-semibold text-white">Capabilities</h4>
+              <h4 className="text-base lg:text-lg font-semibold text-white">Capabilities</h4>
             </div>
             <CapabilityChart capabilities={model.capabilities} />
             
-            <div className="mt-6 pt-4 border-t border-white/20">
-              <div className="grid grid-cols-2 gap-4 text-sm">
+            <div className="mt-4 lg:mt-6 pt-3 lg:pt-4 border-t border-white/20">
+              <div className="grid grid-cols-2 gap-3 lg:gap-4 text-sm">
                 <div>
-                  <span className="text-white/70">Latency (p50)</span>
-                  <div className="text-white font-semibold">{model.latency.p50}ms</div>
+                  <span className="text-white/70 text-xs lg:text-sm">Latency (p50)</span>
+                  <div className="text-white font-semibold text-sm lg:text-base">{model.latency.p50}ms</div>
                 </div>
                 <div>
-                  <span className="text-white/70">Cost/1k tokens</span>
-                  <div className="text-white font-semibold">${model.cost}</div>
+                  <span className="text-white/70 text-xs lg:text-sm">Cost/1k tokens</span>
+                  <div className="text-white font-semibold text-sm lg:text-base">${model.cost}</div>
                 </div>
               </div>
             </div>
 
             <button
               onClick={() => setShowModal(true)}
-              className="mt-4 w-full px-4 py-2 bg-gradient-to-r from-primary to-magenta rounded-lg text-white font-semibold hover:scale-105 transition-transform flex items-center justify-center gap-2 shadow-lg"
+              className="mt-3 lg:mt-4 w-full px-3 lg:px-4 py-2 bg-gradient-to-r from-primary to-magenta rounded-lg text-white font-semibold hover:scale-105 transition-transform flex items-center justify-center gap-2 shadow-lg text-sm lg:text-base min-h-[44px] touch-manipulation"
             >
               Run Sample <ExternalLink className="w-4 h-4" />
             </button>
@@ -191,24 +191,95 @@ const ModelCard: React.FC<{ model: any; index: number }> = ({ model, index }) =>
 
 const ModelsShowcase: React.FC = () => {
   return (
-    <section className="py-24 bg-gradient-to-b from-dark/95 to-dark">
-      <div className="container mx-auto px-6">
+    <section className="py-12 lg:py-24 bg-gradient-to-b from-dark/95 to-dark">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          className="text-center mb-8 lg:mb-16"
         >
-          <h2 className="text-4xl md:text-6xl font-display font-bold text-white mb-6">
+          <h2 className="text-3xl sm:text-4xl lg:text-6xl font-display font-bold text-white mb-4 lg:mb-6">
             Model Showcase
           </h2>
-          <p className="text-xl text-white/80 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-lg sm:text-xl text-white/80 max-w-3xl mx-auto leading-relaxed px-2 lg:px-0">
             Six specialized AI models, each optimized for different tasks, working together to deliver the best possible results
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* Mobile: 2-column grid (≤600px) */}
+        <div className="mobile-model-grid lg:hidden">
+          {models.map((model, index) => (
+            <motion.div
+              key={model.id}
+              initial={{ opacity: 0, scale: 0.8, y: 20 }}
+              whileInView={{ opacity: 1, scale: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ 
+                duration: 0.6, 
+                delay: index * 0.1,
+                type: "spring",
+                stiffness: 100
+              }}
+              className="mobile-model-card touch-manipulation"
+            >
+              {/* Model Header */}
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-6 h-6 bg-white/20 backdrop-blur-sm rounded-md flex items-center justify-center border border-white/30 flex-shrink-0">
+                  <img 
+                    src={model.logo} 
+                    alt={`${model.provider} logo`}
+                    className="w-3 h-3 object-contain filter brightness-0 invert max-w-[12px]"
+                  />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <h3 className="text-sm font-bold text-white truncate">{model.name}</h3>
+                  <p className="text-xs text-white/70 truncate">{model.provider}</p>
+                </div>
+              </div>
+
+              {/* Description */}
+              <p className="text-xs text-white/80 mb-3 line-clamp-2 flex-grow">
+                {model.description}
+              </p>
+
+              {/* Key Stats */}
+              <div className="grid grid-cols-2 gap-2 mb-3 text-xs">
+                <div className="bg-white/5 rounded-lg p-2 text-center">
+                  <div className="text-white font-semibold">{model.latency.p50}ms</div>
+                  <div className="text-white/60">Latency</div>
+                </div>
+                <div className="bg-white/5 rounded-lg p-2 text-center">
+                  <div className="text-white font-semibold">${model.cost}</div>
+                  <div className="text-white/60">Per 1k</div>
+                </div>
+              </div>
+
+              {/* Use Cases (truncated) */}
+              <div className="mt-auto">
+                <div className="text-xs text-white/70 mb-1">Best for:</div>
+                <div className="text-xs text-white/80 line-clamp-1">
+                  {model.bestFor.slice(0, 2).join(', ')}
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Tablet and Mobile: Horizontal scroll (601px+) */}
+        <div className="lg:hidden mobile-hide-scroll overflow-x-auto pb-4">
+          <div className="flex gap-4 px-4" style={{ width: 'max-content' }}>
+            {models.map((model, index) => (
+              <div key={model.id} className="w-80 flex-shrink-0">
+                <ModelCard model={model} index={index} />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Desktop: Grid layout */}
+        <div className="hidden lg:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {models.map((model, index) => (
             <ModelCard key={model.id} model={model} index={index} />
           ))}

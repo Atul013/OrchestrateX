@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Brain, MessageSquare, Sparkles } from 'lucide-react';
 
@@ -46,21 +46,21 @@ const Step: React.FC<{
         initial={{ opacity: 0, y: 50 }}
         animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
         transition={{ duration: 0.6, delay }}
-        className="bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 p-8 hover:bg-white/15 transition-colors group"
+        className="bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 p-4 lg:p-8 hover:bg-white/15 transition-colors group h-full"
       >
         {/* Step number */}
-        <div className="flex items-center gap-4 mb-6">
-          <div className="w-12 h-12 bg-gradient-to-r from-primary to-cyan rounded-full flex items-center justify-center text-white font-bold text-lg">
+        <div className="flex items-center gap-3 lg:gap-4 mb-4 lg:mb-6">
+          <div className="w-10 h-10 lg:w-12 lg:h-12 bg-gradient-to-r from-primary to-cyan rounded-full flex items-center justify-center text-white font-bold text-base lg:text-lg flex-shrink-0">
             {number}
           </div>
-          <div className="w-12 h-12 bg-gradient-to-r from-cyan to-magenta rounded-xl flex items-center justify-center text-white group-hover:scale-110 transition-transform">
+          <div className="w-10 h-10 lg:w-12 lg:h-12 bg-gradient-to-r from-cyan to-magenta rounded-xl flex items-center justify-center text-white group-hover:scale-110 transition-transform flex-shrink-0">
             {icon}
           </div>
         </div>
 
         {/* Content */}
-        <h3 className="text-2xl font-display font-bold text-white mb-4">{title}</h3>
-        <p className="text-white/80 mb-6 text-lg leading-relaxed">{description}</p>
+        <h3 className="text-xl lg:text-2xl font-display font-bold text-white mb-3 lg:mb-4">{title}</h3>
+        <p className="text-white/80 mb-4 lg:mb-6 text-base lg:text-lg leading-relaxed">{description}</p>
 
         {/* Details */}
         <div className="space-y-2">
@@ -83,7 +83,7 @@ const Step: React.FC<{
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.8, delay: delay + 0.5 }}
-          className="mt-6 p-4 bg-dark/50 rounded-lg border border-white/10"
+          className="mt-4 lg:mt-6 p-3 lg:p-4 bg-dark/50 rounded-lg border border-white/10"
         >
           {number === 1 && (
             <div className="space-y-2">
@@ -122,7 +122,7 @@ const HowItWorks: React.FC = () => {
     {
       title: "Intelligent Model Selection",
       description: "Classify domain, estimate complexity, route based on strengths.",
-      icon: <Brain className="w-6 h-6" />,
+      icon: <Brain className="w-5 h-5 lg:w-6 lg:h-6" />,
       details: [
         "Domain classification (code, math, creative, factual)",
         "Complexity estimation and resource requirements",
@@ -132,7 +132,7 @@ const HowItWorks: React.FC = () => {
     {
       title: "Multi-Agent Critique",
       description: "Other models highlight gaps across accuracy, clarity, completeness.",
-      icon: <MessageSquare className="w-6 h-6" />,
+      icon: <MessageSquare className="w-5 h-5 lg:w-6 lg:h-6" />,
       details: [
         "Parallel critique generation from complementary models",
         "Severity scoring and relevance filtering",
@@ -142,7 +142,7 @@ const HowItWorks: React.FC = () => {
     {
       title: "Refine & Deliver",
       description: "Incorporate valid critiques, stop at convergence, return the best answer.",
-      icon: <Sparkles className="w-6 h-6" />,
+      icon: <Sparkles className="w-5 h-5 lg:w-6 lg:h-6" />,
       details: [
         "Selective critique integration based on validation",
         "Convergence detection to prevent over-refinement",
@@ -152,24 +152,46 @@ const HowItWorks: React.FC = () => {
   ];
 
   return (
-    <section className="py-24 bg-gradient-to-b from-dark to-dark/95">
-      <div className="container mx-auto px-6">
+    <section className="py-12 lg:py-24 bg-gradient-to-b from-dark to-dark/95">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          className="text-center mb-8 lg:mb-16"
         >
-          <h2 className="text-4xl md:text-6xl font-display font-bold text-white mb-6">
+          <h2 className="text-3xl sm:text-4xl lg:text-6xl font-display font-bold text-white mb-4 lg:mb-6">
             How It Works
           </h2>
-          <p className="text-xl text-white/80 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-lg sm:text-xl text-white/80 max-w-3xl mx-auto leading-relaxed px-2 lg:px-0">
             Three intelligent steps that transform single-model limitations into collective AI intelligence
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
+        {/* Mobile: Horizontal scroll */}
+        <div className="lg:hidden">
+          <div className="overflow-x-auto pb-4">
+            <div className="flex gap-4 px-4" style={{ width: 'max-content' }}>
+              {steps.map((step, index) => (
+                <div key={index} className="w-80 flex-shrink-0">
+                  <Step
+                    number={index + 1}
+                    title={step.title}
+                    description={step.description}
+                    icon={step.icon}
+                    details={step.details}
+                    delay={index * 0.2}
+                    showPath={false}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Desktop: Grid layout */}
+        <div className="hidden lg:grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
           {steps.map((step, index) => (
             <Step
               key={index}

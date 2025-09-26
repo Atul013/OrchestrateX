@@ -4,8 +4,8 @@ import openaiLogo from '../new-logos/openai1-removebg-preview.png';
 import zhipuLogo from '../new-logos/zhipu-removebg-preview.png';
 import metaLogo from '../new-logos/meta-removebg-preview.png';
 import moonshotLogo from '../new-logos/moonshot-removebg-preview.png';
-import tngtechLogo from '../new-logos/tngtech-removebg-preview.png';
-import alibabaLogo from '../new-logos/alibaba-removebg-preview.png';
+import tngtechLogo from '../new-logos/tngtech.png';
+import alibabaLogo from '../new-logos/alibaba.png';
 
 export const AI_AGENTS: AIAgent[] = [
   {
