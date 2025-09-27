@@ -48,23 +48,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <span className="whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300">New Chat</span>
         </motion.button>
 
-        {/* Infinity Castle Image Button */}
-        <motion.a
-          href="https://castle.orchestratex.me"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block w-full mb-6 cursor-pointer group/castle"
-        >
-          <div className="w-full rounded-lg overflow-hidden shadow-lg hover:shadow-xl hover:shadow-red-500/30 transition-all duration-300 hover:ring-1 hover:ring-red-400/50 p-2 flex items-center gap-2">
-            <img 
-              src="/castle.png" 
-              alt="Infinity Castle" 
-              className="w-8 h-8 object-cover hover:brightness-125 transition-all duration-300 flex-shrink-0"
-            />
-            <span className="text-white text-sm font-medium opacity-0 group-hover/castle:opacity-100 transition-opacity duration-300 whitespace-nowrap overflow-hidden">Infinity Castle</span>
-          </div>
-        </motion.a>
-
         {/* Chat History */}
         <div className="flex-1 overflow-y-auto custom-scrollbar">
           <div className="text-slate-400 text-sm font-medium mb-3 flex items-center gap-2 overflow-hidden">
