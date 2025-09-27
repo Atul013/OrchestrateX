@@ -8,6 +8,7 @@
     "dev": "nodemon app.js"
   },
   "dependencies": {
+    "@emotion/is-prop-valid": "^1.4.0",
     "@google-cloud/firestore": "^7.1.0",
     "axios": "^1.12.2",
     "cors": "^2.8.5",

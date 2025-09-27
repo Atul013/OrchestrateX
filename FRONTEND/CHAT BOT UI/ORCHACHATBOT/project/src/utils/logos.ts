@@ -1,9 +1,10 @@
-import openaiLogo from '../new-logos/openai1-removebg-preview.png';
-import zhipuLogo from '../new-logos/zhipu-removebg-preview.png';
-import metaLogo from '../new-logos/meta-removebg-preview.png';
-import moonshotLogo from '../new-logos/moonshot-removebg-preview.png';
-import tngtechLogo from '../new-logos/tngtech.png';
-import alibabaLogo from '../new-logos/alibaba.png';
+// Use public directory paths for transparent logos
+const openaiLogo = '/logos/openai.png';
+const zhipuLogo = '/logos/zhipu.png';
+const metaLogo = '/logos/meta.png';
+const moonshotLogo = '/logos/moonshot.png';
+const tngtechLogo = '/logos/tngtech.png';
+const alibabaLogo = '/logos/alibaba.png';
 
 export const getModelLogo = (modelName: string): string => {
   const logoMap: Record<string, string> = {

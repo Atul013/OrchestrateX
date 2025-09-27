@@ -47,21 +47,28 @@ export const AgentCard: React.FC<AgentCardProps> = ({ agent, onSelectAgent }) =>
             className="w-8 h-8 md:w-10 md:h-10 rounded-lg flex items-center justify-center text-white font-bold text-sm md:text-base"
             style={{ backgroundColor: agent.color }}
           >
-            {typeof agent.icon === 'string' && (agent.icon.startsWith('/icons/') || agent.icon.startsWith('/assets/') || agent.icon.includes('.png') || agent.icon.includes('.jpg') || agent.icon.includes('.jpeg'))
-              ? <img 
-                  src={agent.icon} 
-                  alt={agent.name + ' logo'} 
-                  className="w-7 h-7 md:w-9 md:h-9 object-contain rounded" 
-                  onError={(e) => {
-                    console.error(`Failed to load icon for ${agent.name}:`, agent.icon);
-                    // Keep the image element but make it invisible and show the text icon instead
-                    e.currentTarget.style.display = 'none';
-                    e.currentTarget.nextElementSibling?.removeAttribute('style');
-                  }}
-                />
-              : null}
-            <span className={`text-xl ${typeof agent.icon === 'string' && (agent.icon.startsWith('/icons/') || agent.icon.startsWith('/assets/')) ? 'hidden' : ''}`}>
-              {typeof agent.icon === 'string' && !agent.icon.startsWith('/icons/') && !agent.icon.startsWith('/assets/') ? agent.icon : '🤖'}
+            {typeof agent.icon === 'string' && agent.icon ? (
+              <img 
+                src={agent.icon} 
+                alt={agent.name + ' logo'} 
+                className="w-7 h-7 md:w-9 md:h-9 object-contain rounded" 
+                onError={(e) => {
+                  console.error(`Failed to load icon for ${agent.name}:`, agent.icon);
+                  // Replace with a fallback
+                  e.currentTarget.style.display = 'none';
+                  const fallbackSpan = e.currentTarget.nextElementSibling as HTMLElement;
+                  if (fallbackSpan) {
+                    fallbackSpan.style.display = 'block';
+                  }
+                }}
+                onLoad={() => console.log(`Successfully loaded logo for ${agent.name}:`, agent.icon)}
+              />
+            ) : null}
+            <span 
+              className="text-xl hidden" 
+              style={{ display: typeof agent.icon === 'string' && agent.icon ? 'none' : 'block' }}
+            >
+              🤖
             </span>
           </motion.div>
           <div>

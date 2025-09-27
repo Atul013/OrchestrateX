@@ -106,7 +106,7 @@ const ModelCard: React.FC<{ model: any; index: number }> = ({ model, index }) =>
                   <div className="text-white font-semibold text-sm lg:text-base">{model.latency.p50}ms</div>
                 </div>
                 <div>
-                  <span className="text-white/70 text-xs lg:text-sm">Cost/1k tokens</span>
+                  <span className="text-white/70 text-xs lg:text-sm">Cost/1M tokens</span>
                   <div className="text-white font-semibold text-sm lg:text-base">${model.cost}</div>
                 </div>
               </div>
@@ -252,7 +252,7 @@ const ModelsShowcase: React.FC = () => {
                 </div>
                 <div className="bg-white/5 rounded-lg p-2 text-center">
                   <div className="text-white font-semibold">${model.cost}</div>
-                  <div className="text-white/60">Per 1k</div>
+                  <div className="text-white/60">Per 1M</div>
                 </div>
               </div>
 
