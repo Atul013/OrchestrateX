@@ -447,3 +447,39 @@ client_session: <aiohttp.client.ClientSession object at 0x00000269A9BC4830>
 2025-09-14 00:39:30,277 - INFO - werkzeug - 127.0.0.1 - - [14/Sep/2025 00:39:30] "POST /chat HTTP/1.1" 200 -
 2025-09-14 00:43:58,120 - INFO - werkzeug - 127.0.0.1 - - [14/Sep/2025 00:43:58] "OPTIONS /chat HTTP/1.1" 200 -
 2025-09-14 00:44:30,807 - INFO - werkzeug - 127.0.0.1 - - [14/Sep/2025 00:44:30] "POST /chat HTTP/1.1" 200 -
+2025-09-27 14:50:17,596 - INFO - advanced_client - [OK] Loaded API keys for 6 models from orche.env
+2025-09-27 14:50:17,596 - INFO - advanced_client -   [MODEL] GLM4.5
+2025-09-27 14:50:17,597 - INFO - advanced_client -   [MODEL] GPT-OSS
+2025-09-27 14:50:17,597 - INFO - advanced_client -   [MODEL] Llama 4 Maverick
+2025-09-27 14:50:17,597 - INFO - advanced_client -   [MODEL] MoonshotAI Kimi
+2025-09-27 14:50:17,597 - INFO - advanced_client -   [MODEL] Qwen3
+2025-09-27 14:50:17,597 - INFO - advanced_client -   [MODEL] TNG DeepSeek
+2025-09-27 14:50:17,632 - INFO - werkzeug - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8002
+ * Running on http://10.208.229.31:8002
+2025-09-27 14:50:17,633 - INFO - werkzeug - [33mPress CTRL+C to quit[0m
+2025-09-27 14:52:37,981 - INFO - advanced_client - [OK] Loaded API keys for 6 models from orche.env
+2025-09-27 14:52:37,981 - INFO - advanced_client -   [MODEL] GLM4.5
+2025-09-27 14:52:37,981 - INFO - advanced_client -   [MODEL] GPT-OSS
+2025-09-27 14:52:37,982 - INFO - advanced_client -   [MODEL] Llama 4 Maverick
+2025-09-27 14:52:37,982 - INFO - advanced_client -   [MODEL] MoonshotAI Kimi
+2025-09-27 14:52:37,982 - INFO - advanced_client -   [MODEL] Qwen3
+2025-09-27 14:52:37,982 - INFO - advanced_client -   [MODEL] TNG DeepSeek
+2025-09-27 14:52:38,001 - INFO - werkzeug - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8002
+ * Running on http://10.208.229.31:8002
+2025-09-27 14:52:38,001 - INFO - werkzeug - [33mPress CTRL+C to quit[0m
+2025-09-27 15:15:07,428 - INFO - advanced_client - [OK] Loaded API keys for 6 models from orche.env
+2025-09-27 15:15:07,429 - INFO - advanced_client -   [MODEL] GLM4.5
+2025-09-27 15:15:07,429 - INFO - advanced_client -   [MODEL] GPT-OSS
+2025-09-27 15:15:07,429 - INFO - advanced_client -   [MODEL] Llama 4 Maverick
+2025-09-27 15:15:07,430 - INFO - advanced_client -   [MODEL] MoonshotAI Kimi
+2025-09-27 15:15:07,430 - INFO - advanced_client -   [MODEL] Qwen3
+2025-09-27 15:15:07,430 - INFO - advanced_client -   [MODEL] TNG DeepSeek
+2025-09-27 15:15:07,480 - INFO - werkzeug - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8002
+ * Running on http://10.208.229.31:8002
+2025-09-27 15:15:07,480 - INFO - werkzeug - [33mPress CTRL+C to quit[0m

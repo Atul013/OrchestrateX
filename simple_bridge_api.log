@@ -95,3 +95,7 @@
  * Running on http://10.205.43.38:8002
 2025-09-13 23:39:59,055 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
 2025-09-13 23:40:51,624 - werkzeug - INFO - 127.0.0.1 - - [13/Sep/2025 23:40:51] "[33mOPTIONS /chat HTTP/1.1[0m" 404 -
+2025-09-27 14:49:27,991 - __main__ - INFO - Starting OrchestrateX Simple Bridge API...
+2025-09-27 14:49:27,993 - __main__ - INFO - Initializing orchestrator...
+2025-09-27 14:49:28,009 - __main__ - ERROR - Failed to initialize orchestrator: No module named 'aiohttp'
+2025-09-27 14:49:28,009 - __main__ - ERROR - Failed to initialize orchestrator

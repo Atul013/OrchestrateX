@@ -44,31 +44,47 @@ export const AgentCard: React.FC<AgentCardProps> = ({ agent, onSelectAgent }) =>
               scale: isHovered ? 1.2 : 1,
               boxShadow: isHovered ? `0 0 20px ${agent.color}40` : '0 0 0px transparent'
             }}
-            className="w-8 h-8 md:w-10 md:h-10 rounded-lg flex items-center justify-center text-white font-bold text-sm md:text-base"
-            style={{ backgroundColor: agent.color }}
+            className="w-8 h-8 md:w-10 md:h-10 rounded-lg flex items-center justify-center overflow-hidden"
+            style={{ backgroundColor: 'transparent' }}
           >
             {typeof agent.icon === 'string' && agent.icon ? (
               <img 
                 src={agent.icon} 
                 alt={agent.name + ' logo'} 
-                className="w-7 h-7 md:w-9 md:h-9 object-contain rounded" 
+                className="w-full h-full object-contain" 
+                style={{ 
+                  filter: 'drop-shadow(0 0 4px rgba(0,0,0,0.3))',
+                  background: 'transparent'
+                }}
                 onError={(e) => {
                   console.error(`Failed to load icon for ${agent.name}:`, agent.icon);
-                  // Replace with a fallback
-                  e.currentTarget.style.display = 'none';
-                  const fallbackSpan = e.currentTarget.nextElementSibling as HTMLElement;
-                  if (fallbackSpan) {
-                    fallbackSpan.style.display = 'block';
+                  // Try alternative path with removebg version
+                  const img = e.currentTarget as HTMLImageElement;
+                  if (!img.src.includes('-removebg-preview')) {
+                    const altPath = agent.icon.replace('.png', '-removebg-preview.png');
+                    console.log(`Trying alternative path: ${altPath}`);
+                    img.src = altPath;
+                  } else {
+                    // If both paths fail, hide image and show letter fallback
+                    console.log(`Both logo paths failed for ${agent.name}, showing letter fallback`);
+                    img.style.display = 'none';
+                    const fallbackSpan = img.nextElementSibling as HTMLElement;
+                    if (fallbackSpan) {
+                      fallbackSpan.style.display = 'block';
+                    }
                   }
                 }}
                 onLoad={() => console.log(`Successfully loaded logo for ${agent.name}:`, agent.icon)}
               />
             ) : null}
             <span 
-              className="text-xl hidden" 
-              style={{ display: typeof agent.icon === 'string' && agent.icon ? 'none' : 'block' }}
+              className="text-xl hidden font-bold" 
+              style={{ 
+                display: typeof agent.icon === 'string' && agent.icon ? 'none' : 'block',
+                color: agent.color 
+              }}
             >
-              🤖
+              {agent.name.charAt(0)}
             </span>
           </motion.div>
           <div>
