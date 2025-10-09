@@ -11,7 +11,7 @@ const SimpleTest = () => {
     
     try {
       console.log('🚀 [TEST] Making fetch request...');
-      const res = await fetch('https://orchestratex-84388526388.us-central1.run.app/chat', {
+      const res = await fetch('https://api.orchestratex.me/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

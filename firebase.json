@@ -1,6 +1,7 @@
 {
   "hosting": {
-    "public": "dist",
+    "site": "orchestratex-57ed9",
+    "public": "FRONTEND/LANDING PAGE/landingpage/project/dist",
     "ignore": [
       "firebase.json",
       "**/.*",
@@ -8,7 +9,7 @@
     ],
     "rewrites": [
       {
-        "source": "**",
+        "source": "!/.well-known/**",
         "destination": "/index.html"
       }
     ]

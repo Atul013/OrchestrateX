@@ -1,41 +1,20 @@
-# Dockerfile for OrchestrateX API with Key Rotation
-FROM python:3.11-slim
+﻿FROM python:3.11-slim
 
-# Set working directory
 WORKDIR /app
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    gcc \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y gcc && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements
-COPY requirements.txt* ./
+COPY requirements-production.txt ./
+RUN pip install --no-cache-dir -r requirements-production.txt
 
-# Install Python dependencies
-RUN pip install --no-cache-dir \
-    flask \
-    flask-cors \
-    requests \
-    python-dotenv \
-    google-cloud-firestore \
-    firebase-admin \
-    gunicorn
-
-# Copy the API rotation system files
-COPY api_key_rotation.py .
+COPY working_api.py .
 COPY rate_limit_handler.py .
-COPY real_ai_api.py .
-
-# Copy environment configuration (will be overridden by Cloud Run env vars)
+COPY api_key_rotation.py .
 COPY orche.env .
 
-# Expose port
-EXPOSE 8080
-
-# Set environment variables
 ENV PORT=8080
 ENV PYTHONUNBUFFERED=1
 
-# Start the application with gunicorn
-CMD exec gunicorn --bind :$PORT --workers 1 --timeout 0 real_ai_api:app
+EXPOSE 8080
+
+CMD ["gunicorn", "--bind", "0.0.0.0:8080", "--workers", "2", "--timeout", "120", "working_api:app"]

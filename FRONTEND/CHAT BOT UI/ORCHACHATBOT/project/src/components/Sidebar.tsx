@@ -24,7 +24,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <div className="p-4 h-full flex flex-col">
         {/* Logo */}
         <a 
-          href="https://orchestratex-84388526388.us-central1.run.app"
+          href="https://api.orchestratex.me"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-3 mb-6 overflow-hidden cursor-pointer hover:opacity-80 transition-opacity"

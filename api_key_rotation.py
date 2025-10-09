@@ -39,13 +39,43 @@ class APIKeyRotationManager:
         
         self._load_api_keys()
         logger.info(f"🔑 API Key Rotation Manager initialized with {len(self.api_keys)} providers")
+
+    def _load_from_environment(self):
+        """Load API keys from environment variables"""
+        providers_found = 0
+        
+        # List of known providers
+        providers = ['GLM45', 'GPTOSS', 'LLAMA3', 'KIMI', 'QWEN3', 'FALCON']
+        
+        for provider in providers:
+            api_key = os.environ.get(f'PROVIDER_{provider}_API_KEY')
+            model = os.environ.get(f'PROVIDER_{provider}_MODEL')
+            
+            if api_key:
+                self.api_keys[provider] = {
+                    'primary_key': api_key,
+                    'backup_keys': [],
+                    'model_id': model,
+                    'all_keys': [api_key]
+                }
+                providers_found += 1
+                logger.info(f"✅ Loaded {provider} from environment")
+        
+        return providers_found > 0
     
     def _load_api_keys(self):
-        """Load API keys and backup keys from environment file"""
-        if not os.path.exists(self.env_file):
-            logger.error(f"❌ Environment file {self.env_file} not found")
+        """Load API keys from environment variables or file"""
+        # First try to load from environment variables (for Cloud Run)
+        env_keys = self._load_from_environment()
+        if env_keys:
+            logger.info(f"🔑 Loaded {len(env_keys)} providers from environment variables")
             return
-        
+
+        # Fallback to file (for local development)
+        if not os.path.exists(self.env_file):
+            logger.error(f"❌ Environment file {self.env_file} not found and no env vars")
+            return
+
         with open(self.env_file, 'r') as f:
             lines = f.readlines()
         

@@ -38,7 +38,7 @@ class OrchestrateXAPI {
 
   constructor() {
     // Use the new Python API deployed to Cloud Run
-    this.baseURL = 'https://orchestratex-api-84388526388.us-central1.run.app';
+    this.baseURL = 'https://api.orchestratex.me';
   }
 
   async orchestrateQuery(prompt: string): Promise<OrchestrateResponse> {
@@ -49,11 +49,11 @@ class OrchestrateXAPI {
       console.log('🚀 [DEBUG] Calling Python API at:', `${this.baseURL}/api/orchestration/process`);
       
       const requestBody = { 
-        prompt: prompt
+        message: prompt
       };
       console.log('🚀 [DEBUG] Request body:', requestBody);
       
-      const response = await fetch(`${this.baseURL}/api/orchestration/process`, {
+      const response = await fetch(`${this.baseURL}/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -19,8 +19,43 @@ import os
 from rate_limit_handler import call_model_with_rotation
 from api_key_rotation import get_status
 
+# HOTFIX: Manually set up API keys from environment variables
+def setup_api_keys_from_env():
+    """Quick fix to load API keys from environment variables"""
+    from api_key_rotation import APIKeyRotationManager
+    
+    # Get the global rotation manager instance
+    rotation_manager = None
+    try:
+        # Try to get existing instance or create new one
+        import rate_limit_handler
+        if hasattr(rate_limit_handler, 'rotation_manager'):
+            rotation_manager = rate_limit_handler.rotation_manager
+        else:
+            rotation_manager = APIKeyRotationManager()
+            rate_limit_handler.rotation_manager = rotation_manager
+    except:
+        pass
+    
+    if rotation_manager and not rotation_manager.api_keys:
+        providers = ['GLM45', 'GPTOSS', 'LLAMA3', 'KIMI', 'QWEN3', 'FALCON']
+        for provider in providers:
+            api_key = os.environ.get(f'PROVIDER_{provider}_API_KEY')
+            model = os.environ.get(f'PROVIDER_{provider}_MODEL')
+            if api_key:
+                rotation_manager.api_keys[provider] = {
+                    'primary_key': api_key,
+                    'backup_keys': [],
+                    'model_id': model,
+                    'all_keys': [api_key]
+                }
+                print(f"✅ Loaded {provider} from environment")
+
+# Call the hotfix
+setup_api_keys_from_env()
+
 app = Flask(__name__)
-CORS(app, origins=['http://localhost:5176', 'http://localhost:5175', 'http://localhost:5174', 'http://127.0.0.1:5176', 'http://127.0.0.1:5175', 'http://127.0.0.1:5174', 'https://orchestratex-frontend-84388526388.us-central1.run.app', 'https://chat.orchestratex.me', 'https://orchestratex.me'], 
+CORS(app, origins=['http://localhost:5176', 'http://localhost:5175', 'http://localhost:5174', 'http://127.0.0.1:5176', 'http://127.0.0.1:5175', 'http://127.0.0.1:5174', 'https://orchestratex-frontend-84388526388.us-central1.run.app', 'https://chat.orchestratex.me', 'https://orchestratex.me', 'https://orchestratex-chat.web.app'], 
      methods=['GET', 'POST', 'OPTIONS'], 
      allow_headers=['Content-Type', 'Authorization'])
 
@@ -407,6 +442,33 @@ def chat():
     except Exception as e:
         print(f"❌ Error: {e}")
         return jsonify({"error": str(e)}), 500
+
+@app.route('/api/orchestration/process', methods=['POST'])
+def orchestration_process():
+    """Orchestration endpoint: Alias for chat endpoint to support chatbot UI"""
+    try:
+        data = request.json
+        prompt = data.get('prompt', '')
+        
+        if not prompt:
+            return jsonify({"error": "No prompt provided"}), 400
+        
+        # Convert prompt to message format and call existing chat function
+        request.json = {'message': prompt}
+        return chat()
+        
+    except Exception as e:
+        print(f"❌ Orchestration Error: {e}")
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/reload-keys', methods=['POST'])
+def reload_keys():
+    """Manual API endpoint to reload keys from environment"""
+    try:
+        setup_api_keys_from_env()
+        return jsonify({"success": True, "message": "Keys reloaded from environment"})
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
 
 @app.route('/status', methods=['GET'])
 def status():

@@ -24,10 +24,41 @@ venv/
 
 # Logs
 *.log
+orchestratex_*.log
 
 # IDE files
 .vscode/
 .idea/
+
+# Exclude development and testing files
+backend/
+chatbot-frontend/
+FRONTEND/
+docs/
+temp_storage/
+test_*.py
+*.md
+*.bat
+*.sh
+.vite/
+assets/
+landingapge/
+dataset/
+deployment/
+config/
+database/
+icons/
+Model/
+models/
+security/
+init-scripts/
+OrchestrateX/
+requirements.txt
+docker-compose*.yml
+Dockerfile
+Dockerfile.*
+!Dockerfile.production
+!requirements-production.txt
 *.swp
 *.swo
 
