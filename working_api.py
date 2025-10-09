@@ -19,6 +19,51 @@ import os
 from rate_limit_handler import call_model_with_rotation
 from api_key_rotation import get_status
 
+# EMERGENCY HOTFIX: Load API keys directly from environment
+def load_api_keys_directly():
+    """Emergency function to load API keys directly from environment"""
+    global rotation_manager
+    
+    if not hasattr(load_api_keys_directly, 'keys_loaded'):
+        print("🚨 EMERGENCY: Loading API keys directly from environment...")
+        
+        # Get the rotation manager
+        try:
+            from api_key_rotation import APIKeyRotationManager
+            rotation_manager = APIKeyRotationManager()
+        except:
+            print("❌ Could not create rotation manager")
+            return False
+        
+        # Manual key loading
+        providers = {
+            'GLM45': 'GLM-4.5',
+            'GPTOSS': 'GPT-OSS', 
+            'LLAMA3': 'Llama-4-Maverick',
+            'KIMI': 'Kimi-K2',
+            'QWEN3': 'Qwen3',
+            'FALCON': 'TNG DeepSeek'
+        }
+        
+        for provider_env, model_name in providers.items():
+            api_key = os.environ.get(f'PROVIDER_{provider_env}_API_KEY')
+            model_id = os.environ.get(f'PROVIDER_{provider_env}_MODEL')
+            
+            if api_key:
+                rotation_manager.api_keys[provider_env] = {
+                    'primary_key': api_key.strip(),
+                    'backup_keys': [],
+                    'model_id': model_id.strip() if model_id else None,
+                    'all_keys': [api_key.strip()]
+                }
+                print(f"✅ Loaded {provider_env} -> {model_name}: {api_key[:20]}...")
+        
+        print(f"🎯 Total keys loaded: {len(rotation_manager.api_keys)}")
+        load_api_keys_directly.keys_loaded = True
+        return len(rotation_manager.api_keys) > 0
+    
+    return True
+
 # HOTFIX: Manually set up API keys from environment variables
 def setup_api_keys_from_env():
     """Quick fix to load API keys from environment variables"""
@@ -53,6 +98,9 @@ def setup_api_keys_from_env():
 
 # Call the hotfix
 setup_api_keys_from_env()
+
+# EMERGENCY HOTFIX: Force load API keys
+load_api_keys_directly()
 
 app = Flask(__name__)
 CORS(app, origins=['http://localhost:5176', 'http://localhost:5175', 'http://localhost:5174', 'http://127.0.0.1:5176', 'http://127.0.0.1:5175', 'http://127.0.0.1:5174', 'https://orchestratex-frontend-84388526388.us-central1.run.app', 'https://chat.orchestratex.me', 'https://orchestratex.me', 'https://orchestratex-chat.web.app'], 

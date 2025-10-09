@@ -28,7 +28,7 @@ steps:
       - 'managed'
       - '--allow-unauthenticated'
       - '--port'
-      - '8002'
+      - '8080'
       - '--memory'
       - '512Mi'
       - '--cpu'

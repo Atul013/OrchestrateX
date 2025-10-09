@@ -1,0 +1,16 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install basic requirements
+RUN pip install flask flask-cors requests
+
+# Copy the fixed API
+COPY fixed_api.py .
+
+ENV PORT=8080
+ENV PYTHONUNBUFFERED=1
+
+EXPOSE 8080
+
+CMD ["python", "fixed_api.py"]
