@@ -60,6 +60,22 @@ class ModelResponse:
             self.timestamp = datetime.utcnow().isoformat()
         if self.metadata is None:
             self.metadata = {}
+    
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert to dictionary for serialization"""
+        return {
+            "model_name": self.model_name,
+            "response_text": self.response_text,
+            "response_type": self.response_type,
+            "tokens_used": self.tokens_used,
+            "latency_ms": self.latency_ms,
+            "cost_usd": self.cost_usd,
+            "confidence_score": self.confidence_score,
+            "success": self.success,
+            "error_message": self.error_message,
+            "timestamp": self.timestamp,
+            "metadata": self.metadata if isinstance(self.metadata, dict) else {}
+        }
 
 @dataclass
 class OrchestrationResult:
@@ -85,8 +101,8 @@ class OrchestrationResult:
             "prompt": self.original_prompt,
             "selected_model": self.selected_model,
             "confidence_scores": self.model_confidence_scores,
-            "primary_response": asdict(self.primary_response),
-            "critiques": [asdict(resp) for resp in self.critique_responses],
+            "primary_response": self.primary_response.to_dict(),
+            "critiques": [resp.to_dict() for resp in self.critique_responses],
             "summary": {
                 "total_latency_ms": self.total_latency_ms,
                 "total_cost_usd": self.total_cost_usd,
@@ -222,7 +238,8 @@ class MultiModelOrchestrator:
                  model_selector_url: str = "http://localhost:5000",
                  max_retries: int = 3,
                  timeout: int = 30,
-                 max_concurrent: int = 6):
+                 max_concurrent: int = 8,
+                 min_successful_critiques: int = 4):
         """
         Initialize the advanced orchestrator
         
@@ -231,23 +248,25 @@ class MultiModelOrchestrator:
             max_retries: Maximum retry attempts for failed requests
             timeout: Request timeout in seconds
             max_concurrent: Maximum concurrent API calls
+            min_successful_critiques: Minimum number of successful critiques to aim for
         """
         self.model_selector_url = model_selector_url
         self.max_retries = max_retries
         self.timeout = timeout
         self.max_concurrent = max_concurrent
+        self.min_successful_critiques = min_successful_critiques
         
         # Initialize secure key manager
         self.key_manager = SecureAPIKeyManager()
         
-        # OpenRouter model mappings - using exact IDs from orche.env
+        # OpenRouter model mappings - Updated with working alternatives
         self.model_mappings = {
-            "TNG DeepSeek": "tngtech/deepseek-r1t2-chimera:free",  # PROVIDER_FALCON_MODEL
-            "GLM4.5": "z-ai/glm-4.5-air:free",  # PROVIDER_GLM45_MODEL
-            "GPT-OSS": "openai/gpt-oss-120b:free",  # PROVIDER_GPTOSS_MODEL
-            "MoonshotAI Kimi": "moonshotai/kimi-k2:free",  # PROVIDER_KIMI_MODEL
-            "Llama 4 Maverick": "meta-llama/llama-4-maverick:free",  # PROVIDER_LLAMA3_MODEL
-            "Qwen3": "qwen/qwen3-coder:free"  # PROVIDER_QWEN3_MODEL
+            "TNG DeepSeek": "deepseek/deepseek-chat",  # Fixed: Working DeepSeek alternative
+            "GLM4.5": "z-ai/glm-4.5-air:free",  # Keep original (rate limited but will work tomorrow)
+            "GPT-OSS": "microsoft/wizardlm-2-8x22b",  # Fixed: Working alternative to broken GPT-OSS
+            "MoonshotAI Kimi": "moonshotai/kimi-k2:free",  # Keep original 
+            "Llama 4 Maverick": "meta-llama/llama-4-maverick:free",  # Keep working original
+            "Qwen3": "qwen/qwen-2.5-coder-32b-instruct"  # Fixed: Working Qwen alternative
         }
         
         # Model cost estimates (per 1K tokens) - All models are free tier
@@ -394,19 +413,25 @@ class MultiModelOrchestrator:
                 
                 focus = focus_areas.get(model_name, "overall quality")
                 
-                # Customize critique prompts for shorter, focused responses
+                # Customize critique prompts for focused, natural responses
                 if model_name == "TNG DeepSeek":
-                    critique_prompt = f"""Analyze ONLY technical accuracy and logical flow: {original_response}
+                    critique_prompt = f"""Please provide a brief critique of this response focusing on technical accuracy and logical flow:
 
-Provide a 15-word critique focusing on: logical gaps, technical errors, or reasoning flaws. Be specific and concise."""
+{original_response}
+
+Your critique should be 1-2 sentences highlighting any technical errors, logical gaps, or areas for improvement."""
                 elif model_name == "Qwen3":
-                    critique_prompt = f"""Check ONLY factual precision and data accuracy: {original_response}
+                    critique_prompt = f"""Please review this response for factual accuracy and data precision:
 
-Provide a 15-word critique focusing on: factual errors, data precision, or citation needs. Avoid technical logic points."""
+{original_response}
+
+Provide a brief critique in 1-2 sentences focusing on any factual errors, data issues, or citation needs."""
                 else:
-                    critique_prompt = f"""Critique {focus}: {original_response}
+                    critique_prompt = f"""Please critique this response focusing on {focus}:
 
-Give a 3-5 word critique about {focus}. Format: "Missing [specific thing]" or "Lacks [specific element]" or "Needs [specific improvement]"."""
+{original_response}
+
+Provide a brief critique in 1-2 sentences about {focus}."""
                 
                 final_prompt = critique_prompt
                 response_type = "critique"
@@ -659,13 +684,53 @@ Give a 3-5 word critique about {focus}. Format: "Missing [specific thing]" or "L
                 else:
                     processed_critiques.append(response)
             
+            # Enhanced retry logic for failed critiques to reach min_successful_critiques
+            successful_critiques_count = sum(1 for c in processed_critiques if c.success)
+            if successful_critiques_count < self.min_successful_critiques:
+                logger.info(f"🔄 Only {successful_critiques_count} successful critiques, retrying failed models...")
+                
+                # Get failed models
+                failed_models = [c.model_name for c in processed_critiques if not c.success]
+                
+                if failed_models:
+                    logger.info(f"🔁 Retrying {len(failed_models)} failed models: {failed_models}")
+                    
+                    # Retry failed models with increased timeout
+                    async def retry_critique_with_timeout(model):
+                        return await self._call_openrouter_api(
+                            model,
+                            prompt,
+                            is_critique=True,
+                            original_response=primary_response.response_text if primary_response.success else None,
+                            temperature=0.9  # Slightly higher temperature for retries
+                        )
+                    
+                    # Execute retry requests
+                    retry_tasks = [retry_critique_with_timeout(model) for model in failed_models]
+                    retry_responses = await asyncio.gather(*retry_tasks, return_exceptions=True)
+                    
+                    # Replace failed critiques with retry results
+                    for i, retry_response in enumerate(retry_responses):
+                        if not isinstance(retry_response, Exception) and retry_response.success:
+                            # Find and replace the failed critique
+                            failed_model = failed_models[i]
+                            for j, critique in enumerate(processed_critiques):
+                                if critique.model_name == failed_model and not critique.success:
+                                    processed_critiques[j] = retry_response
+                                    logger.info(f"✅ Retry successful for {failed_model}")
+                                    break
+            
+            # Update successful critiques count after retries
+            successful_critiques_final = sum(1 for c in processed_critiques if c.success)
+            logger.info(f"📊 Final critiques: {successful_critiques_final}/{len(processed_critiques)} successful")
+            
             # Calculate totals
             end_time = time.time()
             total_latency_ms = int((end_time - start_time) * 1000)
             total_cost = primary_response.cost_usd + sum(c.cost_usd for c in processed_critiques)
             
             # Determine overall success
-            successful_critiques = sum(1 for c in processed_critiques if c.success)
+            successful_critiques = successful_critiques_final
             overall_success = primary_response.success and successful_critiques > 0
             
             if overall_success:

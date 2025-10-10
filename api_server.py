@@ -78,8 +78,46 @@ def chat():
         
         logger.info(f"💬 Chat request: {message[:50]}...")
         
-        # Use the orchestrate endpoint
-        return asyncio.run(run_orchestration(message))
+        # Run the async orchestration
+        result = asyncio.run(run_orchestration(message))
+        
+        if result is None:
+            return jsonify({"error": "Orchestration failed"}), 500
+        
+        # Convert OrchestrationResult to the format expected by frontend
+        if hasattr(result, 'to_dict'):
+            result_dict = result.to_dict()
+            
+            # Transform to frontend-expected format
+            frontend_response = {
+                "success": result.success,
+                "primary_response": {
+                    "success": result.primary_response.success,
+                    "model_name": result.primary_response.model_name,
+                    "response_text": result.primary_response.response_text,
+                    "tokens_used": result.primary_response.tokens_used,
+                    "cost_usd": result.primary_response.cost_usd,
+                    "latency_ms": result.primary_response.latency_ms
+                },
+                "critiques": [
+                    {
+                        "model_name": critique.model_name,
+                        "critique_text": critique.response_text,  # Frontend expects "critique_text"
+                        "tokens_used": critique.tokens_used,
+                        "cost_usd": critique.cost_usd,
+                        "latency_ms": critique.latency_ms,
+                        "success": critique.success
+                    }
+                    for critique in result.critique_responses
+                ],
+                "total_cost": result.total_cost_usd,
+                "api_calls": len(result.critique_responses) + 1,
+                "success_rate": 100.0 if result.success else 0.0
+            }
+            
+            return jsonify(frontend_response)
+        else:
+            return jsonify({"error": "Invalid result format"}), 500
         
     except Exception as e:
         logger.error(f"❌ Error in chat endpoint: {e}")
@@ -103,8 +141,15 @@ def orchestrate():
         if result is None:
             return jsonify({"error": "Orchestration failed"}), 500
         
-        # Convert OrchestrationResult to dict if needed
-        if hasattr(result, '__dict__'):
+        # Convert OrchestrationResult to dict using the to_dict method
+        print(f"Result type: {type(result)}")
+        print(f"Result has to_dict: {hasattr(result, 'to_dict')}")
+        
+        if hasattr(result, 'to_dict'):
+            result_dict = result.to_dict()
+            print(f"to_dict result type: {type(result_dict)}")
+            return jsonify(result_dict)
+        elif hasattr(result, '__dict__'):
             result = result.__dict__
             
         return jsonify(result)
@@ -125,50 +170,15 @@ async def run_orchestration(prompt: str):
             
             if not result or not result.success:
                 logger.error("❌ Orchestration failed")
-                return jsonify({"error": "Orchestration failed"}), 500
+                return None
             
-            # Convert the result to the format expected by frontend
-            response_data = {
-                "success": True,
-                "primary_response": {
-                    "success": result.primary_response.success,
-                    "model_name": result.primary_response.model_name,
-                    "response_text": result.primary_response.response_text,
-                    "tokens_used": result.primary_response.tokens_used,
-                    "cost_usd": result.primary_response.cost_usd,
-                    "latency_ms": result.primary_response.latency_ms
-                },
-                "critiques": [],
-                "total_cost": result.total_cost_usd,
-                "api_calls": len(result.critique_responses) + 1,
-                "success_rate": 100.0 if result.success else 0.0,
-                "metadata": {
-                    "session_id": "python-backend",
-                    "backend_type": "real_api",
-                    "model_selector": "ml_based",
-                    "total_models": len(result.critique_responses) + 1
-                }
-            }
-            
-            # Process critiques from critique_responses
-            for critique in result.critique_responses:
-                if critique.success:  # Only include successful critiques
-                    response_data["critiques"].append({
-                        "model_name": critique.model_name,
-                        "critique_text": critique.response_text,
-                        "tokens_used": critique.tokens_used,
-                        "cost_usd": critique.cost_usd,
-                        "latency_ms": critique.latency_ms
-                    })
-            
-            logger.info(f"✅ Orchestration completed: {result.selected_model} primary, {len(response_data['critiques'])} critiques")
-            return jsonify(response_data)
+            return result
             
     except Exception as e:
         logger.error(f"❌ Error in orchestration: {e}")
         import traceback
         traceback.print_exc()
-        return jsonify({"error": str(e)}), 500
+        return None
 
 if __name__ == '__main__':
     logger.info("🚀 Starting OrchestrateX Python API Server...")

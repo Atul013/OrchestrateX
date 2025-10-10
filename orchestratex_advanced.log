@@ -556,3 +556,17 @@ AttributeError: 'MultiModelOrchestrator' object has no attribute 'models'
  * Running on http://127.0.0.1:8002
  * Running on http://10.208.229.31:8002
 2025-09-27 15:37:25,806 - INFO - werkzeug - [33mPress CTRL+C to quit[0m
+2025-10-10 21:55:13,802 - INFO - advanced_client - [OK] Loaded API keys for 6 models from orche.env
+2025-10-10 21:55:13,803 - INFO - advanced_client -   [MODEL] GLM4.5
+2025-10-10 21:55:13,804 - INFO - advanced_client -   [MODEL] GPT-OSS
+2025-10-10 21:55:13,804 - INFO - advanced_client -   [MODEL] Llama 4 Maverick
+2025-10-10 21:55:13,815 - INFO - advanced_client -   [MODEL] MoonshotAI Kimi
+2025-10-10 21:55:13,815 - INFO - advanced_client -   [MODEL] Qwen3
+2025-10-10 21:55:13,815 - INFO - advanced_client -   [MODEL] TNG DeepSeek
+2025-10-10 22:17:24,733 - INFO - advanced_client - [OK] Loaded API keys for 6 models from orche.env
+2025-10-10 22:17:24,734 - INFO - advanced_client -   [MODEL] GLM4.5
+2025-10-10 22:17:24,734 - INFO - advanced_client -   [MODEL] GPT-OSS
+2025-10-10 22:17:24,734 - INFO - advanced_client -   [MODEL] Llama 4 Maverick
+2025-10-10 22:17:24,734 - INFO - advanced_client -   [MODEL] MoonshotAI Kimi
+2025-10-10 22:17:24,734 - INFO - advanced_client -   [MODEL] Qwen3
+2025-10-10 22:17:24,734 - INFO - advanced_client -   [MODEL] TNG DeepSeek
