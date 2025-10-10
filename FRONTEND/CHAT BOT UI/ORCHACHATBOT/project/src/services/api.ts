@@ -1,8 +1,9 @@
 // API Configuration for OrchestrateX Frontend
 export const API_CONFIG = {
-  BASE_URL: 'http://localhost:8002',
+  BASE_URL: 'http://localhost:8000', // Updated to use Python backend
   ENDPOINTS: {
     CHAT: '/chat',
+    ORCHESTRATE: '/orchestrate',
     MODELS: '/models',
     HEALTH: '/health'
   }
@@ -18,7 +19,7 @@ export const apiService = {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ 
-          prompt: message
+          message: message  // Updated to use 'message' key for Python backend
         }),
       });
       
@@ -32,15 +33,21 @@ export const apiService = {
         model: data.primary_response?.model_name || 'auto-selected',
         status: 'success',
         critiques: data.critiques || [],
-        metadata: data.metadata || {}
+        metadata: data.metadata || {},
+        backend: 'python',
+        totalCost: data.total_cost || 0,
+        apiCalls: data.api_calls || 0,
+        successRate: data.success_rate || 0
       };
     } catch (error) {
       console.error('API call failed:', error);
       // Fallback to mock response
       return {
-        response: `Thank you for your message: "${message}". I'm processing this and will route it to the most appropriate model for the best response.`,
-        model: 'mock-model',
-        status: 'mock'
+        response: `Thank you for your message: "${message}". I'm processing this and will route it to the most appropriate model for the best response. (Note: Backend connection failed, using fallback)`,
+        model: 'fallback-mock',
+        status: 'mock',
+        backend: 'fallback',
+        error: (error as Error).message
       };
     }
   },

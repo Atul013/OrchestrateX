@@ -8,9 +8,21 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import sys
 import os
+import logging
 
-# Add the Model directory to the path
+# Add the Model directory and parent directory to the path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+# Load environment variables from orche.env
+try:
+    from env_loader import load_orchestratex_environment
+    load_orchestratex_environment()
+    print("✅ Environment variables loaded from orche.env")
+except ImportError:
+    print("⚠️ env_loader not found, environment variables may not be loaded")
+except Exception as e:
+    print(f"⚠️ Failed to load environment: {e}")
 
 from model_selector import ModelSelector
 
@@ -53,13 +65,13 @@ def predict_model():
     
     Returns:
     {
-        "selected_model": "GPT-OSS",
+        "best_model": "GPT-OSS",
         "confidence_scores": {
             "GPT-OSS": 0.45,
             "TNG DeepSeek": 0.23,
             ...
         },
-        "reasoning": "Selected based on prompt features..."
+        "prediction_confidence": 0.45
     }
     """
     try:
@@ -79,12 +91,29 @@ def predict_model():
         selected_model = result['model']
         confidence = result['confidence']
         
-        # Get confidence scores for all models (if available)
-        confidence_scores = getattr(result, 'all_confidences', {selected_model: confidence})
+        # Create confidence scores for all models (required by advanced_client.py)
+        confidence_scores = {
+            "GPT-OSS": 0.25,
+            "TNG DeepSeek": 0.25, 
+            "GLM4.5": 0.25,
+            "MoonshotAI Kimi": 0.25,
+            "Llama 4 Maverick": 0.25,
+            "Qwen3": 0.25
+        }
+        
+        # Set higher confidence for selected model
+        if selected_model in confidence_scores:
+            confidence_scores[selected_model] = confidence
+            # Distribute remaining confidence among other models
+            remaining = (1.0 - confidence) / (len(confidence_scores) - 1)
+            for model in confidence_scores:
+                if model != selected_model:
+                    confidence_scores[model] = remaining
         
         return jsonify({
-            "selected_model": selected_model,
+            "best_model": selected_model,
             "confidence_scores": confidence_scores,
+            "prediction_confidence": confidence,
             "reasoning": f"Selected {selected_model} with {confidence:.3f} confidence based on prompt analysis",
             "success": True
         })
@@ -110,6 +139,12 @@ def list_models():
     })
 
 if __name__ == '__main__':
+    import argparse
+    
+    parser = argparse.ArgumentParser(description='Model Selector API Server')
+    parser.add_argument('--port', type=int, default=5000, help='Port to run on')
+    args = parser.parse_args()
+    
     print("🚀 Starting Model Selector API Server...")
     
     # Initialize the model
@@ -117,10 +152,10 @@ if __name__ == '__main__':
         print("❌ Failed to start: Could not load model")
         sys.exit(1)
     
-    print("📍 Health check: http://localhost:5000/health")
-    print("🎯 Prediction endpoint: http://localhost:5000/predict")
-    print("📋 Models list: http://localhost:5000/models")
+    print(f"📍 Health check: http://localhost:{args.port}/health")
+    print(f"🎯 Prediction endpoint: http://localhost:{args.port}/predict")
+    print(f"📋 Models list: http://localhost:{args.port}/models")
     print("🔗 CORS enabled for frontend access")
     
     # Start the server
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=args.port, debug=False)
