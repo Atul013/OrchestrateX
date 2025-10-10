@@ -415,23 +415,23 @@ class MultiModelOrchestrator:
                 
                 # Customize critique prompts for focused, natural responses
                 if model_name == "TNG DeepSeek":
-                    critique_prompt = f"""Please provide a brief critique of this response focusing on technical accuracy and logical flow:
+                    critique_prompt = f"""Give a brief critique (10 words max) on technical accuracy:
 
 {original_response}
 
-Your critique should be 1-2 sentences highlighting any technical errors, logical gaps, or areas for improvement."""
+Critique:"""
                 elif model_name == "Qwen3":
-                    critique_prompt = f"""Please review this response for factual accuracy and data precision:
+                    critique_prompt = f"""Give a brief critique (10 words max) on factual accuracy:
 
 {original_response}
 
-Provide a brief critique in 1-2 sentences focusing on any factual errors, data issues, or citation needs."""
+Critique:"""
                 else:
-                    critique_prompt = f"""Please critique this response focusing on {focus}:
+                    critique_prompt = f"""Give a brief critique (10 words max) on {focus}:
 
 {original_response}
 
-Provide a brief critique in 1-2 sentences about {focus}."""
+Critique:"""
                 
                 final_prompt = critique_prompt
                 response_type = "critique"
