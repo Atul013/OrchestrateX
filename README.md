@@ -6,11 +6,12 @@ OrchestrateX is an advanced multi-model collaborative AI system designed to deli
 
 ## Features
 
-- **Multi-Model Selection:** Chooses the most suitable model from a pool (e.g., GLM4.5, GPT-OSS, Llama 4 Maverick, MoonshotAI Kimi, Qwen3, TNG DeepSeek R1T2 Chimera) to generate the initial response.
+- **Multi-Model Selection:** Intelligently chooses the most suitable model from a pool of GLM4.5, GPT-OSS, Llama 4 Maverick, MoonshotAI Kimi, Qwen3, and TNG DeepSeek R1T2 Chimera to generate the initial response.
 - **Collaborative Criticism:** Other models provide real-time critiques and suggestions to enhance the output of the answering model.
-- **Dynamic Refinement:** The answering model iteratively refines its output based on the feedback.
+- **Dynamic Refinement:** The answering model iteratively refines its output based on feedback.
+- **API Key Rotation:** Automatic rotation of API keys across multiple providers for reliability and rate limit management.
 - **High Output Quality:** Combines strengths of multiple AI models to produce superior results.
-- **Flexible UI Concepts:** Supports various user interface designs for different user needs from simple outputs to interactive comparative views.
+- **Modern React UI:** Clean, responsive interface for seamless interaction with the orchestration system.
 
 ---
 
@@ -24,45 +25,117 @@ OrchestrateX is an advanced multi-model collaborative AI system designed to deli
 
 ---
 
-## UI Ideas (TBD)
+## Architecture
 
-- **Simple Unified Output:** Shows only the final refined answer with an optional details panel for transparency.
-- **Interactive Multi-Model View:** Allows users to see the main response alongside critiques from other models, supporting iterative refinement.
-- **Progressive Refinement:** Displays initial answers and dynamically updates them during collaborative feedback.
-- **Model Visualization Dashboard:** Visual insights into model confidence and critique influence.
-- **Conversational Model Personas:** Chat interface where each model acts as a persona contributing to the dialog.
-- **Minimal UI:** Focus on quick, clean final answers with orchestration handled transparently in the backend.
+**Backend:**
+- Flask API with Google Cloud Firestore integration
+- Multi-model orchestration engine
+- Automatic API key rotation system
+- Rate limiting and request management
+
+**Frontend:**
+- React-based chat interface
+- Real-time model response display
+- Multi-model critique visualization
+
+**Deployment:**
+- Docker containerization
+- Google Cloud Run compatible
+- CI/CD with Cloud Build
 
 ---
 
 ## Why OrchestrateX?
 
-- Maximizes answer quality by leveraging complementary strengths across AI models.
-- Provides real-time, multi-agent feedback and learning.
-- Enables transparency and trust through detailed critique and collaboration.
-- Adaptable UI options for different user skill levels and use cases.
-- Balances cutting-edge AI research with practical deployment considerations.
-
----
-
-## Future Directions
-
-- Experiment with reinforcement learning to distill multi-model wisdom into a single optimized model.
-- Expand collaboration models and critique strategies for specific domains.
-- Explore hybrid approaches combining real-time critique with offline training improvements.
-- Develop customizable UI modules tailored to user preferences and expertise.
+- **Maximizes Answer Quality:** Leverages complementary strengths across multiple AI models
+- **Real-Time Collaboration:** Multi-agent feedback and learning in real-time
+- **Transparency & Trust:** Detailed critique and collaboration visible to users
+- **Production-Ready:** Clean architecture with automated deployment pipelines
+- **Scalable Infrastructure:** Built for cloud deployment with automatic scaling
 
 ---
 
 ## Getting Started
 
-To integrate OrchestrateX into your application:
+### Prerequisites
+```bash
+# Python 3.8+
+# Node.js 18+
+# Docker (optional)
+```
 
-1. Prepare and connect your AI model pool.
-2. Implement the multi-model selection algorithm.
-3. Set up the collaborative critique and refinement loop.
-4. Choose or design a UI approach that fits your user base.
-5. Test and iterate to ensure seamless user experience and output quality.
+### Installation
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/Atul013/OrchestrateX.git
+   cd OrchestrateX
+   ```
+
+2. **Set up environment variables:**
+   ```bash
+   cp orche.env.example orche.env
+   # Add your API keys to orche.env
+   ```
+
+3. **Install Python dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Install frontend dependencies:**
+   ```bash
+   cd FRONTEND/CHAT\ BOT\ UI/ORCHACHATBOT/project
+   npm install
+   ```
+
+5. **Run the backend:**
+   ```bash
+   python working_api.py
+   ```
+
+6. **Run the frontend:**
+   ```bash
+   npm run dev
+   ```
+
+### Docker Deployment
+
+```bash
+docker build -t orchestratex .
+docker run -p 8080:8080 --env-file orche.env orchestratex
+```
+
+### Google Cloud Deployment
+
+```bash
+gcloud builds submit --config cloudbuild.yaml
+```
+
+---
+
+## Technology Stack
+
+**Backend:**
+- Python 3.8+ with Flask
+- Google Cloud Firestore
+- OpenRouter API integration
+
+**Frontend:**
+- React with TypeScript
+- Vite build system
+- Modern CSS with responsive design
+
+**Infrastructure:**
+- Docker containerization
+- Google Cloud Run
+- Cloud Build CI/CD
+
+---
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
 
 ---
 
@@ -72,10 +145,10 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ---
 
-## Contact  
+## Contact
 
-For inquiries, contributions, or support, please contact [Your Contact Information].
+For inquiries, contributions, or support, please open an issue on GitHub.
 
 ---
 
-OrchestrateX — Harnessing the power of many AIs to answer better, faster, and smarter.
+**OrchestrateX** — Harnessing the power of multiple AI models to deliver better, faster, and smarter responses.
