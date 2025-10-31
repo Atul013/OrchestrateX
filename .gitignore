@@ -3,6 +3,8 @@ orche.env
 .env
 .env.local
 .env.*.local
+.env.cloud
+.env.docker
 
 # API keys and secrets
 *.key
